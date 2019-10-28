@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\User;
+use Illuminate\Http\Request;
+use App\Model\User;
+use Auth;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,49 +28,57 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * Show register form.
      *
-     * @var string
+     * @return \Illuminate\Http\Response
      */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected function showRegistrationForm()
     {
-        $this->middleware('guest');
+        return view('auth.register');
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Check input to create a new user.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    protected function register(Request $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+            $rules = [
+                'name' => ['required', 'string', 'max:255'],
+                'address' => ['required', 'string', 'max:255'],
+                'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:6'],
+                'repassword' => ['required', 'string', 'min:6', 'same:password'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            User::create([
+                'name' => $request->name,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'role' => $request->role,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+
+            DB::commit();
+
+            $success = Lang::get('notify.success.register');
+            return redirect()->back()->with('success', $success);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('error',$e->getMessage());
+        }
     }
 }

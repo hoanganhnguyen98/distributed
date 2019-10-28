@@ -1,7 +1,6 @@
 <!-- Footer -->
 <footer class="text-center">
     <div class="container">
-    	<p class="text-danger">NINJA Restaurant</p>
     </div>
 </footer>
 

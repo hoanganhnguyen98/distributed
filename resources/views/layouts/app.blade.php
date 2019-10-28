@@ -10,7 +10,7 @@
             @include('layouts.partials.mainheader')
 
             <section>
-                @yield('main-content')
+                @yield('content')
             </section>
 
             @include('layouts.partials.footer')
