@@ -78,7 +78,7 @@ class RegisterController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error',$e->getMessage());
+            return redirect()->back()->with('errors', $e->getMessage());
         }
     }
 }

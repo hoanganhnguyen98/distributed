@@ -5,7 +5,6 @@
 @endsection
 
 @section('custom_css')
-    <link href="#" rel="stylesheet">
 @endsection
 
 @section('content')

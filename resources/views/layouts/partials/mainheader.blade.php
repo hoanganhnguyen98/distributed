@@ -44,3 +44,16 @@
         </ul> 
     </div>
 </nav>
+
+@if(Auth::check())
+<nav class="navbar navbar-expand-lg bg-light text-uppercase">
+    <div class="container">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item mx-0 mx-lg-1">
+                <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/register">
+                <i class="fas fa-user-plus mr-2"></i>{{ trans('messages.header.register') }}</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+@endif

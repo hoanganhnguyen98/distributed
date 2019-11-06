@@ -8,6 +8,7 @@
     <body>
         <div>
             @include('layouts.partials.mainheader')
+            <br>
 
             <section>
                 @yield('content')
