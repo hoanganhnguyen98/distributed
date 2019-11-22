@@ -14,7 +14,7 @@ class Table extends Model
     protected $fillable = [
         'user_id',
         'admin_id',
-        'area_id',
+        'area',
         'role',
         'first_login',
         'name',

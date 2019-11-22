@@ -4,11 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Model\User;
+use App\Model\Food;
+use App\Model\Type;
+use App\Model\Source;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Cloudder;
+use Auth;
 
 class FoodController extends Controller
 {
@@ -19,7 +23,10 @@ class FoodController extends Controller
      */
     protected function showCreateFoodForm()
     {
-        return view('user.admin.food.create-food');
+        $types = Type::all();
+        $sources = Source::all();
+
+        return view('user.admin.food.create-food', compact('types', 'sources'));
     }
 
     /**
@@ -35,6 +42,9 @@ class FoodController extends Controller
 
             $rules = [
                 'name' => ['required', 'string', 'max:255'],
+                'material' => ['required', 'string', 'max:255'],
+                'vnd_price' => ['required', 'max:255'],
+                'usd_price'  => ['required', 'max:255'],
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -42,14 +52,27 @@ class FoodController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            // if ($request->hasFile('image')) {
-            //     $image = $request->image;
-            //     $avatar = time().'.'.$image->getClientOriginalExtension();
-            //     $destinationPath = public_path('\img\avatar');
-            //     $image->move($destinationPath, $avatar);
-            // }
+            // get image to store in cloud
+            if ($request->hasFile('image')){
+                // create path to store in cloud
+                $public_id = "ninja_restaurant/foods/".time();
+                // upload to cloud
+                Cloudder::upload($request->file('image'), $public_id);
+                // get url of image
+                $resize = array("width" => 300, "height" => 300, "crop" => "pad");
+                $img_url = Cloudder::show($public_id, $resize);
+            }
 
-            //save
+            Food::create([
+                'admin_id' => Auth::user()->user_id,
+                'name' => $request->name,
+                'image' => $img_url,
+                'type' => $request->type,
+                'source' => $request->source,
+                'material' => $request->material,
+                'vnd_price' => $request->vnd_price,
+                'usd_price' => $request->usd_price,
+            ]);
 
             DB::commit();
 
@@ -69,6 +92,7 @@ class FoodController extends Controller
      */
     protected function showFoodList()
     {
-        return view('user.admin.food.food-list');
+        $foods = Food::all();
+        return view('user.admin.food.food-list', compact('foods'));
     }
 }

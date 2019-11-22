@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\SendMailAfterCreate;
+use Cloudder;
 
 class AccountController extends Controller
 {
@@ -47,11 +48,15 @@ class AccountController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
-            if ($request->hasFile('image')) {
-                $image = $request->image;
-                $avatar = time().'.'.$image->getClientOriginalExtension();
-                $destinationPath = public_path('\img\avatar');
-                $image->move($destinationPath, $avatar);
+            // get image to store in cloud
+            if ($request->hasFile('image')){
+                // create path to store in cloud
+                $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
+                // upload to cloud
+                Cloudder::upload($request->file('image'), $public_id);
+                // get url of image
+                $resize = array("width" => 300, "height" => 300, "crop" => "pad");
+                $img_url = Cloudder::show($public_id, $resize);
             }
 
             // generate a random password
@@ -60,10 +65,10 @@ class AccountController extends Controller
             // create new account
             $user = User::create([
                 'user_id' => explode('@', $request->email)[0],
-                'area_id' => $request->area_id,
+                'area' => $request->area,
                 'role' => $request->role,
                 'name' => $request->name,
-                // 'image' => $avatar,
+                'image' => $img_url,
                 'address' => $request->address,
                 'phone' => $request->phone,
                 'email' => $request->email,

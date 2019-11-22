@@ -14,8 +14,7 @@ class CreateFoodsTable extends Migration
     public function up()
     {
         Schema::create('foods', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('food_id')->unique();
+            $table->bigIncrements('food_id');
             $table->string('admin_id');
             $table->string('name');
             $table->string('image');
@@ -23,7 +22,7 @@ class CreateFoodsTable extends Migration
             $table->string('source');
             $table->string('material');
             $table->double('vnd_price');
-            $table->double('usa_price');
+            $table->double('usd_price');
             $table->timestamps();
         });
     }

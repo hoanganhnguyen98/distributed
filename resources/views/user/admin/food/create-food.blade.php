@@ -30,7 +30,7 @@
             </div>
         @endif
         
-        <form method="POST" action="{{ route('create-food') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('create-food') }}" enctype="multipart/form-data" id="food">
             @csrf
 
             <!-- Name -->
@@ -67,38 +67,48 @@
                 </div>
             </div>
 
+            <!-- Type -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
                     {{ trans('messages.create.food.type') }}
                 </label>
 
                 <div class="col-md-6">
-                    <input type="text" class="form-control @error('type') is-invalid @enderror" value="{{ old('type') }}" name="type" required>
-
-                    @error('type')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                    <select class="btn btn-outline border border-success" name="type" form="food">
+                        @foreach($types as $type)
+                        <option value="{{ $type->name }}">
+                            {{ trans('messages.type.'.$type->name) }}
+                        </option>
+                        @endforeach
+                    </select>
+                    <small class="text-success">
+                        <i class="fas fa-long-arrow-alt-left mr-2"></i>
+                        {{ trans('messages.suggest') }}
+                    </small>
                 </div>
             </div>
 
+            <!-- Source -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
                     {{ trans('messages.create.food.source') }}
                 </label>
-
                 <div class="col-md-6">
-                    <input type="text" class="form-control @error('source') is-invalid @enderror" value="{{ old('source') }}" name="source" required>
-
-                    @error('source')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                    <select class="btn btn-outline border border-success" name="source" form="food">
+                        @foreach($sources as $source)
+                        <option value="{{ $source->name }}">
+                            {{ $source->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                    <small class="text-success">
+                        <i class="fas fa-long-arrow-alt-left mr-2"></i>
+                        {{ trans('messages.suggest') }}
+                    </small>
                 </div>
             </div>
 
+            <!-- Material -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
                     {{ trans('messages.create.food.material') }}
@@ -115,6 +125,7 @@
                 </div>
             </div>
 
+            <!-- Price -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
                     {{ trans('messages.create.food.price') }}
@@ -130,9 +141,9 @@
                     @enderror
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control @error('usa_price') is-invalid @enderror" value="{{ old('usa_price') }}" name="usa_price" required placeholder="USA">
+                    <input type="text" class="form-control @error('usd_price') is-invalid @enderror" value="{{ old('usd_price') }}" name="usd_price" required placeholder="USD">
 
-                    @error('usa_price')
+                    @error('usd_price')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -141,7 +152,7 @@
             </div>
 
             <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
+                <div class="col-md-6 offset-md-3">
                     <button type="submit" class="btn btn-primary">
                         {{ trans('messages.create.food.button') }}
                     </button>

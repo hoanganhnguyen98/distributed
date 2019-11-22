@@ -51,7 +51,7 @@
             </div>
 
             <!-- Image -->
-            <!-- <div class="form-group row">
+            <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
                     {{ trans('messages.create.account.image') }}
                 </label>
@@ -65,7 +65,7 @@
                         </span>
                     @enderror
                 </div>
-            </div> -->
+            </div>
 
             <!-- Address -->
             <div class="form-group row">
@@ -108,26 +108,20 @@
                 </label>
 
                 <div class="col-md-6">
-                    <select class="btn btn-outline" name="area_id" form="account">
-                        <option value="employee">
-                            {{ trans('messages.role.employee') }}
+                    <select class="btn btn-outline border border-success" name="area" form="account">
+                        <option value="shuriken">
+                            Shuriken
                         </option>
-                        <option value="receptionist">
-                            {{ trans('messages.role.receptionist') }}
+                        <option value="ninjutsu">
+                            Ninjutsu
                         </option>
-                        <option value="waiter">
-                            {{ trans('messages.role.waiter') }}
-                        </option>
-                        <option value="kitchen_manager">
-                            {{ trans('messages.role.kitchen_manager') }}
-                        </option>
-                        <option value="admin">
-                            {{ trans('messages.role.admin') }}
+                        <option value="ninjago">
+                            Ninjago
                         </option>
                     </select>
                     <small class="text-success">
                         <i class="fas fa-long-arrow-alt-left mr-2"></i>
-                        {{ trans('messages.create.account.suggest') }}
+                        {{ trans('messages.suggest') }}
                     </small>
                 </div>
             </div>
@@ -139,7 +133,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <select class="btn btn-outline" name="role" form="account">
+                    <select class="btn btn-outline border border-success" name="role" form="account">
                         <option value="employee">
                             {{ trans('messages.role.employee') }}
                         </option>
@@ -158,7 +152,7 @@
                     </select>
                     <small class="text-success">
                         <i class="fas fa-long-arrow-alt-left mr-2"></i>
-                        {{ trans('messages.create.account.suggest') }}
+                        {{ trans('messages.suggest') }}
                     </small>
                 </div>
             </div>
@@ -180,7 +174,7 @@
             </div>
 
             <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
+                <div class="col-md-6 offset-md-3">
                     <button type="submit" class="btn btn-primary">
                         {{ trans('messages.create.account.button') }}
                     </button>
