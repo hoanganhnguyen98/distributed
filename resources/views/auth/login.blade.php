@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    {{ trans('messages.title.login') }}
+    {{ trans('messages.login.title') }}
 @endsection
 
 @section('custom_css')

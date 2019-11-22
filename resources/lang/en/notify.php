@@ -2,7 +2,7 @@
 
 return [
     'success' => [
-    	'register' => 'Create a new account successfully!',
+    	'create' => 'Create a new account successfully!',
     	'reset_email' => 'Please check email to reset password!',
     	'reset' => 'Reset password successfully!',
     ],

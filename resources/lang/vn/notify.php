@@ -2,7 +2,7 @@
 
 return [
     'success' => [
-        'register' => 'Tạo tài khoản mới thành công!',
+        'create' => 'Tạo tài khoản mới thành công!',
         'reset_email' => 'Kiểm tra hòm thư để đặt lại mật khẩu!',
         'reset' => 'Đặt lại mật khẩu thành công!',
     ],

@@ -6,15 +6,19 @@
 @show
 
     <body>
-        <div>
-            @include('layouts.partials.mainheader')
-            <br>
+        <div class="wrapper">
+            @if(Auth::check())
+                @include('layouts.partials.sidebar')
+            @endif
 
-            <section>
-                @yield('content')
-            </section>
+            <div id="content">
+                @include('layouts.partials.mainheader')
+                <section>
+                    @yield('content')
+                </section>
+            </div>
 
-            @include('layouts.partials.footer')
+            <!-- footer here -->
         </div>
 
         @section('scripts')

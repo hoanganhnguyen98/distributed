@@ -1,46 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\User;
-use Auth;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\SendMailAfterCreate;
 
-class RegisterController extends Controller
+class AccountController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     /**
-     * Show register form.
+     * Show create account form.
      *
      * @return \Illuminate\Http\Response
      */
-    protected function showRegistrationForm()
+    protected function showCreateAccountForm()
     {
-        return view('user.admin.function.create');
+        return view('user.admin.account.create-account');
     }
 
     /**
-     * Check input to create a new user.
+     * Create a new user.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    protected function register(Request $request)
+    protected function createAccount(Request $request)
     {
         try {
             DB::beginTransaction();
@@ -66,18 +56,22 @@ class RegisterController extends Controller
 
             // generate a random password
             $password = Str::random(8);
-            dd($request->all()); exit();
-            User::create([
+
+            // create new account
+            $user = User::create([
                 'user_id' => explode('@', $request->email)[0],
                 'area_id' => $request->area_id,
                 'role' => $request->role,
                 'name' => $request->name,
-                'image' => $avatar,
+                // 'image' => $avatar,
                 'address' => $request->address,
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'password' => bcrypt($password),
             ]);
+
+            // send a mail with password to user email
+            $user->notify(new SendMailAfterCreate($password));
 
             DB::commit();
 
@@ -88,5 +82,16 @@ class RegisterController extends Controller
 
             return redirect()->back()->with('errors', $e->getMessage());
         }
+    }
+
+    /**
+     * Show account list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function showAccountList()
+    {
+        $accounts = User::all();
+        return view('user.admin.account.account-list', compact('accounts'));
     }
 }

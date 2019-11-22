@@ -9,7 +9,6 @@ use Auth;
 use App\Model\User;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -23,8 +22,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
-    use AuthenticatesUsers;
 
     /**
      * Show login form.

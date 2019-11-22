@@ -10,7 +10,6 @@ use Validator;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller
 {
@@ -24,8 +23,6 @@ class ResetPasswordController extends Controller
     | explore this trait and override any methods you wish to tweak.
     |
     */
-
-    use ResetsPasswords;
 
     /**
      * Show form to reset password.
@@ -51,8 +48,8 @@ class ResetPasswordController extends Controller
             DB::beginTransaction();
 
             $rules = [
-                'password' => ['required', 'string', 'min:6'],
-                'repassword' => ['required', 'string', 'min:6', 'same:password'],
+                'password' => ['required', 'string', 'min:8'],
+                'repassword' => ['required', 'string', 'min:8', 'same:password'],
             ];
 
             $validator = Validator::make($request->all(), $rules);

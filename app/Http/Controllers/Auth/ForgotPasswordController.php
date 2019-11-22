@@ -10,7 +10,6 @@ use App\Model\PasswordReset;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
 use App\Notifications\ResetPasswordRequest;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {
@@ -24,8 +23,6 @@ class ForgotPasswordController extends Controller
     | your application to your users. Feel free to explore this trait.
     |
     */
-
-    use SendsPasswordResetEmails;
 
     /**
      * Create a new controller instance.

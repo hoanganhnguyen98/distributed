@@ -31,7 +31,7 @@
                         </div>
                     @endif
                     
-                    <form method="POST" action="{{ route('register') }}" id="role">
+                    <form method="POST" action="{{ route('create') }}" id="role">
                         @csrf
 
                         <div class="form-group row">

@@ -5,7 +5,7 @@
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
+| Here is where you can create web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -23,9 +23,20 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
-// Register
-Route::get('/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
+// create
+Route::get('create-account', 'Admin\AccountController@showCreateAccountForm')->name('create-account');
+Route::post('create-account', 'Admin\AccountController@createAccount');
+
+Route::get('create-food', 'Admin\FoodController@showCreateFoodForm')->name('create-food');
+Route::post('create-food', 'Admin\FoodController@createFood');
+
+Route::get('create-bill', 'Receptionist\BillController@showCreateBillForm')->name('create-bill');
+Route::post('create-bill', 'Receptionist\BillController@createBill');
+
+// show list
+Route::get('account-list', 'Admin\AccountController@showAccountList')->name('account-list');
+Route::get('food-list', 'Admin\FoodController@showFoodList')->name('food-list');
+// Route::get('bill-list', 'Admin\AccountController@showAccountList')->name('bill-list');
 
 //Forget password
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
