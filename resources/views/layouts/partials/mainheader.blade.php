@@ -1,29 +1,31 @@
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg bg-light text-uppercase fixed-top">
-    <div class="container">
-        <img src="{{asset('img/logo.jpg')}}" height="50" width="50" alt="Small logo">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
 
-        <div class="collapse navbar-collapse">
+        <button type="button" id="sidebarCollapse" class="btn btn-secondary">
+            <i class="fas fa-align-left"></i>
+            <!-- <span>Toggle Sidebar</span> -->
+        </button>
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item mx-0 mx-lg-1">
-                    <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#book">
-                    <i class="fas fa-calendar-check mr-2"></i>{{ trans('messages.header.book') }}</a>
-                </li>
-
-
-                <li class="nav-item mx-0 mx-lg-1">
-                   <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">
-                    <i class="fas fa-utensils mr-2"></i>{{ trans('messages.header.about') }}</a>
-                </li>
-
-                <li class="nav-item mx-0 mx-lg-1">
-                   <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#login">
-                    <i class="fas fa-sign-in-alt mr-2"></i>{{ trans('messages.header.login') }}</a>
-                </li>
+                @if(Auth::check())
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/logout">
+                        <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.logout') }}</a>
+                    </li>
+                @else
+                    <li class="nav-item mx-0 mx-lg-1">
+                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/login">
+                        <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.login') }}</a>
+                    </li>
+                @endif
 
                 <li class="nav-item mx-0 mx-lg-1 dropdown">
-                    <a id="switchLang" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-language mr-2"></i>{{ trans('messages.header.language') }}
+                    <a id="switchLang" class="nav-link py-3 px-0 px-lg-5 rounded js-scroll-trigger dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-language fa-lg mr-2"></i>{{ trans('messages.header.language') }}
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="switchLang">
