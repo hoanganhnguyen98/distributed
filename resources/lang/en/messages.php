@@ -15,6 +15,7 @@ return [
     'sidebar' => [
         'header' => 'Ninja Restaurant',
         'management-header' => 'Management',
+        'general-settings' => 'General Setttings',
         'account' => [
             'header' => 'Account',
             'create' => 'Create new account',
@@ -29,6 +30,11 @@ return [
             'header' => 'Bill',
             'create' => 'Create new bill',
             'list' => 'Bill list',
+        ],
+        'profile' => [
+            'header' => 'Profile',
+            'detail' => 'Account information',
+            'change-password' => 'Change password',
         ],
     ],
     'login' => [
@@ -73,8 +79,6 @@ return [
             'area' => 'Area',
             'role' => 'Role',
             'email' => 'Account (Email)',
-            'password' => 'Password',
-            'repassword' => 'Confirm password',
             'button' => 'Create new',
         ],
         'food' => [
@@ -132,6 +136,15 @@ return [
                 'delete' => 'Delete',
             ],
         ],
+    ],
+    'change-password' => [
+        'title' => 'Change password',
+        'header' => 'Change password',
+        'email' => 'Account (Email)',
+        'old_password' => 'Current password',
+        'new_password' => 'New password',
+        'repassword' => 'Confirm new password',
+        'button' => 'Change password',
     ],
     'reset_password' => [
         'title' => 'Reset password',

@@ -15,6 +15,7 @@ return [
     'sidebar' => [
         'header' => 'Nhà hàng Ninja',
         'management-header' => 'Quản lý',
+        'general-settings' => 'Cài đặt chung',
         'account' => [
             'header' => 'Tài khoản',
             'create' => 'Tạo mới tài khoản',
@@ -29,6 +30,11 @@ return [
             'header' => 'Hóa đơn',
             'create' => 'Tạo mới hóa đơn',
             'list' => 'Danh sách hóa đơn',
+        ],
+        'profile' => [
+            'header' => 'Hồ sơ',
+            'detail' => 'Thông tin tài khoản',
+            'change-password' => 'Đổi mật khẩu',
         ],
     ],
     'login' => [
@@ -73,8 +79,6 @@ return [
             'area' => 'Khu vực',
             'role' => 'Vai trò',
             'email' => 'Tài khoản (Thư điện tử)',
-            'password' => 'Mật khẩu',
-            'repassword' => 'Xác nhận mật khẩu',
             'button' => 'Tạo mới',
         ],
         'food' => [
@@ -132,6 +136,15 @@ return [
                 'delete' => 'Xóa',
             ],
         ],
+    ],   
+    'change-password' => [
+        'title' => 'Thay đổi mật khẩu',
+        'header' => 'Thay đổi mật khẩu',
+        'email' => 'Tài khoản (Thư điện tử)',
+        'old_password' => 'Mật khẩu hiện tại',
+        'new_password' => 'Mật khẩu mới',
+        'repassword' => 'Xác nhận mật khẩu mới',
+        'button' => 'Thay đổi mật khẩu',
     ],
     'reset_password' => [
         'title' => 'Đặt lại mật khẩu',

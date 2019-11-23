@@ -80,7 +80,7 @@ class AccountController extends Controller
 
             DB::commit();
 
-            $success = Lang::get('notify.success.register');
+            $success = Lang::get('notify.success.create-account');
             return redirect()->back()->with('success', $success);
         } catch (Exception $e) {
             DB::rollBack();

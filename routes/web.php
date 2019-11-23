@@ -33,6 +33,11 @@ Route::post('create-food', 'Admin\FoodController@createFood');
 Route::get('create-bill', 'Receptionist\BillController@showCreateBillForm')->name('create-bill');
 Route::post('create-bill', 'Receptionist\BillController@createBill');
 
+// profile
+Route::get('profile', 'ProfileController@showProfile')->name('profile');
+Route::get('change-password', 'ProfileController@showChangePasswordForm')->name('change-password');
+Route::post('change-password', 'ProfileController@changePassword');
+
 // show list
 Route::get('account-list', 'Admin\AccountController@showAccountList')->name('account-list');
 Route::get('food-list', 'Admin\FoodController@showFoodList')->name('food-list');

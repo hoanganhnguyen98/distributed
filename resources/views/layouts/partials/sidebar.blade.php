@@ -12,10 +12,10 @@
         <!-- Managemnet header -->
         <h4 class="text-uppercase">{{ trans('messages.sidebar.management-header') }}</h4>
 
-        <!-- ACCOUNT -->
+        <!-- Account -->
         <li>
             <a href="#accountSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <i class="fas fa-users-cog mr-2"></i>{{ trans('messages.sidebar.account.header') }}
+                <i class="fas fa-user-shield mr-2"></i>{{ trans('messages.sidebar.account.header') }}
             </a>
             <ul class="collapse list-unstyled" id="accountSidebar">
                 <li>
@@ -31,7 +31,7 @@
             </ul>
         </li>
 
-        <!-- FOOD -->
+        <!-- Food -->
         <li>
             <a href="#foodSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fas fa-utensils mr-2"></i>{{ trans('messages.sidebar.food.header') }}
@@ -50,7 +50,7 @@
             </ul>
         </li>
 
-        <!-- BILL -->
+        <!-- Bill -->
         <li>
             <a href="#billSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                 <i class="fas fa-file-alt mr-2"></i>{{ trans('messages.sidebar.bill.header') }}
@@ -64,6 +64,31 @@
                 <li>
                     <a href="#">
                         <i class="fas fa-copy mr-2"></i>{{ trans('messages.sidebar.bill.list') }}
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- General Settings -->
+    <ul class="list-unstyled components">
+        <!-- Settings header -->
+        <h4 class="text-uppercase">{{ trans('messages.sidebar.general-settings') }}</h4>
+
+        <!-- Profile -->
+        <li>
+            <a href="#profileSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fas fa-id-badge mr-2"></i>{{ trans('messages.sidebar.profile.header') }}
+            </a>
+            <ul class="collapse list-unstyled" id="profileSidebar">
+                <li>
+                    <a href="#">
+                        <i class="fas fa-address-card mr-2"></i>{{ trans('messages.sidebar.profile.detail') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('change-password') }}">
+                        <i class="fas fa-user-lock mr-2"></i>{{ trans('messages.sidebar.profile.change-password') }}
                     </a>
                 </li>
             </ul>

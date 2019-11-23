@@ -76,7 +76,7 @@ class FoodController extends Controller
 
             DB::commit();
 
-            $success = Lang::get('notify.success.create');
+            $success = Lang::get('notify.success.create-food');
             return redirect()->back()->with('success', $success);
         } catch (Exception $e) {
             DB::rollBack();
