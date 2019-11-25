@@ -13,6 +13,11 @@
         {{ trans('messages.list.account.header') }}
     </div>
 
+    @if(Session::has('success'))
+        <div class="alert alert-success"><i class="fas fa-check"></i>
+            {!! Session::get('success') !!}
+        </div>
+    @endif
     <div class="card-body">
         <table class="table">
             <thead>
@@ -27,19 +32,13 @@
             <tbody>
                 @foreach($accounts as $account)
                 <tr>
-                    <td>{{ $account->name  }}</td>
-                    <td>{{ $account->address  }}</td>
-                    <td>{{ $account->phone  }}</td>
-                    <td>{{ trans('messages.role.'.$account->role)  }}</td>
+                    <td>{{ $account->name }}</td>
+                    <td>{{ $account->address }}</td>
+                    <td>{{ $account->phone }}</td>
+                    <td>{{ trans('messages.role.'.$account->role) }}</td>
                     <td class="text-uppercase">
-                        <a href="#" class="badge badge-pill badge-info">
+                        <a href="account-detail-{{ $account->user_id }}" class="badge badge-pill badge-info">
                             {{ trans('messages.list.account.button.detail') }}
-                        </a>
-                        <a href="#" class="badge badge-pill badge-primary">
-                            {{ trans('messages.list.account.button.edit') }}
-                        </a>
-                        <a href="#" class="badge badge-pill badge-danger">
-                            {{ trans('messages.list.account.button.delete') }}
                         </a>
                     </td>
                 </tr>

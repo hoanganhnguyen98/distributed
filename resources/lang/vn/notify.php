@@ -3,6 +3,9 @@
 return [
     'success' => [
         'create-account' => 'Tạo tài khoản mới thành công!',
+        'change-image-account' => 'Đổi ảnh thành công!',
+        'edit-account' => 'Sửa thông tin tài khoản thành công!',
+        'delete-account' => 'Xóa tài khoản thành công!',
         'reset_email' => 'Kiểm tra hòm thư để đặt lại mật khẩu!',
         'reset' => 'Đặt lại mật khẩu thành công!',
         'change_password' => 'Thay đổi mật khẩu thành công!',
