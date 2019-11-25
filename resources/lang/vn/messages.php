@@ -115,10 +115,14 @@ return [
             'phone' => 'Số điện thoại',
             'role' => 'Vai trò',
             'button' => [
+                'back' => 'Quay lại danh sách',
                 'detail' => 'Chi tiết',
+                'change_image' => 'Đổi ảnh',
                 'edit' => 'Sửa',
                 'delete' => 'Xóa',
+                'cancel' => 'Hủy',
             ],
+            'modal_title' => 'Xóa tài khoản này?',
         ],
         'food' => [
             'title' => 'Danh sách món ăn',

@@ -14,13 +14,14 @@
     </div>
 
     <div class="card-body">
+        {!! $foods->appends(\Request::except('page'))->render() !!}
         <table class="table">
             <thead>
                 <tr class="text-primary">
                     <th scope="col">{{ trans('messages.list.food.image') }}</th>
-                    <th scope="col">{{ trans('messages.list.food.name') }}</th>
-                    <th scope="col">{{ trans('messages.list.food.type') }}</th>
-                    <th scope="col">{{ trans('messages.list.food.source') }}</th>
+                    <th scope="col">@sortablelink('name',trans('messages.list.food.name'))</th>
+                    <th scope="col">@sortablelink('type',trans('messages.list.food.type'))</th>
+                    <th scope="col">@sortablelink('source',trans('messages.list.food.source'))</th>
                     <th></th>
                 </tr>
             </thead>
@@ -46,6 +47,7 @@
                 @endforeach
             </tbody>
         </table>
+        {!! $foods->appends(\Request::except('page'))->render() !!}
     </div>
 </div>
 @endsection

@@ -26,7 +26,7 @@ class AccountController extends Controller
     }
 
     /**
-     * Create a new user.
+     * Create a new account.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -38,6 +38,7 @@ class AccountController extends Controller
 
             $rules = [
                 'name' => ['required', 'string', 'max:255'],
+                'image' => ['required'],
                 'address' => ['required', 'string', 'max:255'],
                 'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -55,7 +56,7 @@ class AccountController extends Controller
                 // upload to cloud
                 Cloudder::upload($request->file('image'), $public_id);
                 // get url of image
-                $resize = array("width" => 300, "height" => 300, "crop" => "pad");
+                $resize = array("width" => 300, "height" => 300, "crop" => "fill");
                 $img_url = Cloudder::show($public_id, $resize);
             }
 
@@ -98,5 +99,134 @@ class AccountController extends Controller
     {
         $accounts = User::all();
         return view('user.admin.account.account-list', compact('accounts'));
+    }
+
+    /**
+     * Show account detail.
+     *
+     * @param $user_id id of account
+     * @return \Illuminate\Http\Response
+     */
+    protected function showAccountDetail($user_id)
+    {
+        $account = User::where('user_id', $user_id)->first();
+        return view('user.admin.account.account-detail.account-detail', compact('account'));
+    }
+
+    /**
+     * Change image.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function changeImage(Request $request)
+    {
+       try {
+            DB::beginTransaction();
+
+            $rules = [
+                'user_id' => ['required'],
+                'image' => ['required'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // get image to store in cloud
+            if ($request->hasFile('image')){
+                // create path to store in cloud
+                $public_id = "ninja_restaurant/accounts/".($request->user_id);
+                // upload to cloud
+                Cloudder::upload($request->file('image'), $public_id);
+                // get url of image
+                $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+                $img_url = Cloudder::show($public_id, $resize);
+            }
+
+            // update new account information
+            $user = User::where('user_id', $request->user_id)->first();
+            $user->image = $img_url;
+            $user->save();
+
+            DB::commit();
+
+            $success = Lang::get('notify.success.change-image-account');
+            return redirect()->back()->with('success', $success);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        } 
+    }
+
+    /**
+     * Edit account information.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function editAccount(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $rules = [
+                'user_id' => ['required'],
+                'name' => ['required', 'string', 'max:255'],
+                'address' => ['required', 'string', 'max:255'],
+                'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // update new account information
+            $user = User::where('user_id', $request->user_id)->first();
+            $user->area = $request->area;
+            $user->role = $request->role;
+            $user->name = $request->name;
+            $user->address = $request->address;
+            $user->phone = $request->phone;
+            $user->save();
+
+            DB::commit();
+
+            $success = Lang::get('notify.success.edit-account');
+            return redirect()->back()->with('success', $success);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete account.
+     *
+     * @param $user_id id of account
+     * @return \Illuminate\Http\Response
+     */
+    protected function deleteAccount($user_id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $account = User::where('user_id', $user_id)->first();
+            $account->delete();
+
+            DB::commit();
+
+            $success = Lang::get('notify.success.delete-account');
+            return redirect()->route('account-list')->with('success', $success);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
     }
 }

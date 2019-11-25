@@ -3,6 +3,9 @@
 return [
     'success' => [
         'create-account' => 'Create a new account successfully!',
+        'change-image-account' => 'Change image successfully!',
+        'edit-account' => 'Edit account information successfully!',
+        'delete-account' => 'Delete account successfully!',
         'reset_email' => 'Please check email to reset password!',
         'reset' => 'Reset password successfully!',
         'change_password' => 'Change password successfully!',

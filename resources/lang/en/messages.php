@@ -115,10 +115,14 @@ return [
             'phone' => 'Phone',
             'role' => 'Role',
             'button' => [
+                'back' => 'Back to list',
                 'detail' => 'Detail',
+                'change_image' => 'Change image',
                 'edit' => 'Edit',
                 'delete' => 'Delete',
+                'cancel' => 'Cancel',
             ],
+            'modal_title' => 'Delete this account?',
         ],
         'food' => [
             'title' => 'Food list',

@@ -92,7 +92,7 @@ class FoodController extends Controller
      */
     protected function showFoodList()
     {
-        $foods = Food::all();
+        $foods = Food::sortable()->paginate(10);
         return view('user.admin.food.food-list', compact('foods'));
     }
 }
