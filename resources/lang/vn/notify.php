@@ -1,0 +1,16 @@
+<?php
+
+return [
+    'success' => [
+        'create-account' => 'Tạo tài khoản mới thành công!',
+        'reset_email' => 'Kiểm tra hòm thư để đặt lại mật khẩu!',
+        'reset' => 'Đặt lại mật khẩu thành công!',
+        'change_password' => 'Thay đổi mật khẩu thành công!',
+        'create-food' => 'Tạo món ăn mới thành công!',
+    ],
+    'errors' => [
+        'login' => 'Đăng nhập thất bại, mời thử lại!',
+        'reset' => 'Địa chỉ thư điện tử không đúng, mời thử lại!',
+        'change_password' => 'Mật khẩu hiện tại không chính xác, mời thử lại!',
+    ],
+];
