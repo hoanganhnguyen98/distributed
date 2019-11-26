@@ -4,9 +4,6 @@
     {{ trans('messages.list.food.title') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -39,11 +36,11 @@
                     <td>{{ $food->source }}</td>
                     <td>
                         <!-- Detail button -->
-                        <a href="#" class="badge badge-pill badge-info text-uppercase" data-toggle="modal" data-target="#foodDetailModal{{ $food->food_id }}">
+                        <a href="#" class="badge badge-pill badge-info text-uppercase" data-toggle="modal" data-target="#foodDetailModal{{ $food->id }}">
                             {{ trans('messages.list.food.button.detail') }}
                         </a>
                         <!-- Detail modal -->
-                        <div class="modal fade" id="foodDetailModal{{ $food->food_id }}" tabindex="-1" role="dialog" aria-labelledby="foodDetailModalTitle" aria-hidden="true">
+                        <div class="modal fade" id="foodDetailModal{{ $food->id }}" tabindex="-1" role="dialog" aria-labelledby="foodDetailModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -67,15 +64,15 @@
                             </div>
                         </div> <!-- End detail modal -->
                         <!-- Edit button -->
-                        <a href="#" class="badge badge-pill badge-primary text-uppercase">
+                        <a href="food-edit-{{ $food->id }}" class="badge badge-pill badge-primary text-uppercase">
                             {{ trans('messages.list.food.button.edit') }}
                         </a>
                         <!-- Delete button -->
-                        <a href="#" class="badge badge-pill badge-danger text-uppercase" data-toggle="modal" data-target="#foodDeleteModal{{ $food->food_id }}">
+                        <a href="#" class="badge badge-pill badge-danger text-uppercase" data-toggle="modal" data-target="#foodDeleteModal{{ $food->id }}">
                             {{ trans('messages.list.food.button.delete') }}
                         </a>
                         <!-- Delete modal -->
-                        <div class="modal fade" id="foodDeleteModal{{ $food->food_id }}" tabindex="-1" role="dialog" aria-labelledby="foodDeleteModalTitle" aria-hidden="true">
+                        <div class="modal fade" id="foodDeleteModal{{ $food->id }}" tabindex="-1" role="dialog" aria-labelledby="foodDeleteModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -91,7 +88,7 @@
                                             {{ trans('messages.list.food.button.cancel') }}
                                         </button>
                                         <button type="button" class="btn btn-danger">
-                                            <a href="food-delete-{{ $food->food_id }}">
+                                            <a href="food-delete-{{ $food->id }}">
                                                 {{ trans('messages.list.food.button.delete') }}
                                             </a>
                                         </button>

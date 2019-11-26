@@ -14,7 +14,8 @@
         <div class="row">
             <div class="col-auto mr-auto">
                 <a href="{{ route('account-list') }}">
-                    <i class="fas fa-chevron-circle-left mr-2"></i>{{ trans('messages.list.account.button.back') }}
+                    <i class="fas fa-chevron-circle-left mr-2"></i>
+                    {{ trans('messages.list.account.button.back') }}
                 </a>
             </div>
             <div class="col-auto">
@@ -46,7 +47,7 @@
 
     @if($errors->any())
         <div class="alert alert-danger">
-            <ul style="list-style-type: none;">
+            <ul>
                 @foreach ($errors->all() as $error)
                     <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                 @endforeach

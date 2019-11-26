@@ -11,6 +11,8 @@ return [
         'change_password' => 'Change password successfully!',
         'create-food' => 'Create a new food successfully!',
         'delete-food' => 'Delete food successfully!',
+        'edit-food-info' => 'Edit food information successfully!',
+        'change-food-image' => 'Change food image successfully!',
     ],
     'errors' => [
         'login' => 'Login failed, please try again!',

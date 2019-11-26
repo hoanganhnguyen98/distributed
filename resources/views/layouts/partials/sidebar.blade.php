@@ -82,7 +82,7 @@
             </a>
             <ul class="collapse list-unstyled" id="profileSidebar">
                 <li>
-                    <a href="#">
+                    <a href="{{ route('profile') }}">
                         <i class="fas fa-address-card mr-2"></i>{{ trans('messages.sidebar.profile.detail') }}
                     </a>
                 </li>

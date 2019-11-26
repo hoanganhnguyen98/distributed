@@ -145,7 +145,7 @@ class AccountController extends Controller
                 $img_url = Cloudder::show($public_id, $resize);
             }
 
-            // update new account information
+            // save new image
             $user = User::where('user_id', $request->user_id)->first();
             $user->image = $img_url;
             $user->save();

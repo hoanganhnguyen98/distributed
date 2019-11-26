@@ -1,10 +1,10 @@
 <div class="card card-body">
-    <img src="{{ $account->image }}" class="img-thumbnail">
+    <img src="{{ $food->image }}" class="img-thumbnail">
 
-    <form method="POST" action="{{ route('account-change') }}" enctype="multipart/form-data" id="image">
+    <form method="POST" action="{{ route('food-change-image') }}" enctype="multipart/form-data">
         @csrf
 
-        <input type="hidden" name="user_id" value="{{ $account->user_id }}">
+        <input type="hidden" name="id" value="{{ $food->id }}">
         <div class="form-group row">
             <input type="file" class="form-control-file @error('image') is-invalid @enderror" accept="image/jpeg, image/jpg, image/png" name="image">
 

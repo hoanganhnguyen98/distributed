@@ -132,6 +132,7 @@ return [
             'type' => 'Type',
             'source' => 'Source',
             'material' => 'Material',
+            'price' => 'Price',
             'vnd_price' => 'Price (VND)',
             'usd_price' => 'Price (USD)',
             'button' => [
