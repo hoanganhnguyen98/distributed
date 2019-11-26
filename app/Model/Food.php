@@ -15,7 +15,6 @@ class Food extends Model
      * @var array
      */
     protected $fillable = [
-        'food_id',
         'admin_id',
         'name',
         'image',

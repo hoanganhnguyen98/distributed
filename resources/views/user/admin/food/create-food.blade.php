@@ -4,9 +4,6 @@
     {{ trans('messages.create.food.title') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -22,7 +19,7 @@
 
         @if($errors->any())
             <div class="alert alert-danger">
-                <ul style="list-style-type: none;">
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                     @endforeach
@@ -43,9 +40,7 @@
                     <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" name="name" required>
 
                     @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -60,9 +55,7 @@
                     <input type="file" class="form-control-file @error('image') is-invalid @enderror" accept="image/jpeg, image/jpg, image/png" name="image" required>
 
                     @error('image')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -118,9 +111,7 @@
                     <input type="text" class="form-control @error('material') is-invalid @enderror" value="{{ old('material') }}" name="material" required>
 
                     @error('material')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -135,18 +126,14 @@
                     <input type="text" class="form-control @error('vnd_price') is-invalid @enderror" value="{{ old('vnd_price') }}" name="vnd_price" required placeholder="VND">
 
                     @error('vnd_price')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
                 <div class="col-md-3">
                     <input type="text" class="form-control @error('usd_price') is-invalid @enderror" value="{{ old('usd_price') }}" name="usd_price" required placeholder="USD">
 
                     @error('usd_price')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -161,7 +148,4 @@
         </form>
     </div>
 </div>
-@endsection
-
-@section('custom_js')
 @endsection

@@ -132,13 +132,17 @@ return [
             'type' => 'Type',
             'source' => 'Source',
             'material' => 'Material',
+            'price' => 'Price',
             'vnd_price' => 'Price (VND)',
             'usd_price' => 'Price (USD)',
             'button' => [
                 'detail' => 'Detail',
                 'edit' => 'Edit',
                 'delete' => 'Delete',
+                'cancel' => 'Cancel',
+                'close' => 'Close',
             ],
+            'modal_title' => 'Delete this food?',
         ],
     ],
     'change-password' => [
