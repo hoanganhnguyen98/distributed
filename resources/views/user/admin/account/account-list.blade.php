@@ -4,9 +4,6 @@
     {{ trans('messages.list.account.title') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -47,4 +44,10 @@
         </table>
     </div>
 </div>
+@endsection
+
+@section('custom_js')
+<script type="text/javascript">
+    document.getElementById('accountSidebar').classList.add('show');
+</script>
 @endsection

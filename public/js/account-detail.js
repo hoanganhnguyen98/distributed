@@ -1,3 +1,7 @@
+// show sidebar
+document.getElementById('accountSidebar').classList.add('show');
+
+// edit information button
 document.getElementById('editInformation').onclick = function() {
     // display form to edit
     document.getElementById('name').removeAttribute('readonly');
@@ -20,6 +24,7 @@ document.getElementById('editInformation').onclick = function() {
     document.getElementById('cancelEditButton').style.display = "inline";
 };
 
+// cancel edit information button
 document.getElementById('cancelEditButton').onclick = function() {
     // display form to edit
     document.getElementById('name').setAttribute('readonly', '');
@@ -42,6 +47,7 @@ document.getElementById('cancelEditButton').onclick = function() {
     document.getElementById('cancelEditButton').style.display = "none";
 };
 
+// change image button
 document.getElementById('changeImage').onclick = function() {
     // display form to edit
     document.getElementById('image').style.display = "inline";
@@ -55,6 +61,7 @@ document.getElementById('changeImage').onclick = function() {
     document.getElementById('cancelChangeButton').style.display = "inline";
 };
 
+// cancel change image button
 document.getElementById('cancelChangeButton').onclick = function() {
     // display form to edit
     document.getElementById('image').style.display = "none";
