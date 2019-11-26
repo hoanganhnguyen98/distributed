@@ -4,10 +4,6 @@
     {{ trans('messages.list.account.title') }}
 @endsection
 
-@section('custom_css')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/account-detail.css') }}">
-@endsection
-
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -82,5 +78,7 @@
 @endsection
 
 @section('custom_js')
-<script type="text/javascript" src="{{ asset('js/account-detail.js') }}"></script>
+<script type="text/javascript">
+    document.getElementById('profileSidebar').classList.add('show');
+</script>
 @endsection

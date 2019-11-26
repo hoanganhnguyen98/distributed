@@ -105,3 +105,9 @@
     </div>
 </div>
 @endsection
+
+@section('custom_js')
+<script type="text/javascript">
+    document.getElementById('foodSidebar').classList.add('show');
+</script>
+@endsection

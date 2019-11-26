@@ -97,3 +97,9 @@
     </div>
 </div>
 @endsection
+
+@section('custom_js')
+<script type="text/javascript">
+    document.getElementById('profileSidebar').classList.add('show');
+</script>
+@endsection
