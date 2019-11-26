@@ -36,7 +36,7 @@ Route::get('account-delete-{user_id}', 'Admin\AccountController@deleteAccount')-
 Route::get('create-food', 'Admin\FoodController@showCreateFoodForm')->name('create-food');
 Route::post('create-food', 'Admin\FoodController@createFood');
 Route::get('food-list', 'Admin\FoodController@showFoodList')->name('food-list');
-Route::get('food-detail-{food_id}', 'Admin\FoodController@showFoodDetail')->name('food-detail');
+Route::get('food-delete-{food_id}', 'Admin\FoodController@deleteFood')->name('food-delete');
 
 // bill
 Route::get('create-bill', 'Receptionist\BillController@showCreateBillForm')->name('create-bill');

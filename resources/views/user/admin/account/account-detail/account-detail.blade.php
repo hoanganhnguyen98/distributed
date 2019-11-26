@@ -4,6 +4,10 @@
     {{ trans('messages.list.account.title') }}
 @endsection
 
+@section('custom_css')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/account-detail.css') }}">
+@endsection
+
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -17,13 +21,13 @@
                 <button type="button" id="changeImage" class="btn btn-outline-success">
                     {{ trans('messages.list.account.button.change_image') }}
                 </button>
-                <button type="button" id="cancelChangeButton" class="btn btn-outline-secondary" style="display: none;">
+                <button type="button" id="cancelChangeButton" class="btn btn-outline-secondary">
                     {{ trans('messages.list.account.button.cancel') }}
                 </button>
                 <button type="button" id="editInformation" class="btn btn-outline-primary">
                     {{ trans('messages.list.account.button.edit') }}
                 </button>
-                <button type="button" id="cancelEditButton" class="btn btn-outline-secondary" style="display: none;">
+                <button type="button" id="cancelEditButton" class="btn btn-outline-secondary">
                     {{ trans('messages.list.account.button.cancel') }}
                 </button>
                 <button type="button" id="deleteAccount" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteAccountModal">

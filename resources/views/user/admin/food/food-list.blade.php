@@ -13,6 +13,11 @@
         {{ trans('messages.list.food.header') }}
     </div>
 
+    @if(Session::has('success'))
+        <div class="alert alert-success"><i class="fas fa-check"></i>
+            {!! Session::get('success') !!}
+        </div>
+    @endif
     <div class="card-body">
         {!! $foods->appends(\Request::except('page'))->render() !!}
         <table class="table">
@@ -32,16 +37,68 @@
                     <td>{{ $food->name }}</td>
                     <td>{{ trans('messages.type.'.$food->type) }}</td>
                     <td>{{ $food->source }}</td>
-                    <td class="text-uppercase">
-                        <a href="#" class="badge badge-pill badge-info">
+                    <td>
+                        <!-- Detail button -->
+                        <a href="#" class="badge badge-pill badge-info text-uppercase" data-toggle="modal" data-target="#foodDetailModal{{ $food->food_id }}">
                             {{ trans('messages.list.food.button.detail') }}
                         </a>
-                        <a href="#" class="badge badge-pill badge-primary">
+                        <!-- Detail modal -->
+                        <div class="modal fade" id="foodDetailModal{{ $food->food_id }}" tabindex="-1" role="dialog" aria-labelledby="foodDetailModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-uppercase text-primary font-weight-bold">
+                                            {{ $food->name }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-danger font-weight-bold">
+                                        <p>{{ trans('messages.list.food.material') }}</p>
+                                        <p>{{ $food->material }}</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            {{ trans('messages.list.food.button.close') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End detail modal -->
+                        <!-- Edit button -->
+                        <a href="#" class="badge badge-pill badge-primary text-uppercase">
                             {{ trans('messages.list.food.button.edit') }}
                         </a>
-                        <a href="#" class="badge badge-pill badge-danger">
+                        <!-- Delete button -->
+                        <a href="#" class="badge badge-pill badge-danger text-uppercase" data-toggle="modal" data-target="#foodDeleteModal{{ $food->food_id }}">
                             {{ trans('messages.list.food.button.delete') }}
                         </a>
+                        <!-- Delete modal -->
+                        <div class="modal fade" id="foodDeleteModal{{ $food->food_id }}" tabindex="-1" role="dialog" aria-labelledby="foodDeleteModalTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-danger text-uppercase">
+                                            {{ trans('messages.list.food.modal_title') }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            {{ trans('messages.list.food.button.cancel') }}
+                                        </button>
+                                        <button type="button" class="btn btn-danger">
+                                            <a href="food-delete-{{ $food->food_id }}">
+                                                {{ trans('messages.list.food.button.delete') }}
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- End delete modal -->
                     </td>
                 </tr>
                 @endforeach

@@ -10,6 +10,7 @@ return [
         'reset' => 'Reset password successfully!',
         'change_password' => 'Change password successfully!',
         'create-food' => 'Create a new food successfully!',
+        'delete-food' => 'Delete food successfully!',
     ],
     'errors' => [
         'login' => 'Login failed, please try again!',

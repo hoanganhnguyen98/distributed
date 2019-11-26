@@ -95,4 +95,29 @@ class FoodController extends Controller
         $foods = Food::sortable()->paginate(10);
         return view('user.admin.food.food-list', compact('foods'));
     }
+
+    /**
+     * Delete food.
+     *
+     * @param $food_id
+     * @return \Illuminate\Http\Response
+     */
+    protected function deleteFood($food_id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $food = Food::where('food_id', $food_id)->first();
+            $food->delete();
+
+            DB::commit();
+
+            $success = Lang::get('notify.success.delete-food');
+            return redirect()->back()->with('success', $success);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
 }

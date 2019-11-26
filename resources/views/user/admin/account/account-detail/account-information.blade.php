@@ -68,7 +68,7 @@
                     Ninjago
                 </option>
             </select>
-            <small class="text-success" id="suggestArea" style="display: none;">
+            <small class="text-success" id="suggestArea">
                 <i class="fas fa-long-arrow-alt-left mr-2"></i>
                 {{ trans('messages.suggest') }}
             </small>
@@ -102,7 +102,7 @@
                     {{ trans('messages.role.admin') }}
                 </option>
             </select>
-            <small class="text-success" id="suggestRole" style="display: none;">
+            <small class="text-success" id="suggestRole">
                 <i class="fas fa-long-arrow-alt-left mr-2"></i>
                 {{ trans('messages.suggest') }}
             </small>
@@ -125,7 +125,7 @@
 
     <div class="form-group row mb-0">
         <div class="col-md-8 offset-md-3">
-            <button type="submit" id="editButton" class="btn btn-primary" style="display: none;">
+            <button type="submit" id="editButton" class="btn btn-primary">
                 {{ trans('messages.list.account.button.edit') }}
             </button>
         </div>

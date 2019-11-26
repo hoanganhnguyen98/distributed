@@ -138,7 +138,10 @@ return [
                 'detail' => 'Detail',
                 'edit' => 'Edit',
                 'delete' => 'Delete',
+                'cancel' => 'Cancel',
+                'close' => 'Close',
             ],
+            'modal_title' => 'Delete this food?',
         ],
     ],
     'change-password' => [

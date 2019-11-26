@@ -138,7 +138,10 @@ return [
                 'detail' => 'Chi tiết',
                 'edit' => 'Sửa',
                 'delete' => 'Xóa',
+                'cancel' => 'Hủy',
+                'close' => 'Đóng',
             ],
+            'modal_title' => 'Xóa món ăn này?',
         ],
     ],   
     'change-password' => [
