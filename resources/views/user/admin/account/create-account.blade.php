@@ -4,9 +4,6 @@
     {{ trans('messages.create.account.title') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -22,7 +19,7 @@
 
         @if($errors->any())
             <div class="alert alert-danger">
-                <ul style="list-style-type: none;">
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                     @endforeach
@@ -186,4 +183,7 @@
 @endsection
 
 @section('custom_js')
+<script type="text/javascript">
+    document.getElementById('accountSidebar').classList.add('show');
+</script>
 @endsection

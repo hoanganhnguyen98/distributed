@@ -3,16 +3,18 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Food extends Model
 {
+    use Sortable;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'food_id',
         'admin_id',
         'name',
         'image',
@@ -21,5 +23,11 @@ class Food extends Model
         'material',
         'vnd_price',
         'usd_price',
+    ];
+
+    public $sortable = [
+        'name',
+        'type',
+        'source',
     ];
 }

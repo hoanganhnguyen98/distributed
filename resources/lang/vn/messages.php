@@ -115,10 +115,14 @@ return [
             'phone' => 'Số điện thoại',
             'role' => 'Vai trò',
             'button' => [
+                'back' => 'Quay lại danh sách',
                 'detail' => 'Chi tiết',
+                'change_image' => 'Đổi ảnh',
                 'edit' => 'Sửa',
                 'delete' => 'Xóa',
+                'cancel' => 'Hủy',
             ],
+            'modal_title' => 'Xóa tài khoản này?',
         ],
         'food' => [
             'title' => 'Danh sách món ăn',
@@ -128,13 +132,17 @@ return [
             'type' => 'Loại',
             'source' => 'Nguồn gốc',
             'material' => 'Nguyên liệu',
+            'price' => 'Giá',
             'vnd_price' => 'Giá (VND)',
             'usd_price' => 'Giá (USD)',
             'button' => [
                 'detail' => 'Chi tiết',
                 'edit' => 'Sửa',
                 'delete' => 'Xóa',
+                'cancel' => 'Hủy',
+                'close' => 'Đóng',
             ],
+            'modal_title' => 'Xóa món ăn này?',
         ],
     ],   
     'change-password' => [

@@ -115,10 +115,14 @@ return [
             'phone' => 'Phone',
             'role' => 'Role',
             'button' => [
+                'back' => 'Back to list',
                 'detail' => 'Detail',
+                'change_image' => 'Change image',
                 'edit' => 'Edit',
                 'delete' => 'Delete',
+                'cancel' => 'Cancel',
             ],
+            'modal_title' => 'Delete this account?',
         ],
         'food' => [
             'title' => 'Food list',
@@ -128,13 +132,17 @@ return [
             'type' => 'Type',
             'source' => 'Source',
             'material' => 'Material',
+            'price' => 'Price',
             'vnd_price' => 'Price (VND)',
             'usd_price' => 'Price (USD)',
             'button' => [
                 'detail' => 'Detail',
                 'edit' => 'Edit',
                 'delete' => 'Delete',
+                'cancel' => 'Cancel',
+                'close' => 'Close',
             ],
+            'modal_title' => 'Delete this food?',
         ],
     ],
     'change-password' => [

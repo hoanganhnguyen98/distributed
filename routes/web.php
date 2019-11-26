@@ -23,13 +23,25 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
-// create
+// account
 Route::get('create-account', 'Admin\AccountController@showCreateAccountForm')->name('create-account');
 Route::post('create-account', 'Admin\AccountController@createAccount');
+Route::get('account-list', 'Admin\AccountController@showAccountList')->name('account-list');
+Route::get('account-detail-{user_id}', 'Admin\AccountController@showAccountDetail')->name('account-detail');
+Route::post('account-change', 'Admin\AccountController@changeImage')->name('account-change');
+Route::post('account-edit', 'Admin\AccountController@editAccount')->name('account-edit');
+Route::get('account-delete-{user_id}', 'Admin\AccountController@deleteAccount')->name('account-delete');
 
+// food
 Route::get('create-food', 'Admin\FoodController@showCreateFoodForm')->name('create-food');
 Route::post('create-food', 'Admin\FoodController@createFood');
+Route::get('food-list', 'Admin\FoodController@showFoodList')->name('food-list');
+Route::get('food-edit-{id}', 'Admin\FoodController@showEditFoodForm')->name('food-edit');
+Route::post('food-edit-info', 'Admin\FoodController@editFoodInformation')->name('food-edit-info');
+Route::post('food-change-image', 'Admin\FoodController@changeFoodImage')->name('food-change-image');
+Route::get('food-delete-{id}', 'Admin\FoodController@deleteFood')->name('food-delete');
 
+// bill
 Route::get('create-bill', 'Receptionist\BillController@showCreateBillForm')->name('create-bill');
 Route::post('create-bill', 'Receptionist\BillController@createBill');
 
@@ -39,8 +51,6 @@ Route::get('change-password', 'ProfileController@showChangePasswordForm')->name(
 Route::post('change-password', 'ProfileController@changePassword');
 
 // show list
-Route::get('account-list', 'Admin\AccountController@showAccountList')->name('account-list');
-Route::get('food-list', 'Admin\FoodController@showFoodList')->name('food-list');
 // Route::get('bill-list', 'Admin\AccountController@showAccountList')->name('bill-list');
 
 //Forget password

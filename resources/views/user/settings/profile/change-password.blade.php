@@ -4,9 +4,6 @@
     {{ trans('messages.change-password.title') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
@@ -22,7 +19,7 @@
 
         @if($errors->any())
             <div class="alert alert-danger">
-                <ul style="list-style-type: none;">
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                     @endforeach
@@ -54,9 +51,7 @@
                     <input type="password" class="form-control @error('old_password') is-invalid @enderror" name="old_password" required>
 
                     @error('old_password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -71,9 +66,7 @@
                     <input type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required>
 
                     @error('new_password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -88,9 +81,7 @@
                     <input type="password" class="form-control @error('repassword') is-invalid @enderror" name="repassword" required>
 
                     @error('repassword')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
@@ -108,4 +99,7 @@
 @endsection
 
 @section('custom_js')
+<script type="text/javascript">
+    document.getElementById('profileSidebar').classList.add('show');
+</script>
 @endsection
