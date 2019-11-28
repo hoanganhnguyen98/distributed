@@ -105,7 +105,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <select class="btn btn-outline border border-success" name="area" form="account">
+                    <select class="btn btn-outline border border-success text-uppercase" name="area" form="account">
                         <option value="shuriken">
                             Shuriken
                         </option>

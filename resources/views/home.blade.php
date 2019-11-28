@@ -4,14 +4,14 @@
     {{ trans('messages.title.home') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
-<div class="container">
-    <h1>TRANG CHỦ</h1>
-</div>
-@endsection
+<div class="card">
+    <div class="card-header text-uppercase text-primary font-weight-bold">
+        <i class="fas fa-fan fa-spin mr-2"></i>ADMIN
+    </div>
 
-@section('custom_js')
+    <div class="card-body">
+        HOMEPAGE
+    </div>
+</div>
 @endsection

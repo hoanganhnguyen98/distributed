@@ -12,16 +12,10 @@ class Table extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'table_id',
         'admin_id',
         'area',
-        'role',
-        'first_login',
-        'name',
-        'image',
-        'address',
-        'phone',
-        'email',
-        'password',
+        'status',
+        'size',
     ];
 }

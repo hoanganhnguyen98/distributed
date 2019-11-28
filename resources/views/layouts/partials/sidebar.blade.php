@@ -2,7 +2,9 @@
 <nav id="sidebar" class="p-3 mb-2 bg-secondary text-white">
     <div class="sidebar-header components">
         <a href="{{ route('home') }}">
-            <h4 class="text-uppercase">{{ trans('messages.sidebar.header') }}</h4>
+            <h4 class="text-uppercase">
+                <i class="fas fa-fan fa-spin mr-2"></i>{{ trans('messages.sidebar.header') }}
+            </h4>
             <strong>NR</strong>
         </a>
     </div>
@@ -15,7 +17,7 @@
         <!-- Account -->
         <li>
             <a href="#accountSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                <i class="fas fa-user-shield mr-2"></i>{{ trans('messages.sidebar.account.header') }}
+                <i class="fas fa-user-ninja mr-2"></i>{{ trans('messages.sidebar.account.header') }}
             </a>
             <ul class="collapse list-unstyled" id="accountSidebar">
                 <li>
