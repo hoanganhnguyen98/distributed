@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Model\Table;
+use Auth;
 use App;
 use session;
 
@@ -38,6 +40,30 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // check user role and area to show homepage
+        $role = Auth::user()->role;
+        if ($role == 'receptionist') {
+            $area = Auth::user()->area;
+
+            // get table list
+            $table2s = Table::where([['area', $area], ['size', 2]])->get();
+            $table4s = Table::where([['area', $area], ['size', 4]])->get();
+            $table10s = Table::where([['area', $area], ['size', 10]])->get();
+
+            // bisect the table10s array
+            $table10_1s = array();
+            $table10_2s = array();
+            foreach ($table10s as $key => $value) {
+                if ($key < 4) {
+                    $table10_1s[] = $value;
+                } else {
+                    $table10_2s[] = $value;
+                }
+            }
+
+            return view('user.receptionist.home.home', compact('area', 'table2s', 'table4s', 'table10_1s', 'table10_2s'));
+        } else {
+            return view('home');
+        }
     }
 }
