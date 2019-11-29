@@ -28,7 +28,6 @@ return [
         ],
         'bill' => [
             'header' => 'Hóa đơn',
-            'create' => 'Tạo mới hóa đơn',
             'list' => 'Danh sách hóa đơn',
         ],
         'profile' => [
@@ -36,6 +35,16 @@ return [
             'detail' => 'Thông tin tài khoản',
             'change-password' => 'Đổi mật khẩu',
         ],
+    ],
+    'home' => [
+        'receptionist' => [
+            'create' => 'Tạo mới hóa đơn',
+        ],
+    ],
+    'status' => [
+        'ready' => 'sẵn sàng',
+        'prepare' => 'đón khách',
+        'run' => 'được sử dụng',
     ],
     'login' => [
         'title' => 'Đăng nhập',

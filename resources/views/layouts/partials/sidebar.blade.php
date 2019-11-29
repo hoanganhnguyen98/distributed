@@ -59,11 +59,6 @@
             <ul class="collapse list-unstyled" id="billSidebar">
                 <li>
                     <a href="#">
-                        <i class="fas fa-file-signature mr-2"></i>{{ trans('messages.sidebar.bill.create') }}
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
                         <i class="fas fa-copy mr-2"></i>{{ trans('messages.sidebar.bill.list') }}
                     </a>
                 </li>

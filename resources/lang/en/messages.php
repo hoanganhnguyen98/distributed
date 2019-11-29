@@ -28,7 +28,6 @@ return [
         ],
         'bill' => [
             'header' => 'Bill',
-            'create' => 'Create new bill',
             'list' => 'Bill list',
         ],
         'profile' => [
@@ -36,6 +35,16 @@ return [
             'detail' => 'Account information',
             'change-password' => 'Change password',
         ],
+    ],
+    'home' => [
+        'receptionist' => [
+            'create' => 'Create new bill',
+        ],
+    ],
+    'status' => [
+        'ready' => 'ready',
+        'prepare' => 'welcome',
+        'run' => 'in use',
     ],
     'login' => [
         'title' => 'Login',
