@@ -125,7 +125,7 @@
 
     <div class="form-group row mb-0">
         <div class="col-md-8 offset-md-3">
-            <button type="submit" id="editButton" class="btn btn-primary">
+            <button type="submit" id="editButton" class="btn btn-primary font-weight-bold">
                 {{ trans('messages.list.account.button.edit') }}
             </button>
         </div>

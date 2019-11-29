@@ -42,8 +42,9 @@ Route::post('food-change-image', 'Admin\FoodController@changeFoodImage')->name('
 Route::get('food-delete-{id}', 'Admin\FoodController@deleteFood')->name('food-delete');
 
 // bill
-Route::get('create-bill', 'Receptionist\BillController@showCreateBillForm')->name('create-bill');
-Route::post('create-bill', 'Receptionist\BillController@createBill');
+Route::get('create-bill-{table_id}', 'Receptionist\BillController@showCreateBillForm')->name('create-bill-form');
+Route::post('create-bill', 'Receptionist\BillController@createBill')->name('create-bill');
+Route::get('cancel-create-bill-{table_id}', 'Receptionist\BillController@cancelCreateBill')->name('cancel-create-bill');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');

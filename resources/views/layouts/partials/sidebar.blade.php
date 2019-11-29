@@ -5,7 +5,6 @@
             <h4 class="text-uppercase">
                 <i class="fas fa-fan fa-spin mr-2"></i>{{ trans('messages.sidebar.header') }}
             </h4>
-            <strong>NR</strong>
         </a>
     </div>
 
@@ -58,11 +57,6 @@
                 <i class="fas fa-file-alt mr-2"></i>{{ trans('messages.sidebar.bill.header') }}
             </a>
             <ul class="collapse list-unstyled" id="billSidebar">
-                <li>
-                    <a href="{{ route('create-bill') }}">
-                        <i class="fas fa-file-signature mr-2"></i>{{ trans('messages.sidebar.bill.create') }}
-                    </a>
-                </li>
                 <li>
                     <a href="#">
                         <i class="fas fa-copy mr-2"></i>{{ trans('messages.sidebar.bill.list') }}

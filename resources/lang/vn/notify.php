@@ -13,6 +13,7 @@ return [
         'delete-food' => 'Xóa món ăn thành công!',
         'edit-food-info' => 'Sửa món ăn thành công!',
         'change-food-image' => 'Đổi ảnh món ăn thành công!',
+        'create-bill' => 'Tạo mới hóa đơn thành công!',
     ],
     'errors' => [
         'login' => 'Đăng nhập thất bại, mời thử lại!',

@@ -64,6 +64,9 @@
 
                 <div class="col-md-6">
                     <input type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required>
+                    <small class="text-primary font-weight-bold">
+                        {{ trans('messages.suggest-password') }}
+                    </small>
 
                     @error('new_password')
                         <span class="invalid-feedback" role="alert"></span>
@@ -88,7 +91,7 @@
 
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-3">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary font-weight-bold">
                         {{ trans('messages.change-password.button') }}
                     </button>
                 </div>

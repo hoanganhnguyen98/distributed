@@ -56,7 +56,7 @@
                                         <p>{{ $food->material }}</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">
                                             {{ trans('messages.list.food.button.close') }}
                                         </button>
                                     </div>
@@ -84,10 +84,10 @@
                                         </button>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">
                                             {{ trans('messages.list.food.button.cancel') }}
                                         </button>
-                                        <button type="button" class="btn btn-danger">
+                                        <button type="button" class="btn btn-danger font-weight-bold">
                                             <a href="food-delete-{{ $food->id }}">
                                                 {{ trans('messages.list.food.button.delete') }}
                                             </a>

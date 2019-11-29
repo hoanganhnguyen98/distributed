@@ -28,7 +28,6 @@ return [
         ],
         'bill' => [
             'header' => 'Bill',
-            'create' => 'Create new bill',
             'list' => 'Bill list',
         ],
         'profile' => [
@@ -36,6 +35,16 @@ return [
             'detail' => 'Account information',
             'change-password' => 'Change password',
         ],
+    ],
+    'home' => [
+        'receptionist' => [
+            'create' => 'Create new bill',
+        ],
+    ],
+    'status' => [
+        'ready' => 'ready',
+        'prepare' => 'welcome',
+        'run' => 'in use',
     ],
     'login' => [
         'title' => 'Login',
@@ -53,6 +62,7 @@ return [
         'admin' => 'Admin',
     ],
     'suggest' => 'click to choose',
+    'suggest-password' => 'Password is at least 8 characters!',
     'type' => [
         'salad' => 'Salad',
         'rice' => 'Rice',
@@ -104,6 +114,8 @@ return [
             'phone' => 'Phone number',
             'email' => 'Email',
             'button' => 'Create new',
+            'create-modal' => 'Create new this bill?',
+            'cancel' => 'Cancel',
         ],
     ],
     'list' => [

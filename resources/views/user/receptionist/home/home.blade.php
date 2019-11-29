@@ -11,7 +11,21 @@
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
-        <i class="fas fa-fan fa-spin mr-2"></i>{{ $area }}
+        <div class="row">
+            <div class="col-auto mr-auto">    
+                <i class="fas fa-fan fa-spin mr-2"></i>{{ $area }}
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-outline-success">{{ $ready }}</button>
+                <button type="button" class="btn btn-outline-primary">{{ $prepare }}</button>
+                <button type="button" class="btn btn-outline-danger">{{ $run }}</button>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn btn-primary">
+                    <a  href="{{ route('home') }}"><i class="fas fa-sync-alt fa-spin"></i></a>
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="card-body">

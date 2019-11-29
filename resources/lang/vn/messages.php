@@ -28,7 +28,6 @@ return [
         ],
         'bill' => [
             'header' => 'Hóa đơn',
-            'create' => 'Tạo mới hóa đơn',
             'list' => 'Danh sách hóa đơn',
         ],
         'profile' => [
@@ -36,6 +35,16 @@ return [
             'detail' => 'Thông tin tài khoản',
             'change-password' => 'Đổi mật khẩu',
         ],
+    ],
+    'home' => [
+        'receptionist' => [
+            'create' => 'Tạo mới hóa đơn',
+        ],
+    ],
+    'status' => [
+        'ready' => 'sẵn sàng',
+        'prepare' => 'đón khách',
+        'run' => 'được sử dụng',
     ],
     'login' => [
         'title' => 'Đăng nhập',
@@ -53,6 +62,7 @@ return [
         'admin' => 'Quản trị viên',
     ],
     'suggest' => 'nhấn để chọn',
+    'suggest-password' => 'Mật khẩu ít nhất 8 ký tự!',
     'type' => [
         'salad' => 'Gỏi',
         'rice' => 'Cơm',
@@ -104,6 +114,8 @@ return [
             'phone' => 'Số điện thoại',
             'email' => 'Địa chỉ email',
             'button' => 'Tạo mới',
+            'create-modal' => 'Tạo mới hóa đơn này?',
+            'cancel' => 'Hủy',
         ],
     ],
     'list' => [

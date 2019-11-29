@@ -12,7 +12,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ trans('messages.login.header') }}</div>
+                <div class="card-header text-uppercase text-primary font-weight-bold">
+                    {{ trans('messages.login.header') }}
+                </div>
 
                 <div class="card-body">
                     @if(Session::has('success'))
@@ -23,7 +25,7 @@
 
                     @if($errors->any())
                         <div class="alert alert-danger">
-                            <ul style="list-style-type: none;">
+                            <ul>
                                 @foreach ($errors->all() as $error)
                                     <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                                 @endforeach
@@ -40,12 +42,10 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" name="email">
+                                <input type="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" name="email" required>
 
                                 @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback" role="alert"></span>
                                 @enderror
                             </div>
                         </div>
@@ -56,12 +56,10 @@
                             </label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
 
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback" role="alert"></span>
                                 @enderror
                             </div>
                         </div>
@@ -73,7 +71,7 @@
                                 </a>
                             </div>
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary font-weight-bold">
                                     {{ trans('messages.login.button') }}
                                 </button>
                             </div>
