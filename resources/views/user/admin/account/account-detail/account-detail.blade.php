@@ -19,19 +19,19 @@
                 </a>
             </div>
             <div class="col-auto">
-                <button type="button" id="changeImage" class="btn btn-outline-success">
+                <button type="button" id="changeImage" class="btn btn-outline-success font-weight-bold">
                     {{ trans('messages.list.account.button.change_image') }}
                 </button>
-                <button type="button" id="cancelChangeButton" class="btn btn-outline-secondary">
+                <button type="button" id="cancelChangeButton" class="btn btn-outline-secondary font-weight-bold">
                     {{ trans('messages.list.account.button.cancel') }}
                 </button>
-                <button type="button" id="editInformation" class="btn btn-outline-primary">
+                <button type="button" id="editInformation" class="btn btn-outline-primary font-weight-bold">
                     {{ trans('messages.list.account.button.edit') }}
                 </button>
-                <button type="button" id="cancelEditButton" class="btn btn-outline-secondary">
+                <button type="button" id="cancelEditButton" class="btn btn-outline-secondary font-weight-bold">
                     {{ trans('messages.list.account.button.cancel') }}
                 </button>
-                <button type="button" id="deleteAccount" class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteAccountModal">
+                <button type="button" id="deleteAccount" class="btn btn-outline-danger font-weight-bold" data-toggle="modal" data-target="#deleteAccountModal">
                     {{ trans('messages.list.account.button.delete') }}
                 </button>
                 @include('user.admin.account.account-detail.account-delete-modal')

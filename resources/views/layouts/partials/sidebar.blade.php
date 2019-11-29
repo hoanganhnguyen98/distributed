@@ -5,7 +5,6 @@
             <h4 class="text-uppercase">
                 <i class="fas fa-fan fa-spin mr-2"></i>{{ trans('messages.sidebar.header') }}
             </h4>
-            <strong>NR</strong>
         </a>
     </div>
 
@@ -59,7 +58,7 @@
             </a>
             <ul class="collapse list-unstyled" id="billSidebar">
                 <li>
-                    <a href="{{ route('create-bill') }}">
+                    <a href="#">
                         <i class="fas fa-file-signature mr-2"></i>{{ trans('messages.sidebar.bill.create') }}
                     </a>
                 </li>

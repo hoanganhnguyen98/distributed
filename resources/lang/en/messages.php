@@ -53,6 +53,7 @@ return [
         'admin' => 'Admin',
     ],
     'suggest' => 'click to choose',
+    'suggest-password' => 'Password is at least 8 characters!',
     'type' => [
         'salad' => 'Salad',
         'rice' => 'Rice',
@@ -104,6 +105,8 @@ return [
             'phone' => 'Phone number',
             'email' => 'Email',
             'button' => 'Create new',
+            'create-modal' => 'Create new this bill?',
+            'cancel' => 'Cancel',
         ],
     ],
     'list' => [

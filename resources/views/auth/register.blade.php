@@ -23,7 +23,7 @@
 
                     @if($errors->any())
                         <div class="alert alert-danger">
-                            <ul style="list-style-type: none;">
+                            <ul>
                                 @foreach ($errors->all() as $error)
                                     <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                                 @endforeach

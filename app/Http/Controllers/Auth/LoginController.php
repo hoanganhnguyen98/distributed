@@ -57,7 +57,7 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $user = User::where('email', $email)->first();
             $first_login = $user->first_login;
-            if ($first_login != null) {
+            if ($first_login != 0) {
                 return redirect()->route('home');
             } else {
                 Auth::logout();

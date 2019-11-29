@@ -53,6 +53,7 @@ return [
         'admin' => 'Quản trị viên',
     ],
     'suggest' => 'nhấn để chọn',
+    'suggest-password' => 'Mật khẩu ít nhất 8 ký tự!',
     'type' => [
         'salad' => 'Gỏi',
         'rice' => 'Cơm',
@@ -104,6 +105,8 @@ return [
             'phone' => 'Số điện thoại',
             'email' => 'Địa chỉ email',
             'button' => 'Tạo mới',
+            'create-modal' => 'Tạo mới hóa đơn này?',
+            'cancel' => 'Hủy',
         ],
     ],
     'list' => [

@@ -10,10 +10,10 @@
             </button>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">
                 {{ trans('messages.list.account.button.cancel') }}
             </button>
-            <button type="button" class="btn btn-danger">
+            <button type="button" class="btn btn-danger font-weight-bold">
                 <a href="account-delete-{{ $account->user_id }}">
                     {{ trans('messages.list.account.button.delete') }}
                 </a>

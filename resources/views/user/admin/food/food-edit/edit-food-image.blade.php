@@ -13,7 +13,7 @@
             @enderror
         </div>
         <div class="form-group row mb-0">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-success font-weight-bold">
                 {{ trans('messages.list.account.button.change_image') }}
             </button>
         </div>
