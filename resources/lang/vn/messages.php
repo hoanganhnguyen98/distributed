@@ -5,17 +5,17 @@ return [
         'home' => 'Nhà hàng NINJA',
     ],
     'header' => [
-        'home' => 'Trang chủ',
-        'about' => 'Giới thiệu',
         'login' => 'Đăng nhập',
         'logout' => 'Đăng xuất',
+        'logout-modal' => 'Đăng xuất khỏi hệ thống?',
+        'logout-cancel' => 'Hủy',
         'register' => 'Tạo tài khoản',
         'language' => 'Language',
     ],
     'sidebar' => [
         'header' => 'Nhà hàng Ninja',
-        'management-header' => 'Quản lý',
-        'general-settings' => 'Cài đặt chung',
+        'management_header' => 'Quản lý',
+        'general_settings' => 'Cài đặt chung',
         'account' => [
             'header' => 'Tài khoản',
             'create' => 'Tạo mới tài khoản',
@@ -33,7 +33,7 @@ return [
         'profile' => [
             'header' => 'Hồ sơ',
             'detail' => 'Thông tin tài khoản',
-            'change-password' => 'Đổi mật khẩu',
+            'change_password' => 'Đổi mật khẩu',
         ],
     ],
     'home' => [
@@ -62,7 +62,7 @@ return [
         'admin' => 'Quản trị viên',
     ],
     'suggest' => 'nhấn để chọn',
-    'suggest-password' => 'Mật khẩu ít nhất 8 ký tự!',
+    'suggest_password' => 'Mật khẩu ít nhất 8 ký tự!',
     'type' => [
         'salad' => 'Gỏi',
         'rice' => 'Cơm',
@@ -114,7 +114,7 @@ return [
             'phone' => 'Số điện thoại',
             'email' => 'Địa chỉ email',
             'button' => 'Tạo mới',
-            'create-modal' => 'Tạo mới hóa đơn này?',
+            'create_modal' => 'Tạo mới hóa đơn này?',
             'cancel' => 'Hủy',
         ],
     ],
@@ -156,8 +156,22 @@ return [
             ],
             'modal_title' => 'Xóa món ăn này?',
         ],
+        'bill' => [
+            'title' => 'Danh sách hóa đơn',
+            'header' => 'Danh sách hóa dơn',
+            'current_header' => 'Hóa đơn hiện tại',
+            'today_header' => 'Hóa đơn trong ngày',
+            'id' => 'Số',
+            'table' => 'Bàn',
+            'name' => 'Tên khách hàng',
+            'button' => [
+                'detail' => 'Chi tiết',
+                'edit' => 'Sửa',
+                'pay' => 'Thanh toán',
+            ],
+        ],
     ],   
-    'change-password' => [
+    'change_password' => [
         'title' => 'Thay đổi mật khẩu',
         'header' => 'Thay đổi mật khẩu',
         'email' => 'Tài khoản (Thư điện tử)',

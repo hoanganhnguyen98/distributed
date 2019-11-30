@@ -45,14 +45,12 @@ Route::get('food-delete-{id}', 'Admin\FoodController@deleteFood')->name('food-de
 Route::get('create-bill-{table_id}', 'Receptionist\BillController@showCreateBillForm')->name('create-bill-form');
 Route::post('create-bill', 'Receptionist\BillController@createBill')->name('create-bill');
 Route::get('cancel-create-bill-{table_id}', 'Receptionist\BillController@cancelCreateBill')->name('cancel-create-bill');
+Route::get('bill-list', 'Receptionist\BillController@showBillList')->name('bill-list');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
 Route::get('change-password', 'ProfileController@showChangePasswordForm')->name('change-password');
 Route::post('change-password', 'ProfileController@changePassword');
-
-// show list
-// Route::get('bill-list', 'Admin\AccountController@showAccountList')->name('bill-list');
 
 //Forget password
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');

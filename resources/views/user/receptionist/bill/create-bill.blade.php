@@ -20,12 +20,6 @@
     </div>
 
     <div class="card-body">
-        @if(Session::has('success'))
-            <div class="alert alert-success"><i class="fas fa-check"></i>
-                {!! Session::get('success') !!}
-            </div>
-        @endif
-
         @if($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -46,7 +40,7 @@
                 </label>
 
                 <div class="col-md-6">
-                    <input type="text" class="form-control" value="{{ $table_id }}" name="table_number" readonly>
+                    <input type="text" class="form-control" value="{{ $table_id }}" name="table_id" readonly>
                 </div>
             </div>
 
@@ -133,7 +127,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title text-uppercase text-primary" id="createNewBillModalTitle">
-                                    {{ trans('messages.create.bill.create-modal') }}
+                                    {{ trans('messages.create.bill.create_modal') }}
                                 </h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>

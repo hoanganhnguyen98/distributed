@@ -58,7 +58,7 @@ class BillController extends Controller
             DB::beginTransaction();
 
             $rules = [
-                'table_number' => ['required'],
+                'table_id' => ['required'],
                 'name' => ['required', 'string', 'max:255'],
                 'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
                 'city' => ['required', 'string', 'max:255'],
@@ -69,9 +69,15 @@ class BillController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
+            // update status for table
+            $new_status = 'run';
+            $table = Table::where('table_id', $request->table_id)->first();
+            $table->status = $new_status;
+            $table->save();
+
             Bill::create([
                 'receptionist_id' => Auth::user()->user_id,
-                'table_number' => $request->table_number,
+                'table_id' => $request->table_id.'-'.Auth::user()->area,
                 'customer_name' => $request->name,
                 'street' => $request->street,
                 'district' => $request->district,
@@ -83,11 +89,27 @@ class BillController extends Controller
             DB::commit();
 
             $success = Lang::get('notify.success.create-bill');
-            return redirect()->back()->with('success', $success);
+            return redirect()->route('home')->with('success', $success);
         } catch (Exception $e) {
             DB::rollBack();
 
             return redirect()->back()->with('errors', $e->getMessage());
         }
+    }
+
+    /**
+     * Get bill list.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function showBillList()
+    {
+        $area = Auth::user()->area;
+        $today = date('Y-m-d');
+        $today_bills = Bill::whereDate('created_at', $today);
+
+        $bills = $today_bills->sortable('id')->paginate(10);
+        
+        return view('user.receptionist.bill.bill-list', compact('bills', 'today', 'area'));
     }
 }
