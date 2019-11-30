@@ -5,17 +5,17 @@ return [
         'home' => 'NINJA Restaurant',
     ],
     'header' => [
-        'home' => 'Home',
-        'about' => 'About',
         'login' => 'Login',
         'logout' => 'Logout',
+        'logout-modal' => 'Log out of the system?',
+        'logout-cancel' => 'Cancel',
         'register' => 'Create new account',
         'language' => 'Ngôn ngữ',
     ],
     'sidebar' => [
         'header' => 'Ninja Restaurant',
-        'management-header' => 'Management',
-        'general-settings' => 'General Setttings',
+        'management_header' => 'Management',
+        'general_settings' => 'General Setttings',
         'account' => [
             'header' => 'Account',
             'create' => 'Create new account',
@@ -33,7 +33,7 @@ return [
         'profile' => [
             'header' => 'Profile',
             'detail' => 'Account information',
-            'change-password' => 'Change password',
+            'change_password' => 'Change password',
         ],
     ],
     'home' => [
@@ -62,7 +62,7 @@ return [
         'admin' => 'Admin',
     ],
     'suggest' => 'click to choose',
-    'suggest-password' => 'Password is at least 8 characters!',
+    'suggest_password' => 'Password is at least 8 characters!',
     'type' => [
         'salad' => 'Salad',
         'rice' => 'Rice',
@@ -114,7 +114,7 @@ return [
             'phone' => 'Phone number',
             'email' => 'Email',
             'button' => 'Create new',
-            'create-modal' => 'Create new this bill?',
+            'create_modal' => 'Create new this bill?',
             'cancel' => 'Cancel',
         ],
     ],
@@ -156,8 +156,22 @@ return [
             ],
             'modal_title' => 'Delete this food?',
         ],
+        'bill' => [
+            'title' => 'Bill list',
+            'header' => 'Bill list',
+            'current_header' => 'Current bills',
+            'today_header' => 'Today bills',
+            'id' => 'ID',
+            'table' => 'Table',
+            'name' => 'Customer name',
+            'button' => [
+                'detail' => 'Detail',
+                'edit' => 'Edit',
+                'pay' => 'Pay',
+            ],
+        ],
     ],
-    'change-password' => [
+    'change_password' => [
         'title' => 'Change password',
         'header' => 'Change password',
         'email' => 'Account (Email)',

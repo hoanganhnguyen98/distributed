@@ -11,7 +11,7 @@
     <!-- Managemnet -->
     <ul class="list-unstyled components">
         <!-- Managemnet header -->
-        <h4 class="text-uppercase">{{ trans('messages.sidebar.management-header') }}</h4>
+        <h4 class="text-uppercase">{{ trans('messages.sidebar.management_header') }}</h4>
 
         <!-- Account -->
         <li>
@@ -58,7 +58,7 @@
             </a>
             <ul class="collapse list-unstyled" id="billSidebar">
                 <li>
-                    <a href="#">
+                    <a href="{{ route('bill-list') }}">
                         <i class="fas fa-copy mr-2"></i>{{ trans('messages.sidebar.bill.list') }}
                     </a>
                 </li>
@@ -69,7 +69,7 @@
     <!-- General Settings -->
     <ul class="list-unstyled components">
         <!-- Settings header -->
-        <h4 class="text-uppercase">{{ trans('messages.sidebar.general-settings') }}</h4>
+        <h4 class="text-uppercase">{{ trans('messages.sidebar.general_settings') }}</h4>
 
         <!-- Profile -->
         <li>
@@ -84,7 +84,7 @@
                 </li>
                 <li>
                     <a href="{{ route('change-password') }}">
-                        <i class="fas fa-user-lock mr-2"></i>{{ trans('messages.sidebar.profile.change-password') }}
+                        <i class="fas fa-user-lock mr-2"></i>{{ trans('messages.sidebar.profile.change_password') }}
                     </a>
                 </li>
             </ul>

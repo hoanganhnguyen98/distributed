@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('role');
             $table->integer('first_login')->default(0);
             $table->string('name');
-            $table->string('image')->default('avatar.png');
+            $table->string('image');
             $table->string('address');
             $table->string('phone');
             $table->string('email')->unique();

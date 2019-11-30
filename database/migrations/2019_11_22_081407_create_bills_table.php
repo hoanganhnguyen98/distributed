@@ -14,15 +14,15 @@ class CreateBillsTable extends Migration
     public function up()
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->bigIncrements('bill_id');
+            $table->bigIncrements('id');
             $table->string('receptionist_id');
             $table->string('status')->default('new');
-            $table->string('table_number');
+            $table->string('table_id');
             $table->double('total_price')->default(0);
             $table->string('customer_name');
             $table->string('street')->nullable();
             $table->string('district')->nullable();
-            $table->string('city')->nullable();
+            $table->string('city');
             $table->string('phone');
             $table->string('email')->nullable();
             $table->timestamps();
