@@ -14,6 +14,7 @@ return [
         'edit-food-info' => 'Edit food information successfully!',
         'change-food-image' => 'Change food image successfully!',
         'create-bill' => 'Create new bill successfully!',
+        'create-bill-detail' => 'Create bill detail successfully!',
     ],
     'errors' => [
         'login' => 'Login failed, please try again!',

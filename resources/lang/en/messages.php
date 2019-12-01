@@ -42,6 +42,9 @@ return [
             'edit' => 'Edit',
             'pay' => 'Pay',
         ],
+        'waiter' => [
+            'order' => 'Order',
+        ],
     ],
     'status' => [
         'ready' => 'ready',
@@ -118,6 +121,15 @@ return [
             'button' => 'Create new',
             'create_modal' => 'Create new this bill?',
             'cancel' => 'Cancel',
+        ],
+        'bill-detail' => [
+            'title' => 'Create new bill detail',
+            'header' => 'Create new bill detail',
+            'add_option' => 'Add option',
+            'food_name' => '... food name',
+            'amount' => '... amount',
+            'button' => 'Order',
+            'back' => 'Back',
         ],
     ],
     'list' => [

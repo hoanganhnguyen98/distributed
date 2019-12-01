@@ -42,6 +42,9 @@ return [
             'edit' => 'Sửa',
             'pay' => 'Thanh toán',
         ],
+        'waiter' => [
+            'order' => 'Gọi món',
+        ],
     ],
     'status' => [
         'ready' => 'sẵn sàng',
@@ -118,6 +121,15 @@ return [
             'button' => 'Tạo mới',
             'create_modal' => 'Tạo mới hóa đơn này?',
             'cancel' => 'Hủy',
+        ],
+        'bill-detail' => [
+            'title' => 'Tạo mới hóa đơn chi tiết mới',
+            'header' => 'Tạo mới hóa đơn chi tiết mới',
+            'add_option' => 'Thêm tùy chọn',
+            'food_name' => '... tên món',
+            'amount' => '... số lượng',
+            'button' => 'Gọi món',
+            'back' => 'Quay lại',
         ],
     ],
     'list' => [

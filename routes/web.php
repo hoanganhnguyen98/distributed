@@ -46,6 +46,9 @@ Route::get('create-bill-{table_id}', 'Receptionist\BillController@showCreateBill
 Route::post('create-bill', 'Receptionist\BillController@createBill')->name('create-bill');
 Route::get('cancel-create-bill-{table_id}', 'Receptionist\BillController@cancelCreateBill')->name('cancel-create-bill');
 Route::get('bill-list', 'Receptionist\BillController@showBillList')->name('bill-list');
+// bill detail
+Route::get('add-bill-detail-{table_id}', 'Waiter\BillDetailController@showAddBillDetailForm')->name('add-bill-detail-form');
+Route::post('add-bill-detail', 'Waiter\BillDetailController@addBillDetail')->name('add-bill-detail');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
