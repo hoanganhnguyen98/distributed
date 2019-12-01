@@ -39,6 +39,8 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Create new bill',
+            'edit' => 'Edit',
+            'pay' => 'Pay',
         ],
     ],
     'status' => [

@@ -65,12 +65,6 @@
                         <a href="#" class="badge badge-pill badge-info text-uppercase">
                             {{ trans('messages.list.bill.button.detail') }}
                         </a>
-                        <a href="#" class="badge badge-pill badge-primary text-uppercase">
-                            {{ trans('messages.list.bill.button.edit') }}
-                        </a>
-                        <a href="#" class="badge badge-pill badge-success text-uppercase">
-                            {{ trans('messages.list.bill.button.pay') }}
-                        </a>
                         @elseif($bill->status == 'done')
                         <a href="#" class="badge badge-pill badge-danger text-uppercase">
                             {{ trans('messages.list.bill.button.detail') }}

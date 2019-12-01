@@ -39,6 +39,8 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Tạo mới hóa đơn',
+            'edit' => 'Sửa',
+            'pay' => 'Thanh toán',
         ],
     ],
     'status' => [

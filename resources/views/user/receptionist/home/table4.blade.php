@@ -35,6 +35,14 @@
             <a class="dropdown-item text-danger font-weight-bold" href="create-bill-{{ $table4->table_id }}">
                 <i class="fas fa-file-signature mr-2"></i>{{ trans('messages.home.receptionist.create') }}
             </a>
+            @elseif($table4->status == 'run')
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-primary font-weight-bold" href="#">
+                <i class="fas fa-file-medical mr-2"></i>{{ trans('messages.home.receptionist.edit') }}
+            </a>
+            <a class="dropdown-item text-success font-weight-bold" href="#">
+                <i class="fas fa-hand-holding-usd mr-2"></i>{{ trans('messages.home.receptionist.pay') }}
+            </a>
             @endif
         </div> 
     </li>
