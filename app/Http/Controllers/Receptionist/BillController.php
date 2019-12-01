@@ -21,13 +21,17 @@ class BillController extends Controller
      */
     protected function showCreateBillForm($table_id)
     {
-        // update status for table
-        $new_status = 'prepare';
-        $table = Table::where('table_id', $table_id)->first();
-        $table->status = $new_status;
-        $table->save();
+        if (Auth::user()->role == 'receptionist') {
+            // update status for table
+            $new_status = 'prepare';
+            $table = Table::where('table_id', $table_id)->first();
+            $table->status = $new_status;
+            $table->save();
 
-        return view('user.receptionist.bill.create-bill', compact('table_id'));
+            return view('user.receptionist.bill.create-bill', compact('table_id'));
+        } else {
+            return view('404');
+        }
     }
 
     /**
@@ -38,12 +42,16 @@ class BillController extends Controller
      */
     protected function cancelCreateBill($table_id)
     {
-        // update status for table
-        $new_status = 'ready';
-        $table = Table::where('table_id', $table_id)->first();
-        $table->status = $new_status;
-        $table->save();
-        return redirect()->route('home');
+        if (Auth::user()->role == 'receptionist') {
+            // update status for table
+            $new_status = 'ready';
+            $table = Table::where('table_id', $table_id)->first();
+            $table->status = $new_status;
+            $table->save();
+            return redirect()->route('home');
+        } else {
+            return view('404');
+        }
     }
 
     /**
@@ -104,12 +112,16 @@ class BillController extends Controller
      */
     protected function showBillList()
     {
-        $area = Auth::user()->area;
-        $today = date('Y-m-d');
-        $today_bills = Bill::whereDate('created_at', $today);
+        if (Auth::user()->role == 'receptionist') {
+            $area = Auth::user()->area;
+            $today = date('Y-m-d');
+            $today_bills = Bill::whereDate('created_at', $today);
 
-        $bills = $today_bills->sortable('id')->paginate(10);
-        
-        return view('user.receptionist.bill.bill-list', compact('bills', 'today', 'area'));
+            $bills = $today_bills->sortable('id')->paginate(10);
+
+            return view('user.receptionist.bill.bill-list', compact('bills', 'area'));
+        } else {
+            return view('404');
+        }
     }
 }

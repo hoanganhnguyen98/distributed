@@ -216,4 +216,9 @@ return [
         'repassword' => 'Confirm password',
         'button' => 'Change',
     ],
+    '404' => [
+        'title' => '404',
+        'header' => 'Page not found',
+        'content' => 'The page does not exist or has been blocked!',
+    ],
 ];

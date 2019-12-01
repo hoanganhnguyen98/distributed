@@ -216,4 +216,9 @@ return [
         'repassword' => 'Xác nhận mật khẩu',
         'button' => 'Thay đổi',
     ],
+    '404' => [
+        'title' => '404',
+        'header' => 'Không tìm thấy trang',
+        'content' => 'Trang không tồn tại hoặc đã bị chặn truy cập!',
+    ],
 ];

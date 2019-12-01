@@ -22,14 +22,18 @@ class BillDetailController extends Controller
      */
     protected function showAddBillDetailForm($table_id)
     {
-        // get all foods to show
-        $foods = Food::all();
-        // get bill in table to add bill detail
-        $table = $table_id.'-'.Auth::user()->area;
-        $bill = Bill::where([['table_id', $table],['status','!=', 'done']])->first();
-        $bill_id = $bill->id;
+        if (Auth::user()->role == 'waiter') {
+            // get all foods to show
+            $foods = Food::all();
+            // get bill in table to add bill detail
+            $table = $table_id.'-'.Auth::user()->area;
+            $bill = Bill::where([['table_id', $table],['status','!=', 'done']])->first();
+            $bill_id = $bill->id;
 
-        return view('user.waiter.create-bill-detail', compact('foods', 'bill_id'));
+            return view('user.waiter.create-bill-detail', compact('foods', 'bill_id'));
+        } else {
+            return view('404');
+        }
     }
 
     /**
