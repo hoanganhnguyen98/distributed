@@ -13,13 +13,38 @@
             <ul class="navbar-nav ml-auto">
                 @if(Auth::check())
                     <li class="nav-item mx-0 mx-lg-1">
-                        <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/logout">
-                        <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.logout') }}</a>
+                        <a href="#" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.logout') }}
+                        </a>
+                        <!-- Logout modal -->
+                        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-primary" id="logoutModalLabel">
+                                            {{ trans('messages.header.logout-modal') }}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">
+                                            {{ trans('messages.header.logout-cancel') }}
+                                        </button>
+                                        <button type="button" class="btn btn-primary font-weight-bold">
+                                            <a href="/logout" >{{ trans('messages.header.logout') }}</a>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </li>
                 @else
                     <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/login">
-                        <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.login') }}</a>
+                            <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.login') }}
+                        </a>
                     </li>
                 @endif
 

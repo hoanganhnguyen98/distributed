@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\User;
+use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,11 @@ class AccountController extends Controller
      */
     protected function showCreateAccountForm()
     {
-        return view('user.admin.account.create-account');
+        if (Auth::user()->role == 'admin') {
+            return view('user.admin.account.create-account');
+        } else {
+            return view('404');
+        }
     }
 
     /**
@@ -97,8 +102,12 @@ class AccountController extends Controller
      */
     protected function showAccountList()
     {
-        $accounts = User::all();
-        return view('user.admin.account.account-list', compact('accounts'));
+        if (Auth::user()->role == 'admin') {
+            $accounts = User::all();
+            return view('user.admin.account.account-list', compact('accounts'));
+        } else {
+            return view('404');
+        }
     }
 
     /**
@@ -109,8 +118,12 @@ class AccountController extends Controller
      */
     protected function showAccountDetail($user_id)
     {
-        $account = User::where('user_id', $user_id)->first();
-        return view('user.admin.account.account-detail.account-detail', compact('account'));
+        if (Auth::user()->role == 'admin') {
+            $account = User::where('user_id', $user_id)->first();
+            return view('user.admin.account.account-detail.account-detail', compact('account'));
+        } else {
+            return view('404');
+        }
     }
 
     /**

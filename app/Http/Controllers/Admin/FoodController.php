@@ -23,10 +23,14 @@ class FoodController extends Controller
      */
     protected function showCreateFoodForm()
     {
-        $types = Type::all();
-        $sources = Source::all();
+        if (Auth::user()->role == 'admin') {
+            $types = Type::all();
+            $sources = Source::all();
 
-        return view('user.admin.food.create-food', compact('types', 'sources'));
+            return view('user.admin.food.create-food', compact('types', 'sources'));
+        } else {
+            return view('404');
+        }
     }
 
     /**
@@ -92,8 +96,12 @@ class FoodController extends Controller
      */
     protected function showFoodList()
     {
-        $foods = Food::sortable()->paginate(10);
-        return view('user.admin.food.food-list', compact('foods'));
+        if (Auth::user()->role == 'admin') {
+            $foods = Food::sortable()->paginate(10);
+            return view('user.admin.food.food-list', compact('foods'));
+        } else {
+            return view('404');
+        }
     }
 
     /**
@@ -128,11 +136,15 @@ class FoodController extends Controller
      */
     protected function showEditFoodForm($id)
     {
-        $food = Food::where('id', $id)->first();
-        $types = Type::all();
-        $sources = Source::all();
+        if (Auth::user()->role == 'admin') {
+            $food = Food::where('id', $id)->first();
+            $types = Type::all();
+            $sources = Source::all();
 
-        return view('user.admin.food.food-edit.food-edit', compact('food', 'types', 'sources'));
+            return view('user.admin.food.food-edit.food-edit', compact('food', 'types', 'sources'));
+        } else {
+            return view('404');
+        }
     }
 
     /**

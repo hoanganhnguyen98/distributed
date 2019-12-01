@@ -5,17 +5,17 @@ return [
         'home' => 'NINJA Restaurant',
     ],
     'header' => [
-        'home' => 'Home',
-        'about' => 'About',
         'login' => 'Login',
         'logout' => 'Logout',
+        'logout-modal' => 'Log out of the system?',
+        'logout-cancel' => 'Cancel',
         'register' => 'Create new account',
         'language' => 'Ngôn ngữ',
     ],
     'sidebar' => [
         'header' => 'Ninja Restaurant',
-        'management-header' => 'Management',
-        'general-settings' => 'General Setttings',
+        'management_header' => 'Management',
+        'general_settings' => 'General Setttings',
         'account' => [
             'header' => 'Account',
             'create' => 'Create new account',
@@ -28,14 +28,28 @@ return [
         ],
         'bill' => [
             'header' => 'Bill',
-            'create' => 'Create new bill',
             'list' => 'Bill list',
         ],
         'profile' => [
             'header' => 'Profile',
             'detail' => 'Account information',
-            'change-password' => 'Change password',
+            'change_password' => 'Change password',
         ],
+    ],
+    'home' => [
+        'receptionist' => [
+            'create' => 'Create new bill',
+            'edit' => 'Edit',
+            'pay' => 'Pay',
+        ],
+        'waiter' => [
+            'order' => 'Order',
+        ],
+    ],
+    'status' => [
+        'ready' => 'ready',
+        'prepare' => 'welcome',
+        'run' => 'in use',
     ],
     'login' => [
         'title' => 'Login',
@@ -53,6 +67,7 @@ return [
         'admin' => 'Admin',
     ],
     'suggest' => 'click to choose',
+    'suggest_password' => 'Password is at least 8 characters!',
     'type' => [
         'salad' => 'Salad',
         'rice' => 'Rice',
@@ -104,6 +119,17 @@ return [
             'phone' => 'Phone number',
             'email' => 'Email',
             'button' => 'Create new',
+            'create_modal' => 'Create new this bill?',
+            'cancel' => 'Cancel',
+        ],
+        'bill-detail' => [
+            'title' => 'Create new bill detail',
+            'header' => 'Create new bill detail',
+            'add_option' => 'Add option',
+            'food_name' => '... food name',
+            'amount' => '... amount',
+            'button' => 'Order',
+            'back' => 'Back',
         ],
     ],
     'list' => [
@@ -144,8 +170,22 @@ return [
             ],
             'modal_title' => 'Delete this food?',
         ],
+        'bill' => [
+            'title' => 'Bill list',
+            'header' => 'Bill list',
+            'current_header' => 'Current bills',
+            'today_header' => 'Today bills',
+            'id' => 'ID',
+            'table' => 'Table',
+            'name' => 'Customer name',
+            'button' => [
+                'detail' => 'Detail',
+                'edit' => 'Edit',
+                'pay' => 'Pay',
+            ],
+        ],
     ],
-    'change-password' => [
+    'change_password' => [
         'title' => 'Change password',
         'header' => 'Change password',
         'email' => 'Account (Email)',
@@ -175,5 +215,10 @@ return [
         'password' => 'Password',
         'repassword' => 'Confirm password',
         'button' => 'Change',
+    ],
+    '404' => [
+        'title' => '404',
+        'header' => 'Page not found',
+        'content' => 'The page does not exist or has been blocked!',
     ],
 ];

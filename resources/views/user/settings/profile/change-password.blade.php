@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    {{ trans('messages.change-password.title') }}
+    {{ trans('messages.change_password.title') }}
 @endsection
 
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
-        {{ trans('messages.change-password.header') }}
+        {{ trans('messages.change_password.header') }}
     </div>
 
     <div class="card-body">
@@ -27,13 +27,13 @@
             </div>
         @endif
         
-        <form method="POST" action="{{ route('change-password') }}">
+        <form method="POST" action="{{ route('change_password') }}">
             @csrf
 
             <!-- Email -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change-password.email') }}
+                    {{ trans('messages.change_password.email') }}
                 </label>
 
                 <div class="col-md-6">
@@ -44,7 +44,7 @@
             <!-- Current password -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change-password.old_password') }}
+                    {{ trans('messages.change_password.old_password') }}
                 </label>
 
                 <div class="col-md-6">
@@ -59,11 +59,14 @@
             <!-- New password -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change-password.new_password') }}
+                    {{ trans('messages.change_password.new_password') }}
                 </label>
 
                 <div class="col-md-6">
                     <input type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required>
+                    <small class="text-primary font-weight-bold">
+                        {{ trans('messages.suggest_password') }}
+                    </small>
 
                     @error('new_password')
                         <span class="invalid-feedback" role="alert"></span>
@@ -74,7 +77,7 @@
             <!-- Comfirm new_password -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change-password.repassword') }}
+                    {{ trans('messages.change_password.repassword') }}
                 </label>
 
                 <div class="col-md-6">
@@ -88,8 +91,8 @@
 
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-3">
-                    <button type="submit" class="btn btn-primary">
-                        {{ trans('messages.change-password.button') }}
+                    <button type="submit" class="btn btn-primary font-weight-bold">
+                        {{ trans('messages.change_password.button') }}
                     </button>
                 </div>
             </div>

@@ -42,16 +42,18 @@ Route::post('food-change-image', 'Admin\FoodController@changeFoodImage')->name('
 Route::get('food-delete-{id}', 'Admin\FoodController@deleteFood')->name('food-delete');
 
 // bill
-Route::get('create-bill', 'Receptionist\BillController@showCreateBillForm')->name('create-bill');
-Route::post('create-bill', 'Receptionist\BillController@createBill');
+Route::get('create-bill-{table_id}', 'Receptionist\BillController@showCreateBillForm')->name('create-bill-form');
+Route::post('create-bill', 'Receptionist\BillController@createBill')->name('create-bill');
+Route::get('cancel-create-bill-{table_id}', 'Receptionist\BillController@cancelCreateBill')->name('cancel-create-bill');
+Route::get('bill-list', 'Receptionist\BillController@showBillList')->name('bill-list');
+// bill detail
+Route::get('add-bill-detail-{table_id}', 'Waiter\BillDetailController@showAddBillDetailForm')->name('add-bill-detail-form');
+Route::post('add-bill-detail', 'Waiter\BillDetailController@addBillDetail')->name('add-bill-detail');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
 Route::get('change-password', 'ProfileController@showChangePasswordForm')->name('change-password');
 Route::post('change-password', 'ProfileController@changePassword');
-
-// show list
-// Route::get('bill-list', 'Admin\AccountController@showAccountList')->name('bill-list');
 
 //Forget password
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');

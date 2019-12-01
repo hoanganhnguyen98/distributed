@@ -4,15 +4,14 @@
     {{ trans('messages.reset_form.title') }}
 @endsection
 
-@section('custom_css')
-@endsection
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ trans('messages.reset_form.header') }}</div>
+                <div class="card-header text-uppercase text-primary font-weight-bold">
+                    {{ trans('messages.reset_form.header') }}
+                </div>
 
                 <div class="card-body">
                     @if(Session::has('success'))
@@ -23,7 +22,7 @@
 
                     @if($errors->any())
                         <div class="alert alert-danger">
-                            <ul style="list-style-type: none;">
+                            <ul>
                                 @foreach ($errors->all() as $error)
                                     <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
                                 @endforeach
@@ -51,6 +50,9 @@
 
                             <div class="col-md-6">
                                 <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                <small class="text-primary font-weight-bold">
+                                    {{ trans('messages.suggest-password') }}
+                                </small>
 
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
@@ -78,7 +80,7 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary font-weight-bold">
                                     {{ trans('messages.reset_form.button') }}
                                 </button>
                             </div>
@@ -89,7 +91,4 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('custom_js')
 @endsection
