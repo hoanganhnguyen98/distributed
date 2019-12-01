@@ -39,6 +39,11 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Tạo mới hóa đơn',
+            'edit' => 'Sửa',
+            'pay' => 'Thanh toán',
+        ],
+        'waiter' => [
+            'order' => 'Gọi món',
         ],
     ],
     'status' => [
@@ -116,6 +121,15 @@ return [
             'button' => 'Tạo mới',
             'create_modal' => 'Tạo mới hóa đơn này?',
             'cancel' => 'Hủy',
+        ],
+        'bill-detail' => [
+            'title' => 'Tạo mới hóa đơn chi tiết mới',
+            'header' => 'Tạo mới hóa đơn chi tiết mới',
+            'add_option' => 'Thêm tùy chọn',
+            'food_name' => '... tên món',
+            'amount' => '... số lượng',
+            'button' => 'Gọi món',
+            'back' => 'Quay lại',
         ],
     ],
     'list' => [
@@ -201,5 +215,10 @@ return [
         'password' => 'Mật khẩu',
         'repassword' => 'Xác nhận mật khẩu',
         'button' => 'Thay đổi',
+    ],
+    '404' => [
+        'title' => '404',
+        'header' => 'Không tìm thấy trang',
+        'content' => 'Trang không tồn tại hoặc đã bị chặn truy cập!',
     ],
 ];

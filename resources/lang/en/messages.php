@@ -39,6 +39,11 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Create new bill',
+            'edit' => 'Edit',
+            'pay' => 'Pay',
+        ],
+        'waiter' => [
+            'order' => 'Order',
         ],
     ],
     'status' => [
@@ -116,6 +121,15 @@ return [
             'button' => 'Create new',
             'create_modal' => 'Create new this bill?',
             'cancel' => 'Cancel',
+        ],
+        'bill-detail' => [
+            'title' => 'Create new bill detail',
+            'header' => 'Create new bill detail',
+            'add_option' => 'Add option',
+            'food_name' => '... food name',
+            'amount' => '... amount',
+            'button' => 'Order',
+            'back' => 'Back',
         ],
     ],
     'list' => [
@@ -201,5 +215,10 @@ return [
         'password' => 'Password',
         'repassword' => 'Confirm password',
         'button' => 'Change',
+    ],
+    '404' => [
+        'title' => '404',
+        'header' => 'Page not found',
+        'content' => 'The page does not exist or has been blocked!',
     ],
 ];
