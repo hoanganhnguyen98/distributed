@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs justify-content-center" id="typeTab" role="tablist">
+<ul class="nav nav-tabs justify-content-center mt-2 mb-2" id="typeTab" role="tablist">
     @foreach($types as $type)
         <li class="nav-item">
             <a class="nav-link font-weight-bold" id="types-tab" data-toggle="tab" href="#types{{ $type->id }}" role="tab" aria-controls="types" aria-selected="false">
@@ -23,15 +23,9 @@
 
                     <!-- Description -->
                     <div class="col">
-                        <div class="row">
-                            <p class="text-danger text-monospace font-weight-bold">{{ $food->name }}</p>
-                        </div>
-
-                        <div class="w-100"></div>
-
-                        <div class="row">
-                            <p >{{ $food->material }}</p>
-                        </div>
+                        <p class="text-danger text-monospace font-weight-bold">{{ $food->name }}</p>
+                        <p>{{ $food->source }}</p>
+                        <p>{{ $food->material }}</p>
                     </div>
                 </div>
             </div>

@@ -10,6 +10,8 @@ return [
     ],
     'menu' => [
         'header' => 'Menu',
+        'all' => 'All',
+        'suggest' => '... enter food name',
         'types' => 'Type',
         'sources' => 'Source',
     ],
