@@ -11,10 +11,13 @@
 |
 */
 
+// show main home page of website - customer can see
+Route::get('/index', 'UserController@index')->name('index');
+
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/lang/{locale}', 'HomeController@lang');
-Route::get('password/lang/{locale}', 'HomeController@lang');
-Route::get('password/reset/lang/{locale}', 'HomeController@lang');
+Route::get('/lang/{locale}', 'UserController@lang');
+Route::get('password/lang/{locale}', 'UserController@lang');
+Route::get('password/reset/lang/{locale}', 'UserController@lang');
 
 // Auth::routes();
 
@@ -49,6 +52,9 @@ Route::get('bill-list', 'Receptionist\BillController@showBillList')->name('bill-
 // bill detail
 Route::get('add-bill-detail-{table_id}', 'Waiter\BillDetailController@showAddBillDetailForm')->name('add-bill-detail-form');
 Route::post('add-bill-detail', 'Waiter\BillDetailController@addBillDetail')->name('add-bill-detail');
+
+//kitchen management
+Route::get('table-detail-{table_id}', 'KitchenManager\OrderController@showTableDetail')->name('table-detail');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');

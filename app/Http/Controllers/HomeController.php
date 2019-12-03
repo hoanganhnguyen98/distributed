@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\Table;
+use App\Model\BillDetail;
+use App\Model\Bill;
+use App\Model\Food;
 use Auth;
-use App;
-use session;
 
 class HomeController extends Controller
 {
@@ -18,19 +19,6 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-    }
-
-    /**
-     * Switch language and return back.
-     *
-     * @param $locale
-     * @return \Illuminate\Http\Response
-     */
-    public function lang($locale)
-    {
-        App::setLocale($locale);
-        session()->put('locale', $locale);
-        return redirect()->back();
     }
 
     /**
@@ -50,6 +38,9 @@ class HomeController extends Controller
         } else if ($role == 'waiter') {
             // show waiter role homepage
             return $this->getWaiterHome($area);
+        } else if ($role == 'kitchen_manager') {
+            // show kitchen manager role homepage
+            return $this->getKitchenManagerHome($area);
         } else {
             return view('home');
         }
@@ -129,5 +120,50 @@ class HomeController extends Controller
         $table10s = Table::where([['area', $area], ['size', 10]])->get();
 
         return view('user.waiter.home.home', compact('area', 'table2s', 'table4s', 'table10s'));
+    }
+
+    /**
+     * Show homepage with kitchen manager role.
+     *
+     * @param $area
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    private function getKitchenManagerHome($area)
+    {
+        $today = date('Y-m-d');
+        $current_orders = BillDetail::whereDate('created_at', $today)->get();
+
+        // get all order in kitchen manager area
+        $order_news = array();
+        $order_prepares = array();
+        foreach ($current_orders as $order) {
+            if($order->status == 'new') {
+                // get current table id of order with bill id
+                $table_id = Bill::where('id', $order->bill_id)->first()->table_id;
+                // get current area of bill
+                $bill_area = explode('-', $table_id)[1];
+
+                if ($bill_area == $area) {
+                    $order_detail = array();
+                    $order_detail['food_name'] = Food::where('id', $order->food_id)->first()->name;
+                    $order_detail['number'] = $order->number;
+                    $order_news[] = $order_detail;
+                }
+            } elseif ($order->status == 'prepare') {
+                // get current table id of order with bill id
+                $table_id = Bill::where('id', $order->bill_id)->first()->table_id;
+                // get current area of bill
+                $bill_area = explode('-', $table_id)[1];
+
+                if ($bill_area == $area) {
+                    $order_detail = array();
+                    $order_detail['food_name'] = Food::where('id', $order->food_id)->first()->name;
+                    $order_detail['number'] = $order->number;
+                    $order_prepares[] = $order_detail;
+                }
+            }
+        }
+
+        return view('user.kitchen-manager.home.home', compact('tables', 'order_news', 'order_prepares'));
     }
 }
