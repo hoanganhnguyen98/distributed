@@ -10,6 +10,8 @@ return [
     ],
     'menu' => [
         'header' => 'Thực đơn',
+        'all' => 'Tất cả',
+        'suggest' => '... nhập tên món ăn',
         'types' => 'Phân loại',
         'sources' => 'Xuất xứ',
     ],

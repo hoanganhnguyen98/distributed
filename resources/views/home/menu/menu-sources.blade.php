@@ -23,15 +23,9 @@
 
                     <!-- Description -->
                     <div class="col">
-                        <div class="row">
-                            <p class="text-danger text-monospace font-weight-bold">{{ $food->name }}</p>
-                        </div>
-
-                        <div class="w-100"></div>
-
-                        <div class="row">
-                            <p >{{ $food->material }}</p>
-                        </div>
+                        <p class="text-danger text-monospace font-weight-bold">{{ $food->name }}</p>
+                        <p>{{ trans('messages.type.'.$food->type) }}</p>
+                        <p>{{ $food->material }}</p>
                     </div>
                 </div>
             </div>
