@@ -4,7 +4,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Freelancer - Start Bootstrap Theme</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}" />
+    <title>NJs - {{ trans('home.ninja') }}</title>
 
     <!-- Custom fonts for this theme -->
     <link href="{{ asset('css/all.css') }}" rel="stylesheet" type="text/css">

@@ -27,7 +27,7 @@
             </li>
 
             <li class="nav-item mx-0 mx-lg-1 dropdown">
-                <a id="switchLang" class="nav-link py-3 px-0 px-lg-5 rounded js-scroll-trigger dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a id="switchLang" class="nav-link py-3 px-0 px-lg-5 rounded dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-language fa-lg mr-2"></i>EN-VN
                 </a>
 
