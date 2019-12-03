@@ -7,10 +7,4 @@
 <script src="https://kit.fontawesome.com/b9e3e08197.js" crossorigin="anonymous"></script>
 
 <!-- Sidebar Js -->
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-    });
-</script>
+<script type="text/javascript" src="{{ asset('js/sidebar.js') }}"></script>
