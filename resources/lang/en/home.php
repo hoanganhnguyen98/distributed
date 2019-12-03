@@ -43,6 +43,5 @@ return [
     ],
     'contact' => 'Contact',
     'channel' => 'Our channel',
-    'technology' => 'Technology',
     'time' => 'Work time',
 ];
