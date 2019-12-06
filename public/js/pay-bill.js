@@ -14,7 +14,8 @@ document.getElementById('editBill').onclick = function() {
     document.getElementById('totalPriceSuggest').style.display = "none";
 
 
-    document.getElementById('payButton').style.display = "none";
+    document.getElementById('payVNDButton').style.display = "none";
+    document.getElementById('payUSDButton').style.display = "none";
     document.getElementById('checkTrue').style.display = "none";
     document.getElementById('checkFalse').style.display = "none";
 
@@ -33,10 +34,7 @@ document.getElementById('cancelEditButton').onclick = function() {
     document.getElementById('phone').setAttribute('readonly', '');
     document.getElementById('email').setAttribute('readonly', '');
 
-    input = document.getElementById("enterTotalPrice");
-    if (input.value.length != 0) {
-        enterTotalPriceToPay();
-    }
+    enterTotalPriceToPay();
 
     // display function buttons
     document.getElementById('editBill').style.display = "inline";
@@ -50,20 +48,31 @@ document.getElementById('cancelEditButton').onclick = function() {
 
 // enter true total price to display pay button
 function enterTotalPriceToPay() {
-    var input, totalBillPrice;
+    var input, totalVNDPrice, totalUSDPrice;
 
     input = document.getElementById("enterTotalPrice");
-    totalBillPrice = document.getElementById("totalBillPrice");
+    totalVNDPrice = document.getElementById("totalVNDPrice");
+    totalUSDPrice = document.getElementById("totalUSDPrice");
 
-    if (input.value == totalBillPrice.innerText) {
-        document.getElementById('payButton').style.display = "inline";
-        document.getElementById('checkTrue').style.display = "inline";
-        document.getElementById('checkFalse').style.display = "none";
-        input.setAttribute("class", "form-control border border-success");
-    } else {
-        document.getElementById('checkTrue').style.display = "none";
-        document.getElementById('checkFalse').style.display = "inline";
-        document.getElementById('payButton').style.display = "none";
-        input.setAttribute("class", "form-control border border-danger");
+    if (input.value.length != 0) {
+        if (input.value == totalVNDPrice.innerText) {
+            document.getElementById('payVNDButton').style.display = "inline";
+            document.getElementById('payUSDButton').style.display = "none";
+            document.getElementById('checkTrue').style.display = "inline";
+            document.getElementById('checkFalse').style.display = "none";
+            input.setAttribute("class", "form-control border border-success");
+        } else if (input.value == totalUSDPrice.innerText) {
+            document.getElementById('payVNDButton').style.display = "none";
+            document.getElementById('payUSDButton').style.display = "inline";
+            document.getElementById('checkTrue').style.display = "inline";
+            document.getElementById('checkFalse').style.display = "none";
+            input.setAttribute("class", "form-control border border-success");
+        } else {
+            document.getElementById('checkTrue').style.display = "none";
+            document.getElementById('checkFalse').style.display = "inline";
+            document.getElementById('payVNDButton').style.display = "none";
+            document.getElementById('payUSDButton').style.display = "none";
+            input.setAttribute("class", "form-control border border-danger");
+        }
     }
 }

@@ -104,16 +104,17 @@
         <i class="fas fa-check text-success" id="checkTrue"></i>
         <i class="fas fa-times text-danger" id="checkFalse"></i>
     </div>
+    <!-- Pay with VND -->
     <div class="col-md-3">
-        <button type="button" id="payButton" class="btn btn-primary font-weight-bold" data-toggle="modal" data-target="#payBillModal">
-            {{ trans('messages.pay.pay') }}
+        <button type="button" id="payVNDButton" class="btn btn-primary font-weight-bold" data-toggle="modal" data-target="#payVNDBillModal">
+            {{ trans('messages.pay.pay_vnd') }}
         </button>
         <!-- Pay bill modal -->
-        <div class="modal fade" id="payBillModal" tabindex="-1" role="dialog" aria-labelledby="payBillModalTitle" aria-hidden="true">
+        <div class="modal fade" id="payVNDBillModal" tabindex="-1" role="dialog" aria-labelledby="payVNDBillModalTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title text-uppercase text-primary" id="payBillModalTitle">
+                        <h5 class="modal-title text-uppercase text-primary" id="payVNDBillModalTitle">
                             {{ trans('messages.pay.pay_modal') }}
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -126,11 +127,46 @@
                         </button>
                         <button type="button" class="btn btn-primary font-weight-bold">
                             <a href="">
-                                {{ trans('messages.pay.pay') }}
+                                {{ trans('messages.pay.pay_vnd') }}
                             </a>
                         </button>
                         <button type="button" class="btn btn-danger font-weight-bold">
-                            <a href="export-bill-{{ $bill->table_id }}">
+                            <a href="pay-{{ $bill->table_id }}/vnd">
+                                {{ trans('messages.pay.pay_bill') }}
+                            </a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End modal -->
+
+        <!-- Pay with USD -->
+        <button type="button" id="payUSDButton" class="btn btn-primary font-weight-bold" data-toggle="modal" data-target="#payUSDBillModal">
+            {{ trans('messages.pay.pay_usd') }}
+        </button>
+        <!-- Pay bill modal -->
+        <div class="modal fade" id="payUSDBillModal" tabindex="-1" role="dialog" aria-labelledby="payUSDBillModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-uppercase text-primary" id="payUSDBillModalTitle">
+                            {{ trans('messages.pay.pay_modal') }}
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">
+                            {{ trans('messages.pay.cancel') }}
+                        </button>
+                        <button type="button" class="btn btn-primary font-weight-bold">
+                            <a href="">
+                                {{ trans('messages.pay.pay_usd') }}
+                            </a>
+                        </button>
+                        <button type="button" class="btn btn-danger font-weight-bold">
+                            <a href="pay-{{ $bill->table_id }}/usd">
                                 {{ trans('messages.pay.pay_bill') }}
                             </a>
                         </button>

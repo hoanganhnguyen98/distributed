@@ -16,6 +16,7 @@ return [
         'create-bill' => 'Tạo mới hóa đơn thành công!',
         'create-bill-detail' => 'Tạo hóa đơn chi tiết thành công!',
         'edit-bill' => 'Sửa hóa đơn thành công!',
+        'pay-bill' => 'Thanh toán hóa đơn thành công!',
     ],
     'errors' => [
         'login' => 'Đăng nhập thất bại, mời thử lại!',

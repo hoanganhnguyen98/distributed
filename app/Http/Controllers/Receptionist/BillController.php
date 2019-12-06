@@ -189,9 +189,78 @@ class BillController extends Controller
 
             $bill_details = $output[0];
             $vndPrice  = $output[1];
+            $usdPrice  = $output[2];
 
             return view('user.receptionist.bill.pay-bill.pay-bill',
-                compact('bill', 'bill_details', 'vndPrice'));
+                compact('bill', 'bill_details', 'vndPrice', 'usdPrice'));
+        } else {
+            return view('404');
+        }
+    }
+
+    /**
+     * Pay bill.
+     *
+     * @param $table_id, $type
+     * @return \Illuminate\Http\Response
+     */
+    protected function payBill($table_id, $type)
+    {
+        if (Auth::user()->role == 'receptionist') {
+            try {
+                DB::beginTransaction();
+
+                $bill = Bill::where([['table_id', $table_id], ['status', 'new']])->first();
+
+                $output = $this->getBillDetail($bill);
+
+                $bill_details = $output[0];
+                $vndPrice  = $output[1];
+                $usdPrice  = $output[2];
+
+                // update bill
+                if ($type == 'vnd') {
+                    $bill->total_price = $vndPrice;
+                } elseif ($type == 'usd') {
+                    $bill->total_price = $usdPrice;
+                }
+                $bill->status = 'done'; // status of bill, new -> done
+                $bill->save();
+
+                //update table
+                $current_table_id = explode('-', $table_id)[0];
+                $table = Table::where([['table_id', $current_table_id], ['status', 'run']])->first();
+                $table->status = 'ready'; // status of table, run -> ready
+                $table->save();
+
+                DB::commit();
+
+                // export a pdf as a invoice of customer
+                $user = Auth::user(); // get information of receptionist
+                $now = date("Y-m-d H:i:s"); // get current time
+                $mpdf = new \Mpdf\Mpdf();
+
+                if ($type == 'vnd') {
+                    $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.vnd-invoice',
+                        compact('user', 'bill', 'now', 'bill_details', 'vndPrice')));
+                    $mpdf->debug = true;
+                    // auto save file to path and return
+                    $mpdf->Output('C:\Users\admin\Documents\invoice-ninjarestaurant.pdf', 'F');
+                } elseif ($type == 'usd') {
+                    $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.usd-invoice',
+                        compact('user', 'bill', 'now', 'bill_details', 'usdPrice')));
+                    $mpdf->debug = true;
+                    // auto save file to path and return
+                    $mpdf->Output('C:\Users\admin\Documents\invoice-ninjarestaurant.pdf', 'F');
+                }
+
+                $success = Lang::get('notify.success.pay-bill');
+                return redirect()->route('home')->with('success', $success);
+            } catch (Exception $e) {
+                DB::rollBack();
+
+                return redirect()->back()->with('errors', $e->getMessage());
+            }
         } else {
             return view('404');
         }
@@ -278,8 +347,10 @@ class BillController extends Controller
             $food_detail['vnd_price'] = explode('.', $food->vnd_price)[0];
             $food_detail['usd_price'] = explode('.', $food->usd_price)[0];
             $food_detail['vnd_total'] = $bill_merged['number']*$food->vnd_price;
+            $food_detail['usd_total'] = $bill_merged['number']*$food->usd_price;
 
             $vndPrice = $vndPrice + $food_detail['vnd_total'];
+            $usdPrice = $usdPrice + $food_detail['usd_total'];
             // put into a single array
             $bill_details[] = $food_detail;
         }
