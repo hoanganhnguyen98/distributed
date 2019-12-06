@@ -39,8 +39,7 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Tạo mới hóa đơn',
-            'edit' => 'Sửa',
-            'pay' => 'Thanh toán',
+            'pay' => 'Sửa & Thanh toán',
         ],
         'waiter' => [
             'order' => 'Gọi món',
@@ -131,6 +130,21 @@ return [
             'button' => 'Gọi món',
             'back' => 'Quay lại',
         ],
+    ],
+    'pay' => [
+        'title' => 'Thanh toán hóa đơn',
+        'header' => 'Thanh toán hóa đơn',
+        'food_name' => 'Tên món',
+        'number' => 'Số lượng',
+        'vnd' => 'VND',
+        'usd' => 'USD',
+        'total' => 'Tổng cộng',
+        'pay' => 'Thanh toán',
+        'pay_modal' => 'Thanh toán hóa đơn này?',
+        'pay_bill' => 'Xuất hóa đơn đỏ',
+        'edit' => 'Sửa hóa đơn',
+        'cancel' => 'Hủy',
+        'suggest' => 'Nhập tổng số tiền của hóa đơn',
     ],
     'list' => [
         'account' => [

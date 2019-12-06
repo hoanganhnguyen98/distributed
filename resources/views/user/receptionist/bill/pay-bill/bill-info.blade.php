@@ -1,14 +1,4 @@
-@if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
-<form method="POST" action="{{ route('create-bill') }}">
+<form method="POST" action="{{ route('edit-bill') }}">
     @csrf
 
     <!-- Table number -->
@@ -29,7 +19,7 @@
         </label>
 
         <div class="col-md-9">
-            <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ $bill->customer_name }}" name="name" required readonly>
+            <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ $bill->customer_name }}" name="name" id="name" required readonly>
 
             @error('name')
                 <span class="invalid-feedback" role="alert"></span>
@@ -43,21 +33,21 @@
         </label>
 
         <div class="col-md-3">
-            <input type="text" class="form-control @error('street') is-invalid @enderror" value="{{ $bill->street }}" name="street" placeholder="{{ trans('messages.create.bill.street') }}"  readonly>
+            <input type="text" class="form-control @error('street') is-invalid @enderror" value="{{ $bill->street }}" name="street" id="street" placeholder="{{ trans('messages.create.bill.street') }}"  readonly>
 
             @error('street')
                 <span class="invalid-feedback" role="alert"></span>
             @enderror
         </div>
         <div class="col-md-3">
-            <input type="text" class="form-control @error('district') is-invalid @enderror" value="{{ $bill->district }}" name="district" placeholder="{{ trans('messages.create.bill.district') }}"  readonly>
+            <input type="text" class="form-control @error('district') is-invalid @enderror" value="{{ $bill->district }}" name="district" id="district" placeholder="{{ trans('messages.create.bill.district') }}"  readonly>
 
             @error('district')
                 <span class="invalid-feedback" role="alert"></span>
             @enderror
         </div>
         <div class="col-md-3">
-            <input type="text" class="form-control @error('city') is-invalid @enderror" value="{{ $bill->city }}" name="city" placeholder="{{ trans('messages.create.bill.city') }}" required readonly>
+            <input type="text" class="form-control @error('city') is-invalid @enderror" value="{{ $bill->city }}" name="city" id="city" placeholder="{{ trans('messages.create.bill.city') }}" required readonly>
 
             @error('city')
                 <span class="invalid-feedback" role="alert"></span>
@@ -72,7 +62,7 @@
         </label>
 
         <div class="col-md-9">
-            <input type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ $bill->phone }}" name="phone" required readonly>
+            <input type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ $bill->phone }}" name="phone" id="phone" required readonly>
 
             @error('phone')
                 <span class="invalid-feedback" role="alert"></span>
@@ -86,7 +76,7 @@
         </label>
 
         <div class="col-md-9">
-            <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ $bill->email }}" name="email" required readonly>
+            <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ $bill->email }}" name="email" id="email" required readonly>
 
             @error('email')
                 <span class="invalid-feedback" role="alert"></span>
@@ -96,12 +86,31 @@
 
     <div class="form-group row mb-0">
         <div class="col-md-9 offset-md-3">
-            <button type="button" class="btn btn-primary font-weight-bold" data-toggle="modal" data-target="#payBillModal">
-                {{ trans('messages.pay.pay') }}
+            <button type="submit" id="editBillButton" class="btn btn-primary font-weight-bold">
+                {{ trans('messages.pay.edit') }}
             </button>
-            <!-- Create new bill modal -->
-            <div class="modal fade" id="payBillModal" tabindex="-1" role="dialog" aria-labelledby="payBillModalTitle" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+        </div>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-5 offset-md-3">
+        <input type="text" class="form-control border-primary" id="enterTotalPrice" onkeyup="enterTotalPriceToPay()">
+        <small class="text-primary font-weight-bold" id="totalPriceSuggest">
+            <i class="fas fa-chevron-up mr-2"></i>{{ trans('messages.pay.suggest') }}
+        </small>
+    </div>
+    <div class="col-md-1">
+        <i class="fas fa-check text-success" id="checkTrue"></i>
+        <i class="fas fa-times text-danger" id="checkFalse"></i>
+    </div>
+    <div class="col-md-3">
+        <button type="button" id="payButton" class="btn btn-primary font-weight-bold" data-toggle="modal" data-target="#payBillModal">
+            {{ trans('messages.pay.pay') }}
+        </button>
+        <!-- Pay bill modal -->
+        <div class="modal fade" id="payBillModal" tabindex="-1" role="dialog" aria-labelledby="payBillModalTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-uppercase text-primary" id="payBillModalTitle">
@@ -121,14 +130,13 @@
                             </a>
                         </button>
                         <button type="button" class="btn btn-danger font-weight-bold">
-                            <a href="export-bill-{{ $bill->table_id }}" target="_blank">
+                            <a href="export-bill-{{ $bill->table_id }}">
                                 {{ trans('messages.pay.pay_bill') }}
                             </a>
                         </button>
                     </div>
                 </div>
-                </div>
-            </div><!-- End modal -->
-        </div>
+            </div>
+        </div><!-- End modal -->
     </div>
-</form>
+</div>

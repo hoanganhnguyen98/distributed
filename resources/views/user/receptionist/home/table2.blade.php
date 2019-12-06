@@ -37,9 +37,6 @@
             </a>
             @elseif($table2->status == 'run')
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item text-primary font-weight-bold" href="edit-bill-{{ $table2->table_id }}">
-                <i class="fas fa-file-medical mr-2"></i>{{ trans('messages.home.receptionist.edit') }}
-            </a>
             <a class="dropdown-item text-success font-weight-bold" href="pay-bill-{{ $table2->table_id }}">
                 <i class="fas fa-hand-holding-usd mr-2"></i>{{ trans('messages.home.receptionist.pay') }}
             </a>

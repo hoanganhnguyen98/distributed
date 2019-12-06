@@ -129,14 +129,47 @@ class BillController extends Controller
     }
 
     /**
-     * Show edit bill form.
+     * Edit bill information.
      *
-     * @param $table_id
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    protected function showEditBillForm($table_id)
+    protected function editBillForm(Request $request)
     {
-        
+        try {
+            DB::beginTransaction();
+
+            $rules = [
+                'table_id' => ['required'],
+                'name' => ['required', 'string', 'max:255'],
+                'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
+                'city' => ['required', 'string', 'max:255'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            $bill = Bill::where([['table_id', $request->table_id], ['status', 'new']])->first();
+
+            $bill->customer_name = $request->name;
+            $bill->street = $request->street;
+            $bill->district = $request->district;
+            $bill->city = $request->city;
+            $bill->phone = $request->phone;
+            $bill->email = $request->email;
+            $bill->save();
+
+            DB::commit();
+
+            $success = Lang::get('notify.success.edit-bill');
+            return redirect()->back()->with('success', $success);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
     }
 
     /**
@@ -187,7 +220,8 @@ class BillController extends Controller
         $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.red-bill',
             compact('user', 'bill', 'now', 'bill_details', 'vndPrice')));
         $mpdf->debug = true;
-        $mpdf->Output();
+        // $mpdf->Output(); // display pdf view
+        $mpdf->Output('invoice-ninjarestaurant.pdf', 'D'); // save pdf
     }
 
     /**

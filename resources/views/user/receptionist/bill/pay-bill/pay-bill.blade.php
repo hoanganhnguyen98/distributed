@@ -4,12 +4,43 @@
     {{ trans('messages.pay.title') }}
 @endsection
 
+@section('custom_css')
+<link rel="stylesheet" type="text/css" href="{{ asset('css/pay-bill.css') }}">
+@endsection
+
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">  
-        {{ trans('messages.pay.header') }}
+        <div class="row">
+            <div class="col-auto mr-auto">
+                {{ trans('messages.pay.header') }}
+            </div>
+            <div class="col-auto">
+                <button type="button" id="editBill" class="btn btn-outline-primary font-weight-bold">
+                    {{ trans('messages.pay.edit') }}
+                </button>
+                <button type="button" id="cancelEditButton" class="btn btn-outline-secondary font-weight-bold">
+                    {{ trans('messages.pay.cancel') }}
+                </button>
+            </div>
+        </div>
     </div>
 
+    @if(Session::has('success'))
+        <div class="alert alert-success"><i class="fas fa-check"></i>
+            {!! Session::get('success') !!}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="card-body">
         <div class="row">
             <!-- Show bill information -->
@@ -26,7 +57,5 @@
 @endsection
 
 @section('custom_js')
-<script type="text/javascript">
-
-</script>
+<script type="text/javascript" src="{{ asset('js/pay-bill.js') }}"></script>
 @endsection

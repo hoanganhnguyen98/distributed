@@ -39,8 +39,7 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Create new bill',
-            'edit' => 'Edit',
-            'pay' => 'Pay',
+            'pay' => 'Edit & Pay',
         ],
         'waiter' => [
             'order' => 'Order',
@@ -143,7 +142,9 @@ return [
         'pay' => 'Pay',
         'pay_modal' => 'Pay this bill?',
         'pay_bill' => 'Export red bill',
+        'edit' => 'Edit bill',
         'cancel' => 'Cancel',
+        'suggest' => 'Enter total price of bill',
     ],
     'list' => [
         'account' => [

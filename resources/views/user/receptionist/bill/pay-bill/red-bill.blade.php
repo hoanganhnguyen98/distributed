@@ -17,7 +17,8 @@
             </div>
             <div style="float: right; width: 70%; text-align: center; color: #008800;">
                 <p>NINJA RESTAURANT</p>
-                <p>51 floor, Bitexco Buidling, 2, Hai Trieu, Ben Nghe, 1 District</p>
+                <p>51 floor, Bitexco Buidling, 2, Hai Trieu</p>
+                <p>Ben Nghe, 1 District, Ho Chi Minh City</p>
                 <p>(+84)363866499 - hoanghuynh1998@gmail.com</p>
             </div>
         </div>
