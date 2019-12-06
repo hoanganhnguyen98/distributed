@@ -27,7 +27,7 @@
             </div>
         @endif
         
-        <form method="POST" action="{{ route('change_password') }}">
+        <form method="POST" action="{{ route('change-password') }}">
             @csrf
 
             <!-- Email -->

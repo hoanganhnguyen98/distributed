@@ -132,6 +132,19 @@ return [
             'back' => 'Back',
         ],
     ],
+    'pay' => [
+        'title' => 'Pay bill',
+        'header' => 'Pay bill',
+        'food_name' => 'Food name',
+        'number' => 'Number',
+        'vnd' => 'VND price',
+        'usd' => 'USD price',
+        'total' => 'Total',
+        'pay' => 'Pay',
+        'pay_modal' => 'Pay this bill?',
+        'pay_bill' => 'Export red bill',
+        'cancel' => 'Cancel',
+    ],
     'list' => [
         'account' => [
             'title' => 'Account list',
