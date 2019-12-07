@@ -6,9 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Ninja Restaurant</title>
-
-        <style type="text/css">
-        </style>
     </head>
     <body>
         <div>

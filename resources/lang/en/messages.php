@@ -5,11 +5,12 @@ return [
         'home' => 'NINJA Restaurant',
     ],
     'header' => [
+        'title' => 'Ninja Restaurant Management System',
+        'subtitle' => 'Only for restaurant employees',
         'login' => 'Login',
         'logout' => 'Logout',
         'logout-modal' => 'Log out of the system?',
         'logout-cancel' => 'Cancel',
-        'register' => 'Create new account',
         'language' => 'Ngôn ngữ',
     ],
     'sidebar' => [
@@ -43,6 +44,18 @@ return [
         ],
         'waiter' => [
             'order' => 'Order',
+        ],
+        'kitchen' => [
+            'new_order' => 'New order',
+            'preparing_order' => 'Preparing order',
+            'food_name' => 'Food name',
+            'number' => 'Number',
+            'table' => 'Table',
+            'prepare' => 'Prepare',
+            'delete' => 'Delete',
+            'delete_modal' => 'Delete this order?',
+            'confirm' => 'Confirm',
+            'cancel' => 'Cancel',
         ],
     ],
     'status' => [

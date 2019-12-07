@@ -59,6 +59,9 @@ Route::post('add-bill-detail', 'Waiter\BillDetailController@addBillDetail')->nam
 
 //kitchen management
 Route::get('table-detail-{table_id}', 'KitchenManager\OrderController@showTableDetail')->name('table-detail');
+Route::get('prepare-order-{id}', 'KitchenManager\OrderController@prepareOrder')->name('prepare-order');
+Route::get('delete-order-{id}', 'KitchenManager\OrderController@deleteOrder')->name('delete-order');
+Route::get('confirm-order-{id}', 'KitchenManager\OrderController@confirmOrder')->name('confirm-order');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');

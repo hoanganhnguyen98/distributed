@@ -5,11 +5,12 @@ return [
         'home' => 'Nhà hàng NINJA',
     ],
     'header' => [
+        'title' => 'Hệ thống quản lý nhà hàng Ninja',
+        'subtitle' => 'Chỉ dành cho nhân viên nhà hàng',
         'login' => 'Đăng nhập',
         'logout' => 'Đăng xuất',
         'logout-modal' => 'Đăng xuất khỏi hệ thống?',
         'logout-cancel' => 'Hủy',
-        'register' => 'Tạo tài khoản',
         'language' => 'Language',
     ],
     'sidebar' => [
@@ -43,6 +44,18 @@ return [
         ],
         'waiter' => [
             'order' => 'Gọi món',
+        ],
+        'kitchen' => [
+            'new_order' => 'Yêu cầu mới',
+            'preparing_order' => 'Đang chuẩn bị',
+            'food_name' => 'Tên món',
+            'number' => 'Số lượng',
+            'table' => 'Bàn',
+            'prepare' => 'Chuẩn bị',
+            'delete' => 'Xóa',
+            'delete_modal' => 'Xóa yêu cầu này?',
+            'confirm' => 'Xác nhận',
+            'cancel' => 'Hủy',
         ],
     ],
     'status' => [
