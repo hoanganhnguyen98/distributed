@@ -29,12 +29,12 @@
                 <thead class="text-success">
                     <tr>
                         <th colspan="4" scope="col" class="text-center text-uppercase">
-                            New Order
+                            {{ trans('messages.home.kitchen.new_order') }}
                         </th>
                     </tr>
                     <tr>
-                        <th scope="col">Food Name</th>
-                        <th scope="col" class="text-center">Number</th>
+                        <th scope="col">{{ trans('messages.home.kitchen.food_name') }}</th>
+                        <th scope="col" class="text-center">{{ trans('messages.home.kitchen.number') }}</th>
                         <th colspan="2"></th>
                     </tr>
                 </thead>
@@ -43,8 +43,40 @@
                     <tr>
                         <td>{{ $order['food_name'] }}</td>
                         <td class="text-center">{{ $order['number'] }}</td>
-                        <td>Click to Prepare</td>
-                        <td>Click to Cancel</td>
+                        <td class="text-center">
+                            <a href="prepare-order-{{ $order['id'] }}" class="text-uppercase badge badge-pill badge-info">
+                                {{ trans('messages.home.kitchen.prepare') }}
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <a href="" class="text-uppercase badge badge-pill badge-danger" data-toggle="modal" data-target="#deleteOrderModal-{{ $order['id'] }}">
+                                {{ trans('messages.home.kitchen.delete') }}
+                            </a>
+                            <div class="modal fade" id="deleteOrderModal-{{ $order['id'] }}" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal-{{ $order['id'] }}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-uppercase text-danger" id="deleteOrderModal-{{ $order['id'] }}Label">
+                                                {{ trans('messages.home.kitchen.delete_modal') }}
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">
+                                                {{ trans('messages.home.kitchen.cancel') }}
+                                            </button>
+                                            <button type="button" class="btn btn-danger font-weight-bold">
+                                                <a href="delete-order-{{ $order['id'] }}" >
+                                                    {{ trans('messages.home.kitchen.delete') }}
+                                                </a>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -54,22 +86,28 @@
             <table class="table table-bordered">
                 <thead class="text-danger">
                     <tr>
-                        <th colspan="3" scope="col" class="text-center text-uppercase">
-                            Preparing order
+                        <th colspan="4" scope="col" class="text-center text-uppercase">
+                            {{ trans('messages.home.kitchen.preparing_order') }}
                         </th>
                     </tr>
                     <tr>
-                        <th scope="col">Food Name</th>
-                        <th scope="col" class="text-center">Number</th>
+                        <th scope="col">{{ trans('messages.home.kitchen.table') }}</th>
+                        <th scope="col">{{ trans('messages.home.kitchen.food_name') }}</th>
+                        <th scope="col" class="text-center">{{ trans('messages.home.kitchen.number') }}</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($order_prepares as $order)
                     <tr>
+                        <td>{{ $order['table'] }}</td>
                         <td>{{ $order['food_name'] }}</td>
                         <td class="text-center">{{ $order['number'] }}</td>
-                        <td>Click to Done</td>
+                        <td class="text-center">
+                            <a href="confirm-order-{{ $order['id'] }}" class="text-uppercase badge badge-pill badge-success">
+                                {{ trans('messages.home.kitchen.confirm') }}
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -80,5 +118,4 @@
 @endsection
 
 @section('custom_js')
-
 @endsection

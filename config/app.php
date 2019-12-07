@@ -162,6 +162,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         JD\Cloudder\CloudderServiceProvider::class, // store image in cloud
+        Barryvdh\DomPDF\ServiceProvider::class, // export pdf
 
         /*
          * Package Service Providers...

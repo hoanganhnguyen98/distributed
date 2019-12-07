@@ -145,6 +145,7 @@ class HomeController extends Controller
 
                 if ($bill_area == $area) {
                     $order_detail = array();
+                    $order_detail['id'] = $order->id;
                     $order_detail['food_name'] = Food::where('id', $order->food_id)->first()->name;
                     $order_detail['number'] = $order->number;
                     $order_news[] = $order_detail;
@@ -157,6 +158,8 @@ class HomeController extends Controller
 
                 if ($bill_area == $area) {
                     $order_detail = array();
+                    $order_detail['id'] = $order->id;
+                    $order_detail['table'] = $table_id;
                     $order_detail['food_name'] = Food::where('id', $order->food_id)->first()->name;
                     $order_detail['number'] = $order->number;
                     $order_prepares[] = $order_detail;

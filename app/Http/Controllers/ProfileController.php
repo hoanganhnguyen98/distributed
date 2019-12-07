@@ -13,6 +13,27 @@ use App\Model\User;
 class ProfileController extends Controller
 {
     /**
+     * User to change password.
+     *
+     * @var string[]
+     */
+    private $user;
+
+    /**
+     * String to replace the old password.
+     *
+     * @var string
+     */
+    private $newPassword;
+
+    /**
+     * String to matches with current password.
+     *
+     * @var string
+     */
+    private $oldPassword;
+
+    /**
      * Show rpofile.
      *
      * @return \Illuminate\Http\Response
@@ -58,17 +79,11 @@ class ProfileController extends Controller
             }
 
             // find account with email
-            $user = User::where('email', $request->email)->first();
+            $this->user = User::where('email', $request->email)->first();
+            $this->newPassword = $request->new_password;
+            $this->oldPassword = $request->old_password;
 
-            // check if current password is incorrect
-            if (!Hash::check($request->old_password, $user->password)) {
-                $errors = Lang::get('notify.errors.change_password');
-                return redirect()->back()->withErrors($errors)->withInput();
-            }
-
-            // save new password
-            $user->password = Hash::make($request->new_password);
-            $user->save();
+            $this->isOldPassword() ? $this->saveNewPassword() : $this->getErrorPassword();
 
             DB::commit();
 
@@ -79,5 +94,37 @@ class ProfileController extends Controller
 
             return redirect()->back()->with('errors', $e->getMessage());
         }
+    }
+
+    /**
+     * Save new password.
+     *
+     * @return void
+     */
+    private function saveNewPassword()
+    {
+        $this->user->password = Hash::make($this->newPassword);
+        $this->user->save();
+    }
+
+    /**
+     * Verify that the old password matches the current password.
+     *
+     * @return bool
+     */
+    private function isOldPassword()
+    {
+        return Hash::check($this->oldPassword, $this->user->password);
+    }
+
+    /**
+     * Return errors when old password is not same.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function getErrorPassword()
+    {
+        $errors = Lang::get('notify.errors.change_password');
+        return redirect()->back()->withErrors($errors)->withInput();
     }
 }

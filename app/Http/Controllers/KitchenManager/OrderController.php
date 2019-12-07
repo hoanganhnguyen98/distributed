@@ -9,6 +9,7 @@ use App\Model\BillDetail;
 use App\Model\Bill;
 use App\Model\Food;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -47,5 +48,79 @@ class OrderController extends Controller
         $done_orders = BillDetail::where('status', 'done')->get();
 
         return view('user.kitchen-manager.home.table-detail', compact('tables', 'orders'));
+    }
+
+    /**
+     * Change order to prepare from new status.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    protected function prepareOrder($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order = BillDetail::where('id', $id)->first();
+            $order->status = 'prepare';
+            $order->save();
+
+            DB::commit();
+
+            return redirect()->back();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
+
+    /**
+     * Cancel order.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    protected function deleteOrder($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order = BillDetail::where('id', $id)->first();
+            $order->delete();
+
+            DB::commit();
+
+            return redirect()->back();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
+    }
+
+    /**
+     * Confirm order is done.
+     *
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    protected function confirmOrder($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $order = BillDetail::where('id', $id)->first();
+            $order->status = 'done';
+            $order->save();
+
+            DB::commit();
+
+            return redirect()->back();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with('errors', $e->getMessage());
+        }
     }
 }
