@@ -5,11 +5,12 @@ return [
         'home' => 'NINJA Restaurant',
     ],
     'header' => [
+        'title' => 'Ninja Restaurant Management System',
+        'subtitle' => 'Only for restaurant employees',
         'login' => 'Login',
         'logout' => 'Logout',
         'logout-modal' => 'Log out of the system?',
         'logout-cancel' => 'Cancel',
-        'register' => 'Create new account',
         'language' => 'Ngôn ngữ',
     ],
     'sidebar' => [
@@ -39,11 +40,22 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Create new bill',
-            'edit' => 'Edit',
-            'pay' => 'Pay',
+            'pay' => 'Edit & Pay',
         ],
         'waiter' => [
             'order' => 'Order',
+        ],
+        'kitchen' => [
+            'new_order' => 'New order',
+            'preparing_order' => 'Preparing order',
+            'food_name' => 'Food name',
+            'number' => 'Number',
+            'table' => 'Table',
+            'prepare' => 'Prepare',
+            'delete' => 'Delete',
+            'delete_modal' => 'Delete this order?',
+            'confirm' => 'Confirm',
+            'cancel' => 'Cancel',
         ],
     ],
     'status' => [
@@ -131,6 +143,20 @@ return [
             'button' => 'Order',
             'back' => 'Back',
         ],
+    ],
+    'pay' => [
+        'title' => 'Pay bill',
+        'header' => 'Pay bill',
+        'food_name' => 'Food name',
+        'number' => 'Number',
+        'total' => 'Total',
+        'pay_vnd' => 'Pay by VND',
+        'pay_usd' => 'Pay by USD',
+        'pay_modal' => 'Pay this bill?',
+        'pay_bill' => 'Export red bill',
+        'edit' => 'Edit bill',
+        'cancel' => 'Cancel',
+        'suggest' => 'Enter total price of bill',
     ],
     'list' => [
         'account' => [

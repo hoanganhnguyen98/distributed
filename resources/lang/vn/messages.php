@@ -5,11 +5,12 @@ return [
         'home' => 'Nhà hàng NINJA',
     ],
     'header' => [
+        'title' => 'Hệ thống quản lý nhà hàng Ninja',
+        'subtitle' => 'Chỉ dành cho nhân viên nhà hàng',
         'login' => 'Đăng nhập',
         'logout' => 'Đăng xuất',
         'logout-modal' => 'Đăng xuất khỏi hệ thống?',
         'logout-cancel' => 'Hủy',
-        'register' => 'Tạo tài khoản',
         'language' => 'Language',
     ],
     'sidebar' => [
@@ -39,11 +40,22 @@ return [
     'home' => [
         'receptionist' => [
             'create' => 'Tạo mới hóa đơn',
-            'edit' => 'Sửa',
-            'pay' => 'Thanh toán',
+            'pay' => 'Sửa & Thanh toán',
         ],
         'waiter' => [
             'order' => 'Gọi món',
+        ],
+        'kitchen' => [
+            'new_order' => 'Yêu cầu mới',
+            'preparing_order' => 'Đang chuẩn bị',
+            'food_name' => 'Tên món',
+            'number' => 'Số lượng',
+            'table' => 'Bàn',
+            'prepare' => 'Chuẩn bị',
+            'delete' => 'Xóa',
+            'delete_modal' => 'Xóa yêu cầu này?',
+            'confirm' => 'Xác nhận',
+            'cancel' => 'Hủy',
         ],
     ],
     'status' => [
@@ -131,6 +143,20 @@ return [
             'button' => 'Gọi món',
             'back' => 'Quay lại',
         ],
+    ],
+    'pay' => [
+        'title' => 'Thanh toán hóa đơn',
+        'header' => 'Thanh toán hóa đơn',
+        'food_name' => 'Tên món',
+        'number' => 'Số lượng',
+        'total' => 'Tổng cộng',
+        'pay_vnd' => 'Thanh toán <VND>',
+        'pay_usd' => 'Thanh toán <USD>',
+        'pay_modal' => 'Thanh toán hóa đơn này?',
+        'pay_bill' => 'Xuất hóa đơn đỏ',
+        'edit' => 'Sửa hóa đơn',
+        'cancel' => 'Hủy',
+        'suggest' => 'Nhập tổng số tiền của hóa đơn',
     ],
     'list' => [
         'account' => [

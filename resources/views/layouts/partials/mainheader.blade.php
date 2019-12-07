@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-
+        @if(Auth::check())
         <button type="button" id="sidebarCollapse" class="btn btn-secondary">
             <i class="fas fa-align-left"></i>
             <!-- <span>Toggle Sidebar</span> -->
@@ -8,7 +8,17 @@
         <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-align-justify"></i>
         </button>
-
+        @else
+        <div class="media">
+            <img src="{{ asset('img/logo.jpg') }}" class="mr-3" width="80" height="80">
+            <div class="media-body">
+                <h3 class="mt-2 text-uppercase text-secondary font-weight-bold">
+                    {{ trans('messages.header.title') }}
+                </h3>
+                <h6 class="text-secondary font-weight-bold">{{ trans('messages.header.subtitle') }}</h6>
+            </div>
+        </div>
+        @endif
         <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 @if(Auth::check())
@@ -41,11 +51,11 @@
                         </div>
                     </li>
                 @else
-                    <li class="nav-item mx-0 mx-lg-1">
+                    <!-- <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/login">
                             <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.login') }}
                         </a>
-                    </li>
+                    </li> -->
                 @endif
 
                 <li class="nav-item mx-0 mx-lg-1 dropdown">

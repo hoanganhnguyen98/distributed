@@ -43,6 +43,5 @@ return [
     ],
     'contact' => 'Liên hệ',
     'channel' => 'Các kênh tương tác',
-    'technology' => 'Công nghệ',
     'time' => 'Thời gian làm việc',
 ];

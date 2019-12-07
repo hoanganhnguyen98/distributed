@@ -48,6 +48,10 @@ Route::get('food-delete-{id}', 'Admin\FoodController@deleteFood')->name('food-de
 Route::get('create-bill-{table_id}', 'Receptionist\BillController@showCreateBillForm')->name('create-bill-form');
 Route::post('create-bill', 'Receptionist\BillController@createBill')->name('create-bill');
 Route::get('cancel-create-bill-{table_id}', 'Receptionist\BillController@cancelCreateBill')->name('cancel-create-bill');
+Route::post('edit-bill', 'Receptionist\BillController@editBillForm')->name('edit-bill');
+Route::get('pay-bill-{table_id}', 'Receptionist\BillController@showPayBillForm')->name('pay-bill-form');
+Route::get('pay-{table_id}/{type}', 'Receptionist\BillController@payBill')->name('pay');
+Route::get('export-bill-{table_id}', 'Receptionist\BillController@exportRedBill')->name('export-bill');
 Route::get('bill-list', 'Receptionist\BillController@showBillList')->name('bill-list');
 // bill detail
 Route::get('add-bill-detail-{table_id}', 'Waiter\BillDetailController@showAddBillDetailForm')->name('add-bill-detail-form');
@@ -55,6 +59,9 @@ Route::post('add-bill-detail', 'Waiter\BillDetailController@addBillDetail')->nam
 
 //kitchen management
 Route::get('table-detail-{table_id}', 'KitchenManager\OrderController@showTableDetail')->name('table-detail');
+Route::get('prepare-order-{id}', 'KitchenManager\OrderController@prepareOrder')->name('prepare-order');
+Route::get('delete-order-{id}', 'KitchenManager\OrderController@deleteOrder')->name('delete-order');
+Route::get('confirm-order-{id}', 'KitchenManager\OrderController@confirmOrder')->name('confirm-order');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
