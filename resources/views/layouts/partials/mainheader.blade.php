@@ -3,17 +3,20 @@
         @if(Auth::check())
         <button type="button" id="sidebarCollapse" class="btn btn-secondary">
             <i class="fas fa-align-left"></i>
-            <!-- <span>Toggle Sidebar</span> -->
         </button>
+        @else
         <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-align-justify"></i>
         </button>
-        @else
+        
         <div class="media">
-            <img src="{{ asset('img/logo.jpg') }}" class="mr-3" width="80" height="80">
+            <a href="/">
+                <img src="{{ asset('img/logo.jpg') }}" class="mr-3" width="80" height="80">
+            </a>
+            
             <div class="media-body">
                 <h3 class="mt-2 text-uppercase text-secondary font-weight-bold">
-                    {{ trans('messages.header.title') }}
+                    <a href="/">{{ trans('messages.header.title') }}</a>
                 </h3>
                 <h6 class="text-secondary font-weight-bold">{{ trans('messages.header.subtitle') }}</h6>
             </div>
