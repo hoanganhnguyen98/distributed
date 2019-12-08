@@ -5,6 +5,7 @@
             <h4 class="text-uppercase">
                 <i class="fas fa-fan fa-spin mr-2"></i>{{ trans('messages.sidebar.header') }}
             </h4>
+            <strong><i class="fas fa-fan fa-spin mr-2"></i>NR</strong>
         </a>
     </div>
     @if(Auth()->user()->role  == 'admin')
