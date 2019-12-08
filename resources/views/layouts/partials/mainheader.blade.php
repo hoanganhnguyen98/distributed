@@ -51,11 +51,11 @@
                         </div>
                     </li>
                 @else
-                    <!-- <li class="nav-item mx-0 mx-lg-1">
+                    <li class="nav-item mx-0 mx-lg-1">
                         <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/login">
                             <i class="fas fa-sign-in-alt fa-lg mr-2"></i>{{ trans('messages.header.login') }}
                         </a>
-                    </li> -->
+                    </li>
                 @endif
 
                 <li class="nav-item mx-0 mx-lg-1 dropdown">
