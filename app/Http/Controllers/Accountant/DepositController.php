@@ -70,6 +70,19 @@ class DepositController extends Controller
     }
 
     /**
+     * Create new deposit for receptionist.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function showDepositList()
+    {
+        $today = date('Y-m-d');
+        $deposits = Deposit::whereDate('created_at', $today)->where('status', 'new')->get();
+
+        return view('user.accountant.deposit-list', compact('deposits'));
+    }
+
+    /**
      * Check if account role is receptionist.
      *
      * @return bool

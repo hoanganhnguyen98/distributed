@@ -65,6 +65,7 @@ Route::get('confirm-order-{id}', 'KitchenManager\OrderController@confirmOrder')-
 
 //accountant
 Route::post('create-deposit', 'Accountant\DepositController@createDeposit')->name('create-deposit');
+Route::get('deposit-bill', 'Accountant\DepositController@showDepositList')->name('deposit-bill');
 
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
