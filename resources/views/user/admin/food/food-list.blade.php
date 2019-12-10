@@ -11,10 +11,9 @@
     </div>
 
     @if(Session::has('success'))
-        <div class="alert alert-success"><i class="fas fa-check"></i>
-            {!! Session::get('success') !!}
-        </div>
+        @include('layouts.toast.success')
     @endif
+
     <div class="card-body">
         {!! $foods->appends(\Request::except('page'))->render() !!}
         <table class="table">

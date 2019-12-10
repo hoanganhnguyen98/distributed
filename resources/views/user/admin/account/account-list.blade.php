@@ -11,10 +11,9 @@
     </div>
 
     @if(Session::has('success'))
-        <div class="alert alert-success"><i class="fas fa-check"></i>
-            {!! Session::get('success') !!}
-        </div>
+        @include('layouts.toast.success')
     @endif
+
     <div class="card-body">
         <table class="table">
             <thead>
