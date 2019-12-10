@@ -17,10 +17,13 @@ return [
         'create-bill-detail' => 'Create bill detail successfully!',
         'edit-bill' => 'Edit bill successfully!',
         'pay-bill' => 'Pay bill successfully!',
+        'create-deposit' => 'Create deposit successfully!',
     ],
     'errors' => [
         'login' => 'Login failed, please try again!',
         'reset' => 'Incorrect email address, please try again!',
         'change_password' => 'Incorrect current password, please try again!',
+        'create-deposit-account' => 'Email or password is incorrect!',
+        'create-deposit-role' => 'Account is not a receptionist account!',
     ],
 ];

@@ -76,6 +76,7 @@ return [
         'receptionist' => 'Lễ tân',
         'waiter' => 'Bồi bàn',
         'kitchen_manager' => 'Quản lý bếp',
+        'accountant' => 'Kế toán',
         'admin' => 'Quản trị viên',
     ],
     'suggest' => 'nhấn để chọn',
@@ -199,16 +200,12 @@ return [
         'bill' => [
             'title' => 'Danh sách hóa đơn',
             'header' => 'Danh sách hóa dơn',
-            'current_header' => 'Hóa đơn hiện tại',
-            'today_header' => 'Hóa đơn trong ngày',
             'id' => 'Số',
             'table' => 'Bàn',
             'name' => 'Tên khách hàng',
-            'button' => [
-                'detail' => 'Chi tiết',
-                'edit' => 'Sửa',
-                'pay' => 'Thanh toán',
-            ],
+            'phone' => 'Số điện thoại',
+            'book_time' => 'Đặt bàn',
+            'paytime' => 'Thanh toán',
         ],
     ],   
     'change_password' => [

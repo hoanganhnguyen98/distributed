@@ -76,6 +76,7 @@ return [
         'receptionist' => 'Receptionist',
         'waiter' => 'Waiter',
         'kitchen_manager' => 'Kitchen manager',
+        'accountant' => 'Accountant',
         'admin' => 'Admin',
     ],
     'suggest' => 'click to choose',
@@ -199,16 +200,12 @@ return [
         'bill' => [
             'title' => 'Bill list',
             'header' => 'Bill list',
-            'current_header' => 'Current bills',
-            'today_header' => 'Today bills',
             'id' => 'ID',
             'table' => 'Table',
             'name' => 'Customer name',
-            'button' => [
-                'detail' => 'Detail',
-                'edit' => 'Edit',
-                'pay' => 'Pay',
-            ],
+            'phone' => 'Phone number',
+            'booktime' => 'Book time',
+            'paytime' => 'Pay time',
         ],
     ],
     'change_password' => [

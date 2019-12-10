@@ -17,10 +17,13 @@ return [
         'create-bill-detail' => 'Tạo hóa đơn chi tiết thành công!',
         'edit-bill' => 'Sửa hóa đơn thành công!',
         'pay-bill' => 'Thanh toán hóa đơn thành công!',
+        'create-deposit' => 'Lấy tiền cọc thành công!',
     ],
     'errors' => [
         'login' => 'Đăng nhập thất bại, mời thử lại!',
         'reset' => 'Địa chỉ thư điện tử không đúng, mời thử lại!',
         'change_password' => 'Mật khẩu hiện tại không chính xác, mời thử lại!',
+        'create-deposit-account' => 'Thư điện tử hoặc mật khẩu không đúng!',
+        'create-deposit-role' => 'Không phải một tài khoản lễ tân!',
     ],
 ];

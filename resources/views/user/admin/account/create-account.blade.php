@@ -143,6 +143,9 @@
                         <option value="kitchen_manager">
                             {{ trans('messages.role.kitchen_manager') }}
                         </option>
+                        <option value="accountant">
+                            {{ trans('messages.role.accountant') }}
+                        </option>
                         <option value="admin">
                             {{ trans('messages.role.admin') }}
                         </option>

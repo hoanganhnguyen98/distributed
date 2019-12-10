@@ -63,6 +63,9 @@ Route::get('prepare-order-{id}', 'KitchenManager\OrderController@prepareOrder')-
 Route::get('delete-order-{id}', 'KitchenManager\OrderController@deleteOrder')->name('delete-order');
 Route::get('confirm-order-{id}', 'KitchenManager\OrderController@confirmOrder')->name('confirm-order');
 
+//accountant
+Route::post('create-deposit', 'Accountant\DepositController@createDeposit')->name('create-deposit');
+
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
 Route::get('change-password', 'ProfileController@showChangePasswordForm')->name('change-password');

@@ -88,6 +88,7 @@
     </ul>
     @elseif(Auth()->user()->role  == 'waiter')
     @elseif(Auth()->user()->role  == 'kitchen_manager')
+    @elseif(Auth()->user()->role  == 'accountant')
     @endif
 
     <!-- General Settings -->

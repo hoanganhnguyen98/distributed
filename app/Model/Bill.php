@@ -31,5 +31,8 @@ class Bill extends Model
         'id',
         'table_id',
         'customer_name',
+        'phone',
+        'created_at',
+        'updated_at',
     ];
 }

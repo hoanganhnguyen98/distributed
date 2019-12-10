@@ -41,6 +41,9 @@ class HomeController extends Controller
         } else if ($role == 'kitchen_manager') {
             // show kitchen manager role homepage
             return $this->getKitchenManagerHome($area);
+        } else if ($role == 'accountant') {
+            // show accountant role homepage
+            return $this->getAccountantHome($area);
         } else {
             return view('home');
         }
@@ -168,5 +171,16 @@ class HomeController extends Controller
         }
 
         return view('user.kitchen-manager.home.home', compact('tables', 'order_news', 'order_prepares'));
+    }
+
+    /**
+     * Show homepage with accountant role.
+     *
+     * @param $area
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    private function getAccountantHome($area)
+    {
+        return view('user.accountant.home.home', compact('area'));
     }
 }
