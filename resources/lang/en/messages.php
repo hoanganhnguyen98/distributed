@@ -57,6 +57,13 @@ return [
             'confirm' => 'Confirm',
             'cancel' => 'Cancel',
         ],
+        'accountant' => [
+            'vnd' => 'VND',
+            'usd' => 'USD',
+            'email' => 'Email',
+            'password' => 'Password',
+            'confirm' => 'Confirm',
+        ],
     ],
     'status' => [
         'ready' => 'ready',

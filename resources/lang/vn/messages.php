@@ -57,6 +57,13 @@ return [
             'confirm' => 'Xác nhận',
             'cancel' => 'Hủy',
         ],
+        'accountant' => [
+            'vnd' => 'VND',
+            'usd' => 'USD',
+            'email' => 'Thư điện tử',
+            'password' => 'Mật khẩu',
+            'confirm' => 'Xác nhận',
+        ],
     ],
     'status' => [
         'ready' => 'sẵn sàng',

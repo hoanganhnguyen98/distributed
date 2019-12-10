@@ -37,7 +37,7 @@
             <!-- VND -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    VND
+                    {{ trans('messages.home.accountant.vnd') }}
                 </label>
 
                 <div class="col-md-6">
@@ -52,7 +52,7 @@
             <!-- USD -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    USD
+                    {{ trans('messages.home.accountant.usd') }}
                 </label>
 
                 <div class="col-md-6">
@@ -67,7 +67,7 @@
             <!-- User ID -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    Email
+                    {{ trans('messages.home.accountant.email') }}
                 </label>
 
                 <div class="col-md-6">
@@ -81,7 +81,7 @@
 
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    Password
+                    {{ trans('messages.home.accountant.password') }}
                 </label>
 
                 <div class="col-md-6">
@@ -96,7 +96,7 @@
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-3">
                     <button type="submit" class="btn btn-primary font-weight-bold">
-                        Confirm
+                        {{ trans('messages.home.accountant.confirm') }}
                     </button>
                 </div>
             </div>
