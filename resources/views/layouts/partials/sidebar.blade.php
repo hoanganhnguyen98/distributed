@@ -105,9 +105,28 @@
                         <i class="fas fa-copy mr-2"></i>{{ trans('messages.sidebar.bill.list') }}
                     </a>
                 </li>
+            </ul>
+        </li>
+
+        <!-- Deposit -->
+        <li>
+            <a href="#depositSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fas fa-file-invoice-dollar mr-2"></i>{{ trans('messages.sidebar.deposit.header') }}
+            </a>
+            <ul class="collapse list-unstyled" id="depositSidebar">
+                <li>
+                    <a href="{{ route('create-deposit') }}">
+                        <i class="fas fa-file-signature mr-2"></i>{{ trans('messages.sidebar.deposit.get') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('repay-deposit') }}">
+                        <i class="fas fa-file-invoice mr-2"></i>{{ trans('messages.sidebar.deposit.repay') }}
+                    </a>
+                </li>
                 <li>
                     <a href="{{ route('deposit-bill') }}">
-                        <i class="fas fa-copy mr-2"></i>Deposit list
+                        <i class="fas fa-copy mr-2"></i>{{ trans('messages.sidebar.deposit.list') }}
                     </a>
                 </li>
             </ul>

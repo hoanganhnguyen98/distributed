@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Accountant;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\DepositRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Lang;
@@ -42,74 +43,100 @@ class DepositController extends Controller
     private $usd;
 
     /**
-     * Create new deposit for receptionist.
+     *
+     *
+     * @var string[]
+     */
+    private $deposit;
+
+    /**
+     * Create a new controller instance.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    protected function createDeposit(Request $request)
+    public function __construct(Request $request)
     {
-        $rules = [
-            'vnd' => ['required', 'numeric'],
-            'usd' => ['required', 'numeric'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:8'],
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
         $this->email = $request->email;
         $this->password = $request->password;
         $this->vnd = $request->vnd;
         $this->usd = $request->usd;
-
-        return $this->isValidAccount() ? $this->isValidRole() : $this->isInvalidAccount();
+        // get deposit of account
+        $this->deposit = Deposit::whereDate('created_at', date('Y-m-d'))->where('user_id', explode('@', $this->email)[0])->first();
     }
 
     /**
-     * Create new deposit for receptionist.
+     * Show deposit list.
      *
      * @return \Illuminate\Http\Response
      */
     protected function showDepositList()
     {
-        $today = date('Y-m-d');
-        $deposits = Deposit::whereDate('created_at', $today)->where('status', 'new')->get();
+        $deposits = Deposit::where('status', 'new')->get();
 
         return view('user.accountant.deposit-list', compact('deposits'));
     }
 
     /**
-     * Check if account role is receptionist.
-     *
-     * @return bool
-     */
-    private function isReceptionistRole()
-    {
-        return User::where('email', $this->email)->first()->role == 'receptionist';
-    }
-
-    /**
-     * Check if account exists.
-     *
-     * @return bool
-     */
-    private function isValidAccount()
-    {
-        return Auth::attempt(['email' => $this->email, 'password' => $this->password]);
-    }
-
-    /**
-     * Return if account role is valid.
+     * Show form to create new deposit.
      *
      * @return \Illuminate\Http\Response
      */
-    private function isValidRole()
+    protected function showCreateDepositForm()
     {
-        return $this->isReceptionistRole() ? $this->createNewDeposit() : $this->isInvalidRole();
+        return view('user.accountant.deposit.create-deposit');
+    }
+
+    /**
+     * Show form to repay deposit.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function showRepayDepositForm()
+    {
+        return view('user.accountant.deposit.repay-deposit');
+    }
+
+    /**
+     * Create new deposit for receptionist.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function create(DepositRequest $request)
+    {
+        // redirect back with errors if input is not validated
+        $validated = $request->validated();
+
+        return
+        $this->isValidAccount() ?
+            ($this->isReceptionistRole() ?
+                ($this->isNulltDeposit() ? $this->createNewDeposit() : $this->ExistedDepositErrors())
+            : $this->invalidRoleErrors())
+        : $this->invalidAccountErrors();
+    }
+
+    /**
+     * Confirm to repay deposit of receptionist.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function repay(DepositRequest $request)
+    {
+        // redirect back with errors if input is not validated
+        $validated = $request->validated();
+
+        return
+        $this->isValidAccount() ?
+            ($this->isReceptionistRole() ?
+                (!$this->isNulltDeposit() ?
+                    ($this->isValidStatus() ?
+                        ($this->isCorrectDeposit() ? $this->confirmDeposit() : $this->incorrectDepositErrors())
+                    : $this->invalidStatusErrors())
+                : $this->NullDepositErrors())
+            : $this->invalidRoleErrors())
+        : $this->invalidAccountErrors();
     }
 
     /**
@@ -125,19 +152,70 @@ class DepositController extends Controller
             'usd' => $this->usd,
         ]);
 
-        $success = Lang::get('notify.success.create-deposit');
-        return redirect()->back()->with('success', $success);
+        return redirect()->back()->with('success', Lang::get('notify.success.create-deposit'));
     }
 
     /**
-     * Return errors when account role is invalid.
+     * Create new deposit and return.
      *
      * @return \Illuminate\Http\Response
      */
-    private function isInvalidRole()
+    private function confirmDeposit()
     {
-        $errors = Lang::get('notify.errors.create-deposit-role');
-        return redirect()->back()->withErrors($errors)->withInput();
+        $this->deposit->status = 'done';
+        $this->deposit->save();
+
+        return redirect()->back()->with('success', Lang::get('notify.success.create-deposit'));
+    }
+
+    /**
+     * Check if account exists.
+     *
+     * @return bool
+     */
+    private function isValidAccount()
+    {
+        return Auth::validate(['email' => $this->email, 'password' => $this->password]);
+    }
+
+    /**
+     * Check if account role is receptionist.
+     *
+     * @return bool
+     */
+    private function isReceptionistRole()
+    {
+        return User::where('email', $this->email)->first()->role == 'receptionist';
+    }
+
+    /**
+     * Check if deposit is null.
+     *
+     * @return bool
+     */
+    private function isNulltDeposit()
+    {
+        return $this->deposit == null;
+    }
+
+    /**
+     * Check if deposit matches with input.
+     *
+     * @return bool
+     */
+    private function isCorrectDeposit()
+    {
+        return $this->deposit->vnd == $this->vnd && $this->deposit->usd == $this->usd;
+    }
+
+    /**
+     * Check if deposit status is new.
+     *
+     * @return bool
+     */
+    private function isValidStatus()
+    {
+        return $this->deposit->status == 'new';
     }
 
     /**
@@ -145,9 +223,58 @@ class DepositController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    private function isInvalidAccount()
+    private function invalidAccountErrors()
     {
-        $errors = Lang::get('notify.errors.create-deposit-account');
-        return redirect()->back()->withErrors($errors)->withInput();
+        return redirect()->back()->withErrors(Lang::get('notify.errors.deposit.invalidAccount'))->withInput();
+    }
+
+    /**
+     * Return errors when account role is invalid.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function invalidRoleErrors()
+    {
+        return redirect()->back()->withErrors(Lang::get('notify.errors.deposit.invalidRole'))->withInput();
+    }
+
+    /**
+     * Return errors when deposit of account has exist.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function ExistedDepositErrors()
+    {
+        return redirect()->back()->withErrors(Lang::get('notify.errors.deposit.existed'))->withInput();
+    }
+
+    /**
+     * Return errors when deposit of account is null.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function NullDepositErrors()
+    {
+        return redirect()->back()->withErrors(Lang::get('notify.errors.deposit.null'))->withInput();
+    }
+
+    /**
+     * Return errors when deposit status is done.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function invalidStatusErrors()
+    {
+        return redirect()->back()->withErrors(Lang::get('notify.errors.deposit.invalidStatus'))->withInput();
+    }
+
+    /**
+     * Return errors when deposit does not match.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function incorrectDepositErrors()
+    {
+        return redirect()->back()->withErrors(Lang::get('notify.errors.deposit.incorrect'))->withInput();
     }
 }

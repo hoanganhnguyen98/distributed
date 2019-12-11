@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Validator;
 use Auth;
 use App\Model\User;
@@ -24,6 +25,32 @@ class LoginController extends Controller
     */
 
     /**
+     *
+     *
+     * @var string
+     */
+    private $email;
+
+    /**
+     *
+     *
+     * @var string
+     */
+    private $password;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     */
+    public function __construct(Request $request)
+    {
+        $this->email = $request->email;
+        $this->password = $request->password;
+    }
+
+    /**
      * Show login form.
      *
      * @return \Illuminate\Http\Response
@@ -39,34 +66,65 @@ class LoginController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $rules = [
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:6']
-        ];
+        // redirect back with errors if input is not validated
+        $validated = $request->validated();
 
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        return
+        $this->isValidAccount() ?
+            ($this->isNotFirstLogin() ? $this->getHome() : $this->getFirstLoginForm())
+        : $this->invalidAccountErrors();
+    }
 
-        $email = $request->email;
-        $password = $request->password;
+    /**
+     * Check if account is valid.
+     *
+     * @return bool
+     */
+    private function isValidAccount()
+    {
+        return Auth::validate(['email' => $this->email, 'password' => $this->password]);
+    }
 
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            $user = User::where('email', $email)->first();
-            $first_login = $user->first_login;
-            if ($first_login != 0) {
-                return redirect()->route('home');
-            } else {
-                Auth::logout();
-                return view('auth.first-login')->with('email', $email);
-            }
-        } else {
-            $errors = Lang::get('notify.errors.login');
-            return redirect()->back()->withErrors($errors)->withInput();
-        }
+    /**
+     * Check if account is not first time to login.
+     *
+     * @return bool
+     */
+    private function isNotFirstLogin()
+    {
+        return Auth::attempt(['email' => $this->email, 'password' => $this->password, 'first_login' => 1]);
+    }
+
+    /**
+     * Return homepage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function getHome()
+    {
+        return redirect()->route('home');
+    }
+
+    /**
+     * Return first login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function getFirstLoginForm()
+    {
+        return view('auth.first-login')->with('email', $this->email);
+    }
+
+    /**
+     * Return errors when account is invalid.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    private function invalidAccountErrors()
+    {
+        return redirect()->back()->withErrors(Lang::get('notify.errors.login'))->withInput();
     }
 
     /**

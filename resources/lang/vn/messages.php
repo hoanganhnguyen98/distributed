@@ -31,6 +31,12 @@ return [
             'header' => 'Hóa đơn',
             'list' => 'Danh sách hóa đơn',
         ],
+        'deposit' => [
+            'header' => 'Tiền cọc',
+            'get' => 'Nhận tiền cọc',
+            'repay' => 'Hoàn tiền cọc',
+            'list' => 'Danh sách',
+        ],
         'profile' => [
             'header' => 'Hồ sơ',
             'detail' => 'Thông tin tài khoản',
@@ -56,13 +62,6 @@ return [
             'delete_modal' => 'Xóa yêu cầu này?',
             'confirm' => 'Xác nhận',
             'cancel' => 'Hủy',
-        ],
-        'accountant' => [
-            'vnd' => 'VND',
-            'usd' => 'USD',
-            'email' => 'Thư điện tử',
-            'password' => 'Mật khẩu',
-            'confirm' => 'Xác nhận',
         ],
     ],
     'status' => [
@@ -214,7 +213,17 @@ return [
             'book_time' => 'Đặt bàn',
             'paytime' => 'Thanh toán',
         ],
-    ],   
+    ],
+    'deposit' => [
+        'get_head' => 'Nhận tiền cọc',
+        'repay_head' => 'Hoàn tiền cọc',
+        'vnd' => 'VND',
+        'usd' => 'USD',
+        'email' => 'Thư điện tử',
+        'password' => 'Mật khẩu',
+        'get' => 'Xác nhận nhận tiền',
+        'repay' => 'Xác nhận hoàn tiền',
+    ],
     'change_password' => [
         'title' => 'Thay đổi mật khẩu',
         'header' => 'Thay đổi mật khẩu',

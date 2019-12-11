@@ -5,11 +5,6 @@
 @endsection
 
 @section('custom_css')
-<style type="text/css">
-    .confirmButton {
-        display: none;
-    }
-</style>
 @endsection
 
 @section('content')
@@ -17,7 +12,7 @@
     <div class="card-header text-uppercase text-primary font-weight-bold">
         <div class="row">
             <div class="col-auto mr-auto">    
-                <i class="fas fa-fan fa-spin mr-2"></i>Quyet toan
+                <i class="fas fa-fan fa-spin mr-2"></i>Quyet toan list
             </div>
 
             <div class="col-auto">
@@ -31,45 +26,20 @@
             <thead>
                 <tr class="text-primary">
                     <th scope="col">User ID</th>
-                    <th scope="col" class="text-center">Balance sheet</th>
+                    <th scope="col">VND</th>
+                    <th scope="col">USD</th>
+                    <th scope="col">Get time</th>
+                    <th scope="col">Last updated time</th>
                 </tr>
             </thead>
             <tbody id="todayDeposit">
                 @foreach($deposits as $deposit)
-                <tr class="text-primary">
-                    <th scope="col">{{ $deposit->user_id }}</th>
-                    <th>
-                        <form method="POST" action="#">
-                            @csrf
-
-                            <input type="hidden" name="user_id" value="{{ $deposit->user_id }}">
-
-                            <!-- Form -->
-                            <div class="form-group row">
-                                <label class="col-1 col-form-label text-md-right">
-                                    VND
-                                </label>
-
-                                <div class="col-4">
-                                    <input type="text" name="vnd" class="form-control" required>
-                                </div>
-
-                                <label class="col-1 col-form-label text-md-right">
-                                    USD
-                                </label>
-
-                                <div class="col-4">
-                                    <input type="text" name="usd" class="form-control" required>
-                                </div>
-
-                                <div class="col-2">
-                                    <button type="submit" class="confirmButton btn btn-primary">
-                                        Confirm
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </th>
+                <tr class="text-primary font-weight-bold">
+                    <td>{{ $deposit->user_id }}</td>
+                    <td>{{ $deposit->vnd }}</td>
+                    <td>{{ $deposit->usd }}</td>
+                    <td>{{ $deposit->created_at }}</td>
+                    <td>{{ $deposit->updated_at }}</td>
                 </tr>
                 @endforeach
             </tbody>

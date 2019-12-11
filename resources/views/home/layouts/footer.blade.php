@@ -2,8 +2,8 @@
 <footer class="footer text-center">
     <div class="container">
         <div class="row">
-            <div class="col-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4">
+            <div class="col-lg-4 ml-auto mb-4">
+                <h4 class="text-uppercase mb-2">
                     {{ trans('home.contact') }}
                 </h4>
                 <p class="lead mb-0">
@@ -14,8 +14,8 @@
                 </p>
             </div>
 
-            <div class="col-4 mb-5 mb-lg-0">
-                <h4 class="text-uppercase mb-4">
+            <div class="col-lg-4 ml-auto mb-4">
+                <h4 class="text-uppercase mb-2">
                     {{ trans('home.channel') }}
                 </h4>
                 <a class="btn btn-outline-light btn-social mx-1" href="https://www.facebook.com/">
@@ -24,13 +24,10 @@
                 <a class="btn btn-outline-light btn-social mx-1" href="https://www.youtube.com/">
                     <i class="fab fa-fw fa-youtube"></i>
                 </a>
-                <a class="btn btn-outline-light btn-social mx-1" href="https://www.instagram.com/">
-                    <i class="fab fa-fw fa-instagram"></i>
-                </a>
             </div>
 
-            <div class="col-4">
-                <h4 class="text-uppercase mb-4">
+            <div class="col-lg-4 mr-auto mb-4">
+                <h4 class="text-uppercase mb-2">
                     {{ trans('home.time') }}
                 </h4>
                 <p class="lead mb-0">

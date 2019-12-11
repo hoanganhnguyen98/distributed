@@ -25,5 +25,13 @@ return [
         'change_password' => 'Incorrect current password, please try again!',
         'create-deposit-account' => 'Email or password is incorrect!',
         'create-deposit-role' => 'Account is not a receptionist account!',
+        'deposit' => [
+            'invalidAccount' => 'Email or password is incorrect!',
+            'invalidRole' => 'Account is not a receptionist account!',
+            'existed' => 'Account received deposit!',
+            'null' => 'Account has not received deposit!',
+            'invalidStatus' =>  'Account repayed!',
+            'incorrect' => 'Amount does not match!',
+        ],
     ],
 ];

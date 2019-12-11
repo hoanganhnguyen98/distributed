@@ -1,8 +1,11 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
-    <a class="navbar-brand js-scroll-trigger" href="#page-top">
-        <i class="fas fa-fan fa-spin mr-2"></i>{{ trans('home.ninja') }}
-    </a>
+    <div class="media" href="#page-top">
+        <img src="{{ asset('img/logo.jpg')}}" class="align-self-center mr-3 img-thumbnail" height="80" width="80">
+        <div class="media-body">
+            <h3 class="mt-3 text-white">{{ trans('home.ninja') }}</h3>
+        </div>
+    </div>
 
     <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
 

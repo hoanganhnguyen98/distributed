@@ -31,6 +31,12 @@ return [
             'header' => 'Bill',
             'list' => 'Bill list',
         ],
+        'deposit' => [
+            'header' => 'Deposit',
+            'get' => 'Get deposit',
+            'repay' => 'Repay deposit',
+            'list' => 'List',
+        ],
         'profile' => [
             'header' => 'Profile',
             'detail' => 'Account information',
@@ -56,13 +62,6 @@ return [
             'delete_modal' => 'Delete this order?',
             'confirm' => 'Confirm',
             'cancel' => 'Cancel',
-        ],
-        'accountant' => [
-            'vnd' => 'VND',
-            'usd' => 'USD',
-            'email' => 'Email',
-            'password' => 'Password',
-            'confirm' => 'Confirm',
         ],
     ],
     'status' => [
@@ -214,6 +213,16 @@ return [
             'booktime' => 'Book time',
             'paytime' => 'Pay time',
         ],
+    ],
+    'deposit' => [
+        'get_head' => 'Get deposit',
+        'repay_head' => 'Repay deposit',
+        'vnd' => 'VND',
+        'usd' => 'USD',
+        'email' => 'Email',
+        'password' => 'Password',
+        'get' => 'Confirm getted',
+        'repay' => 'Confirm repayed',
     ],
     'change_password' => [
         'title' => 'Change password',
