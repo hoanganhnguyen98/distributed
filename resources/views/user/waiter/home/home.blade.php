@@ -35,7 +35,7 @@
                     <i class="fas fa-search"></i>
                 </div>
             </div>
-            <input type="text" class="form-control" id="tableInput" onkeyup="searchTable()">
+            <input type="text" class="form-control" id="tableInput">
         </div>
     </div>
 

@@ -95,7 +95,7 @@
 
 <div class="row">
     <div class="col-md-5 offset-md-3">
-        <input type="text" class="form-control border-primary" id="enterTotalPrice" onkeyup="enterTotalPriceToPay()">
+        <input type="text" class="form-control border-primary" id="enterTotalPrice">
         <small class="text-primary font-weight-bold" id="totalPriceSuggest">
             <i class="fas fa-chevron-up mr-2"></i>{{ trans('messages.pay.suggest') }}
         </small>

@@ -1,76 +1,77 @@
 // show sidebar
-document.getElementById('accountSidebar').classList.add('show');
+$("#accountSidebar").attr("class", "collapse show list-unstyled");
 
 // edit information button
-document.getElementById('editInformation').onclick = function() {
+$("#editInformation").click(function() {
     // display form to edit
-    document.getElementById('name').removeAttribute('readonly');
-    document.getElementById('address').removeAttribute('readonly');
-    document.getElementById('phone').removeAttribute('readonly');
-    document.getElementById('area').removeAttribute('disabled');
-    document.getElementById('role').removeAttribute('disabled');
+    $("#name").removeAttr("readonly");
+    $("#address").removeAttr("readonly");
+    $("#phone").removeAttr("readonly");
+    $("#area").removeAttr("disabled");
+    $("#role").removeAttr("disabled");
 
-    //display suggest and button
-    document.getElementById('editButton').style.display = "inline";
-    document.getElementById('suggestArea').style.display = "inline";
-    document.getElementById('suggestRole').style.display = "inline";
+    // display suggest and button
+    $("#editButton").css("display", "inline");
+    $("#suggestArea").css("display", "inline");
+    $("#suggestRole").css("display", "inline");
 
     // hidden other functions
-    document.getElementById('changeImage').setAttribute('disabled', '');
-    document.getElementById('deleteAccount').setAttribute('disabled', '');
-    document.getElementById('editInformation').style.display = "none";
+    $("#changeImage").attr("disabled", '');
+    $("#deleteAccount").attr("disabled", '');
+    $(this).css("display", "none");
 
-    //display cancel button
-    document.getElementById('cancelEditButton').style.display = "inline";
-};
+    // display cancael button
+    $("#cancelEditButton").css("display", "inline");
+});
 
 // cancel edit information button
-document.getElementById('cancelEditButton').onclick = function() {
+$("#cancelEditButton").click(function() {
     // display form to edit
-    document.getElementById('name').setAttribute('readonly', '');
-    document.getElementById('address').setAttribute('readonly', '');
-    document.getElementById('phone').setAttribute('readonly', '');
-    document.getElementById('area').setAttribute('disabled', '');
-    document.getElementById('role').setAttribute('disabled', '');
+    $("#name").attr("readonly", '');
+    $("#address").attr("readonly", '');
+    $("#phone").attr("readonly", '');
+    $("#area").attr("disabled", '');
+    $("#role").attr("disabled", '');
 
-    //display suggest and button
-    document.getElementById('editButton').style.display = "none";
-    document.getElementById('suggestArea').style.display = "none";
-    document.getElementById('suggestRole').style.display = "none";
+    // hidden suggest and button
+    $("#editButton").css("display", "none");
+    $("#suggestArea").css("display", "none");
+    $("#suggestRole").css("display", "none");
 
-    // hidden other functions
-    document.getElementById('changeImage').removeAttribute('disabled');
-    document.getElementById('deleteAccount').removeAttribute('disabled');
-    document.getElementById('editInformation').style.display = "inline";
+    // display other functions
+    $("#changeImage").removeAttr("disabled");
+    $("#deleteAccount").removeAttr("disabled");
+    $("#editInformation").css("display", "inline");
 
-    //display cancel button
-    document.getElementById('cancelEditButton').style.display = "none";
-};
+    // hidden cancael button
+    $(this).css("display", "none");
+});
 
 // change image button
-document.getElementById('changeImage').onclick = function() {
+$("#changeImage").click(function() {
     // display form to edit
-    document.getElementById('image').style.display = "inline";
+    $("#image").css("display", "inline");
 
     // hidden other functions
-    document.getElementById('editInformation').setAttribute('disabled', '');
-    document.getElementById('deleteAccount').setAttribute('disabled', '');
-    document.getElementById('changeImage').style.display = "none";
+    $("#editInformation").attr("disabled", '');
+    $("#deleteAccount").attr("disabled", '');
+    $(this).css("display", "none");
 
     //display cancel button
-    document.getElementById('cancelChangeButton').style.display = "inline";
-};
+    $("#cancelChangeButton").css("display", "inline");
+});
+
 
 // cancel change image button
-document.getElementById('cancelChangeButton').onclick = function() {
+$("#cancelChangeButton").click(function() {
     // display form to edit
-    document.getElementById('image').style.display = "none";
+    $("#image").css("display", "none");
 
     // hidden other functions
-    document.getElementById('editInformation').removeAttribute('disabled');
-    document.getElementById('deleteAccount').removeAttribute('disabled');
-    document.getElementById('changeImage').style.display = "inline";
+    $("#editInformation").removeAttr("disabled");
+    $("#deleteAccount").removeAttr("disabled");
+    $("#changeImage").css("display", "inline");
 
     //display cancel button
-    document.getElementById('cancelChangeButton').style.display = "none";
-};
+    $(this).css("display", "none");
+});

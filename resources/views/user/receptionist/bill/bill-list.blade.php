@@ -30,7 +30,7 @@
                                     <i class="fas fa-filter"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="idInput" onkeyup="searchID()">
+                            <input type="text" class="form-control" id="idInput">
                         </div>
                     </th>
                     <th>
@@ -40,7 +40,7 @@
                                     <i class="fas fa-filter"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="tableInput" onkeyup="searchTable()">
+                            <input type="text" class="form-control" id="tableInput">
                         </div>
                     </th>
                     <th>
@@ -50,7 +50,7 @@
                                     <i class="fas fa-filter"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="nameInput" onkeyup="searchName()">
+                            <input type="text" class="form-control" id="nameInput">
                         </div>
                     </th>
                     <th>
@@ -60,7 +60,7 @@
                                     <i class="fas fa-filter"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="phoneInput" onkeyup="searchPhone()">
+                            <input type="text" class="form-control" id="phoneInput">
                         </div>
                     </th>
                     <th>
@@ -70,7 +70,7 @@
                                     <i class="fas fa-filter"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="bookInput" onkeyup="searchBook()">
+                            <input type="text" class="form-control" id="bookInput">
                         </div>
                     </th>
                     <th>
@@ -80,12 +80,12 @@
                                     <i class="fas fa-filter"></i>
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="payInput" onkeyup="searchPay()">
+                            <input type="text" class="form-control" id="payInput">
                         </div>
                     </th>
                 </tr>
             </thead>
-            <tbody id="currentBill">
+            <tbody id="billTable">
                 @foreach($bills as $bill)
                 @if($bill->status == 'done')
                 <tr class="alert alert-primary" role="alert">

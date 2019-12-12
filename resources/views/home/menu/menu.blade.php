@@ -38,7 +38,7 @@
                             <i class="fas fa-search"></i>
                         </div>
                     </div>
-                    <input type="text" class="form-control border-primary" placeholder="{{ trans('home.menu.suggest') }}" id="foodInput" onkeyup="searchFood()">
+                    <input type="text" class="form-control border-primary" placeholder="{{ trans('home.menu.suggest') }}" id="foodInput">
                 </div>
                 @include('home.menu.all')
             </div>

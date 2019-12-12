@@ -15,7 +15,7 @@
         {{ trans('messages.create.bill-detail.header') }}
     </div>
     <div class="card-body">
-        <a href="#" onclick="addOptions()" class="text-primary font-weight-bold">
+        <a href="#" id="addOptions" class="text-primary font-weight-bold">
             <i class="fas fa-plus mr-2"></i>{{ trans('messages.create.bill-detail.add_option') }}
         </a>
         <form method="POST" action="{{ route('add-bill-detail') }}" id="billDetail" class="font-weight-bold">

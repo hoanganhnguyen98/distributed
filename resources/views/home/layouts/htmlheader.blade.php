@@ -1,11 +1,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Ninja">
+    <meta name="author" content="Nguyen Hoang Anh">
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}" />
-    <title>NJs - {{ trans('home.ninja') }}</title>
+    <title>NR - {{ trans('home.ninja') }}</title>
 
     <!-- Custom fonts for this theme -->
     <link href="{{ asset('css/all.css') }}" rel="stylesheet" type="text/css">
