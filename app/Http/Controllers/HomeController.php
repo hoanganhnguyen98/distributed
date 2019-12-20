@@ -18,7 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     /**
@@ -28,6 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        return view('demo'); exit();
         // check user role and area to show homepage
         $role = Auth::user()->role;
         $area = Auth::user()->area;
