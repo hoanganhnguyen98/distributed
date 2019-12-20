@@ -11,6 +11,7 @@ use App\Model\Table;
 use App\Model\Bill;
 use App\Model\BillDetail;
 use App\Model\Food;
+use App\Model\Deposit;
 use Auth;
 use PDF;
 
@@ -58,7 +59,7 @@ class BillController extends Controller
     }
 
     /**
-     * Cancel create new bill.
+     * Create new bill.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -211,6 +212,8 @@ class BillController extends Controller
                 DB::beginTransaction();
 
                 $bill = Bill::where([['table_id', $table_id], ['status', 'new']])->first();
+                //get deposit of reception
+                $deposit = Deposit::where([['user_id', Auth::user()->user_id], ['status', 'new']])->first();
 
                 $output = $this->getBillDetail($bill);
 
@@ -221,11 +224,18 @@ class BillController extends Controller
                 // update bill
                 if ($type == 'vnd') {
                     $bill->total_price = $vndPrice;
+
+                    //updaate deposit of receptionist
+                    $deposit->vnd = $deposit->vnd + $vndPrice;
                 } elseif ($type == 'usd') {
                     $bill->total_price = $usdPrice;
+
+                    //updaate deposit of receptionist
+                    $deposit->usd = $deposit->usd + $usdPrice;
                 }
                 $bill->status = 'done'; // status of bill, new -> done
                 $bill->save();
+                $deposit->save();
 
                 //update table
                 $current_table_id = explode('-', $table_id)[0];

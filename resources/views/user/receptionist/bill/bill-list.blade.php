@@ -18,7 +18,9 @@
                     <th scope="col">@sortablelink('id', trans('messages.list.bill.id'))</th>
                     <th scope="col">@sortablelink('table_id', trans('messages.list.bill.table'))</th>
                     <th scope="col">@sortablelink('customner_name', trans('messages.list.bill.name'))</th>
-                    <th></th>
+                    <th scope="col">@sortablelink('phone', trans('messages.list.bill.phone'))</th>
+                    <th scope="col">@sortablelink('created_at', trans('messages.list.bill.booktime'))</th>
+                    <th scope="col">@sortablelink('updated_at', trans('messages.list.bill.paytime'))</th>
                 </tr>
                 <tr>
                     <th>
@@ -51,26 +53,55 @@
                             <input type="text" class="form-control" id="nameInput" onkeyup="searchName()">
                         </div>
                     </th>
-                    <th></th>
+                    <th>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text text-primary">
+                                    <i class="fas fa-filter"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="phoneInput" onkeyup="searchPhone()">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text text-primary">
+                                    <i class="fas fa-filter"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="bookInput" onkeyup="searchBook()">
+                        </div>
+                    </th>
+                    <th>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text text-primary">
+                                    <i class="fas fa-filter"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="payInput" onkeyup="searchPay()">
+                        </div>
+                    </th>
                 </tr>
             </thead>
             <tbody id="currentBill">
                 @foreach($bills as $bill)
+                @if($bill->status == 'done')
+                <tr class="alert alert-primary" role="alert">
+                @elseif($bill->status == 'new')
                 <tr>
-                    <td>{{ $bill->id }}</td>
+                @endif
+                    <td class="text-primary font-weight-bold">{{ $bill->id }}</td>
                     <td>{{ $bill->table_id }}</td>
                     <td>{{ $bill->customer_name }}</td>
-                    <td>
-                        @if($bill->status == 'new')
-                        <a href="#" class="badge badge-pill badge-info text-uppercase">
-                            {{ trans('messages.list.bill.button.detail') }}
-                        </a>
-                        @elseif($bill->status == 'done')
-                        <a href="#" class="badge badge-pill badge-danger text-uppercase">
-                            {{ trans('messages.list.bill.button.detail') }}
-                        </a>
-                        @endif
-                    </td>
+                    <td>{{ $bill->phone }}</td>
+                    <td>{{ $bill->created_at }}</td>
+                    @if($bill->status == 'done')
+                    <td>{{ $bill->updated_at }}</td>
+                    @elseif($bill->status == 'new')
+                    <td></td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>

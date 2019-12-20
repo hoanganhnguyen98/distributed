@@ -5,10 +5,6 @@
             <i class="fas fa-align-left"></i>
         </button>
         @else
-        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-align-justify"></i>
-        </button>
-        
         <div class="media">
             <a href="/">
                 <img src="{{ asset('img/logo.jpg') }}" class="mr-3" width="80" height="80">
@@ -22,6 +18,11 @@
             </div>
         </div>
         @endif
+
+        <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
         <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 @if(Auth::check())

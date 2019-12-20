@@ -20,19 +20,11 @@
     </div>
 
     @if(Session::has('success'))
-        <div class="alert alert-success"><i class="fas fa-check"></i>
-            {!! Session::get('success') !!}
-        </div>
+        @include('layouts.toast.success')
     @endif
 
     @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+        @include('layouts.toast.errors')
     @endif
     <div class="card-body row">
         <!-- Change account image -->

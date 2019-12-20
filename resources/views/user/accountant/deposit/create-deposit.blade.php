@@ -1,13 +1,16 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    {{ trans('messages.change_password.title') }}
+    {{ trans('messages.deposit.get_head') }}
+@endsection
+
+@section('custom_css')
 @endsection
 
 @section('content')
 <div class="card">
     <div class="card-header text-uppercase text-primary font-weight-bold">
-        {{ trans('messages.change_password.header') }}
+        {{ trans('messages.deposit.get_head') }}
     </div>
 
     <div class="card-body">
@@ -15,67 +18,67 @@
             @include('layouts.toast.success')
         @endif
 
-        @if($errors->any())
+        @if(Session::has('errors'))
             @include('layouts.toast.errors')
         @endif
         
-        <form method="POST" action="{{ route('change-password') }}">
+        <form method="POST" action="{{ route('create-deposit') }}">
             @csrf
 
-            <!-- Email -->
+            <!-- VND -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change_password.email') }}
+                    {{ trans('messages.deposit.vnd') }}
                 </label>
 
                 <div class="col-md-6">
-                    <input type="email" class="form-control" value="{{ $email }}" name="email" readonly>
-                </div>
-            </div>
+                    <input type="text" class="form-control @error('vnd') is-invalid @enderror" name="vnd" required>
 
-            <!-- Current password -->
-            <div class="form-group row">
-                <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change_password.old_password') }}
-                </label>
-
-                <div class="col-md-6">
-                    <input type="password" class="form-control @error('old_password') is-invalid @enderror" name="old_password" required>
-
-                    @error('old_password')
+                    @error('vnd')
                         <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
 
-            <!-- New password -->
+            <!-- USD -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change_password.new_password') }}
+                    {{ trans('messages.deposit.usd') }}
                 </label>
 
                 <div class="col-md-6">
-                    <input type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" required>
-                    <small class="text-primary font-weight-bold">
-                        {{ trans('messages.suggest_password') }}
-                    </small>
+                    <input type="text" class="form-control @error('usd') is-invalid @enderror" name="usd" required>
 
-                    @error('new_password')
+                    @error('usd')
                         <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
             </div>
 
-            <!-- Comfirm new_password -->
+            <!-- User ID -->
             <div class="form-group row">
                 <label class="col-md-3 col-form-label text-md-right">
-                    {{ trans('messages.change_password.repassword') }}
+                    {{ trans('messages.deposit.email') }}
                 </label>
 
                 <div class="col-md-6">
-                    <input type="password" class="form-control @error('repassword') is-invalid @enderror" name="repassword" required>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" required>
 
-                    @error('repassword')
+                    @error('email')
+                        <span class="invalid-feedback" role="alert"></span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label text-md-right">
+                    {{ trans('messages.deposit.password') }}
+                </label>
+
+                <div class="col-md-6">
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+
+                    @error('password')
                         <span class="invalid-feedback" role="alert"></span>
                     @enderror
                 </div>
@@ -84,7 +87,7 @@
             <div class="form-group row mb-0">
                 <div class="col-md-6 offset-md-3">
                     <button type="submit" class="btn btn-primary font-weight-bold">
-                        {{ trans('messages.change_password.button') }}
+                        {{ trans('messages.deposit.get') }}
                     </button>
                 </div>
             </div>
@@ -94,7 +97,4 @@
 @endsection
 
 @section('custom_js')
-<script type="text/javascript">
-    document.getElementById('profileSidebar').classList.add('show');
-</script>
 @endsection

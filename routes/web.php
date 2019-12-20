@@ -63,6 +63,13 @@ Route::get('prepare-order-{id}', 'KitchenManager\OrderController@prepareOrder')-
 Route::get('delete-order-{id}', 'KitchenManager\OrderController@deleteOrder')->name('delete-order');
 Route::get('confirm-order-{id}', 'KitchenManager\OrderController@confirmOrder')->name('confirm-order');
 
+//accountant
+Route::get('create-deposit', 'Accountant\DepositController@showCreateDepositForm')->name('create-deposit');
+Route::post('create-deposit', 'Accountant\DepositController@create');
+Route::get('repay-deposit', 'Accountant\DepositController@showRepayDepositForm')->name('repay-deposit');
+Route::post('repay-deposit', 'Accountant\DepositController@repay');
+Route::get('deposit-bill', 'Accountant\DepositController@showDepositList')->name('deposit-bill');
+
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
 Route::get('change-password', 'ProfileController@showChangePasswordForm')->name('change-password');

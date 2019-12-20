@@ -12,19 +12,11 @@
 
     <div class="card-body">
         @if(Session::has('success'))
-            <div class="alert alert-success"><i class="fas fa-check"></i>
-                {!! Session::get('success') !!}
-            </div>
+            @include('layouts.toast.success')
         @endif
 
         @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li><i class="fa fa-exclamation-circle"></i> {{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            @include('layouts.toast.errors')
         @endif
         
         <form method="POST" action="{{ route('create-account') }}" enctype="multipart/form-data" id="account">
@@ -142,6 +134,9 @@
                         </option>
                         <option value="kitchen_manager">
                             {{ trans('messages.role.kitchen_manager') }}
+                        </option>
+                        <option value="accountant">
+                            {{ trans('messages.role.accountant') }}
                         </option>
                         <option value="admin">
                             {{ trans('messages.role.admin') }}
