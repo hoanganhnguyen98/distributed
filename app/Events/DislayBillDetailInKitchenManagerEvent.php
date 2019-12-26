@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DemoPusherEvent implements ShouldBroadcast
+class DislayBillDetailInKitchenManagerEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,13 +20,15 @@ class DemoPusherEvent implements ShouldBroadcast
      * @return void
      */
 
-    public $messages;
+    public $food_name;
     public $number;
+    public $order_id;
 
-    public function __construct($messages, $number)
+    public function __construct($food_name, $number, $order_id)
     {
-        $this->messages = $messages;
+        $this->food_name = $food_name;
         $this->number = $number;
+        $this->order_id = $order_id;
     }
 
     /**
@@ -36,6 +38,6 @@ class DemoPusherEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('channel-demo');
+        return new Channel('channel-display-billdetail-kitchen');
     }
 }

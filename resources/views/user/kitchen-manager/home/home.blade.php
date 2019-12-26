@@ -48,7 +48,7 @@
                                 {{ trans('messages.home.kitchen.prepare') }}
                             </a>
                         </td>
-                        <td class="text-center">
+                        <!-- <td class="text-center">
                             <a href="" class="text-uppercase badge badge-pill badge-danger" data-toggle="modal" data-target="#deleteOrderModal-{{ $order['id'] }}">
                                 {{ trans('messages.home.kitchen.delete') }}
                             </a>
@@ -76,9 +76,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </td>
+                        </td> -->
                     </tr>
                     @endforeach
+                    <tr id="addOrder">
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -118,4 +120,36 @@
 @endsection
 
 @section('custom_js')
+<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // init an Pusher object with Pusher app key
+        var pusher = new Pusher('6063520d51edaa14b9cf', {
+            cluster: 'ap1',
+            encrypted: true
+        });
+
+        // register a channel created in event
+        var channel = pusher.subscribe('channel-display-billdetail-kitchen');
+
+        // bind a function with event
+        channel.bind('App\\Events\\DislayBillDetailInKitchenManagerEvent', addOrder);
+    });
+
+    // function to change status of table
+    function addOrder(data) {
+        console.log(data.food_name);
+        var tdName = $("<td></td>");
+        tdName.html(data.food_name);
+        $("#addOrder").append(tdName);
+
+        var tdNumber = $("<td class='text-center'></td>");
+        tdNumber.html(data.number);
+        $("#addOrder").append(tdNumber);
+
+        var tdId = $("<td class='text-center'><a class='text-uppercase badge badge-pill badge-info'>{{ trans('messages.home.kitchen.prepare') }}</a></td>");
+        tdId.find("a:eq(0)").attr("href","prepare-order-"+data.order_id);
+        $("#addOrder").append(tdId);
+    }
+</script>
 @endsection
