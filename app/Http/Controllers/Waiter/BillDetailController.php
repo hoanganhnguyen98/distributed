@@ -11,6 +11,7 @@ use App\Model\Food;
 use App\Model\Bill;
 use App\Model\BillDetail;
 use Auth;
+use App\Events\DislayBillDetailInKitchenManagerEvent;
 
 class BillDetailController extends Controller
 {
@@ -63,6 +64,11 @@ class BillDetailController extends Controller
                     'food_id' => $request->food_id[$i],
                     'number' => $request->amount[$i],
                 ]);
+
+                $food_name = Food::where('id', $request->food_id[$i])->first()->name;
+                $order_id = BillDetail::where([['bill_id', $request->bill_id], ['status', 'new'], ['food_id', $request->food_id[$i]], ['number', $request->amount[$i]]])->first()->id;
+                // push event to server Pusher to get in other screen
+                event(new DislayBillDetailInKitchenManagerEvent($food_name ,$request->amount[$i], $order_id));
             }
 
             DB::commit();
