@@ -37,6 +37,11 @@ return [
             'repay' => 'Hoàn tiền cọc',
             'list' => 'Danh sách',
         ],
+        'export' => [
+            'header' => 'Xuất báo cáo',
+            'bill' => 'Báo cáo danh sách hóa đơn',
+            'food' => 'Báo cáo món ăn được đặt nhiều',
+        ],
         'profile' => [
             'header' => 'Hồ sơ',
             'detail' => 'Thông tin tài khoản',

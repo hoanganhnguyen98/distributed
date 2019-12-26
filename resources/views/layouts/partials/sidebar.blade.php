@@ -103,6 +103,25 @@
                 </li>
             </ul>
         </li>
+
+        <!-- Export Excel -->
+        <li>
+            <a href="#exportSidebar" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <i class="fas fa-file-export mr-2"></i>{{ trans('messages.sidebar.export.header') }}
+            </a>
+            <ul class="collapse list-unstyled" id="exportSidebar">
+                <li>
+                    <a href="{{ route('export-bill') }}">
+                        <i class="fas fa-file-excel mr-2"></i>{{ trans('messages.sidebar.export.bill') }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('export-food') }}">
+                        <i class="fas fa-file-excel mr-2"></i>{{ trans('messages.sidebar.export.food') }}
+                    </a>
+                </li>
+            </ul>
+        </li>
     </ul>
     @endif
 

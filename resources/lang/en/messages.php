@@ -37,6 +37,11 @@ return [
             'repay' => 'Repay deposit',
             'list' => 'List',
         ],
+        'export' => [
+            'header' => 'Export Report',
+            'bill' => 'Bill list report',
+            'food' => 'Most ordered foods report',
+        ],
         'profile' => [
             'header' => 'Profile',
             'detail' => 'Account information',
