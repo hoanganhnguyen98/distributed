@@ -59,11 +59,10 @@ class HomeController extends Controller
 
     protected function gettedDeposit($user_id)
     {
-        // $today = date('Y-m-d');
-        // $deposits = Deposit::whereDate('created_at', $today)->get();
-        // $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
-        // return $deposit != null;
-        return true;
+        $today = date('Y-m-d');
+        $deposits = Deposit::whereDate('created_at', $today)->get();
+        $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
+        return $deposit != null;
     }
 
     /**
