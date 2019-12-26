@@ -21,10 +21,12 @@ class DemoPusherEvent implements ShouldBroadcast
      */
 
     public $messages;
+    public $number;
 
-    public function __construct($messages)
+    public function __construct($messages, $number)
     {
         $this->messages = $messages;
+        $this->number = $number;
     }
 
     /**

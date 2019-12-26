@@ -16,7 +16,7 @@ class FrontEndController extends Controller
     public function fireEvent()
     {
         // Truyền message lên server Pusher
-        event(new DemoPusherEvent("Hi, I'm Trung Quân. Thanks for"));
+        event(new DemoPusherEvent("Hi, I'm Trung Quân. Thanks for", 1));
         return "Message has been sent.";
     }
 }
