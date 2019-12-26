@@ -167,6 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Maatwebsite\Excel\ExcelServiceProvider::class, // export excel file
 
         /*
          * Application Service Providers...
@@ -233,6 +234,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Cloudder' => JD\Cloudder\Facades\Cloudder::class, // store image in cloud
         'Pusher' => Pusher\Pusher::class, // real time
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class, // export excel file
 
     ],
 

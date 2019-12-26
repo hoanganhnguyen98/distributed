@@ -75,6 +75,11 @@ Route::get('repay-deposit', 'Accountant\DepositController@showRepayDepositForm')
 Route::post('repay-deposit', 'Accountant\DepositController@repay');
 Route::get('deposit-bill', 'Accountant\DepositController@showDepositList')->name('deposit-bill');
 
+
+//Export excel
+Route::get('export-bill', 'Accountant\Excel\BillController@export')->name('export-bill');
+Route::get('export-food', 'Accountant\Excel\FoodController@export')->name('export-food');
+
 // profile
 Route::get('profile', 'ProfileController@showProfile')->name('profile');
 Route::get('change-password', 'ProfileController@showChangePasswordForm')->name('change-password');
