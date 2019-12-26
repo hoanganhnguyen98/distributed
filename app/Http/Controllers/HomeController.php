@@ -61,8 +61,14 @@ class HomeController extends Controller
     {
         $today = date('Y-m-d');
         $deposits = Deposit::whereDate('created_at', $today)->get();
-        $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
-        return $deposit != null;
+
+        foreach ($deposits as $deposit) {
+            if ($deposit->user_id == $user_id && $deposit->status == 'new') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
