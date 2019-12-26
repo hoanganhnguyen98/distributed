@@ -10,7 +10,7 @@ class FrontEndController extends Controller
     public function getPusher()
     {
         // gọi ra trang view demo-pusher.blade.php
-        return view("demo-pusher");
+        return view("demo");
     }
 
     public function fireEvent()

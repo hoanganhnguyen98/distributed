@@ -50,6 +50,7 @@
       //function add message
       function addMessageDemo(data) {
         var liTag = $("<li class='list-group-item'></li>");
+        console.log(data.messages);
         liTag.html(data.messages);
         $('#messages').append(liTag);
       }

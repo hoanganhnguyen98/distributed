@@ -22,7 +22,7 @@ Route::get('password/reset/lang/{locale}', 'UserController@lang');
 // Auth::routes();
 
 // gọi ra trang view demo-pusher.blade.php
- Route::get('demo-pusher','FrontEndController@getPusher');
+ Route::get('/demo-pusher','FrontEndController@getPusher')->name('demo-pusher');
 // Truyển message lên server Pusher
  Route::get('/fire-event','FrontEndController@fireEvent')->name('fire-event');
 
