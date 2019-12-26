@@ -1,78 +1,85 @@
 // show form to edit bill information
-document.getElementById('editBill').onclick = function() {
+$("#editBill").click(function(){
     // display form to edit
-    document.getElementById('name').removeAttribute('readonly');
-    document.getElementById('street').removeAttribute('readonly');
-    document.getElementById('district').removeAttribute('readonly');
-    document.getElementById('city').removeAttribute('readonly');
-    document.getElementById('phone').removeAttribute('readonly');
-    document.getElementById('email').removeAttribute('readonly');
+    $("#name").removeAttr("readonly");
+    $("#street").removeAttr("readonly");
+    $("#district").removeAttr("readonly");
+    $("#city").removeAttr("readonly");
+    $("#phone").removeAttr("readonly");
+    $("#email").removeAttr("readonly");
 
     // hidden function buttons
-    document.getElementById('editBill').style.display = "none";
-    document.getElementById('enterTotalPrice').style.display = "none";
-    document.getElementById('totalPriceSuggest').style.display = "none";
+    $(this).css("display", "none");
+    $("#enterTotalPrice").css("display", "none");
+    $("#totalPriceSuggest").css("display", "none");
 
-
-    document.getElementById('payVNDButton').style.display = "none";
-    document.getElementById('payUSDButton').style.display = "none";
-    document.getElementById('checkTrue').style.display = "none";
-    document.getElementById('checkFalse').style.display = "none";
+    $("#payVNDButton").css("display", "none");
+    $("#payUSDButton").css("display", "none");
+    $("#checkTrue").css("display", "none");
+    $("#checkFalse").css("display", "none");
 
     // display cancel and submit button
-    document.getElementById('cancelEditButton').style.display = "inline";
-    document.getElementById('editBillButton').style.display = "inline";
-};
+    $("#cancelEditButton").css("display", "inline");
+    $("#editBillButton").css("display", "inline");
+});
 
 // cancel edit bill information
-document.getElementById('cancelEditButton').onclick = function() {
-    // display form to edit
-    document.getElementById('name').setAttribute('readonly', '');
-    document.getElementById('street').setAttribute('readonly', '');
-    document.getElementById('district').setAttribute('readonly', '');
-    document.getElementById('city').setAttribute('readonly', '');
-    document.getElementById('phone').setAttribute('readonly', '');
-    document.getElementById('email').setAttribute('readonly', '');
+$("#cancelEditButton").click(function(){
+    // hidden form
+    $("#name").attr("readonly", '');
+    $("#street").attr("readonly", '');
+    $("#district").attr("readonly", '');
+    $("#city").attr("readonly", '');
+    $("#phone").attr("readonly", '');
+    $("#email").attr("readonly", '');
 
-    enterTotalPriceToPay();
+    pay();
 
     // display function buttons
-    document.getElementById('editBill').style.display = "inline";
-    document.getElementById('enterTotalPrice').style.display = "inline";
-    document.getElementById('totalPriceSuggest').style.display = "inline";
+    $("#editBill").css("display", "inline");
+    $("#enterTotalPrice").css("display", "inline");
+    $("#totalPriceSuggest").css("display", "inline");
 
     // hidden cancel and submit button
-    document.getElementById('cancelEditButton').style.display = "none";
-    document.getElementById('editBillButton').style.display = "none";
-};
+    $(this).css("display", "none");
+    $("#editBillButton").css("display", "none");
+});
 
 // enter true total price to display pay button
-function enterTotalPriceToPay() {
-    var input, totalVNDPrice, totalUSDPrice;
+$("#enterTotalPrice").keyup(function(){
+    pay();
+});
 
-    input = document.getElementById("enterTotalPrice");
-    totalVNDPrice = document.getElementById("totalVNDPrice");
-    totalUSDPrice = document.getElementById("totalUSDPrice");
+function pay() {
+    if ($("#enterTotalPrice").val().length > 0) {
+        if ($("#enterTotalPrice").val() == $("#totalVNDPrice").html()) {
+            $("#payVNDButton").css("display", "inline");
+            $("#payUSDButton").css("display", "none");
+            $("#checkTrue").css("display", "inline");
+            $("#checkFalse").css("display", "none");
 
-    if (input.value.length != 0) {
-        if (input.value == totalVNDPrice.innerText) {
-            document.getElementById('payVNDButton').style.display = "inline";
-            document.getElementById('payUSDButton').style.display = "none";
-            document.getElementById('checkTrue').style.display = "inline";
-            document.getElementById('checkFalse').style.display = "none";
-            input.setAttribute("class", "form-control border border-success");
-        } else if (input.value == totalUSDPrice.innerText) {
-            document.getElementById('payVNDButton').style.display = "none";
-            document.getElementById('payUSDButton').style.display = "inline";
-            document.getElementById('checkTrue').style.display = "inline";
-            document.getElementById('checkFalse').style.display = "none";
-            input.setAttribute("class", "form-control border border-success");
+            $("#enterTotalPrice").attr("class", "form-control border border-success");
+        } else if($("#enterTotalPrice").val() == $("#totalUSDPrice").html()) {
+            $("#payVNDButton").css("display", "none");
+            $("#payUSDButton").css("display", "inline");
+            $("#checkTrue").css("display", "inline");
+            $("#checkFalse").css("display", "none");
+
+            $("#enterTotalPrice").attr("class", "form-control border border-success");
         } else {
-            document.getElementById('checkTrue').style.display = "none";
-            document.getElementById('checkFalse').style.display = "inline";
-            document.getElementById('payVNDButton').style.display = "none";
-            document.getElementById('payUSDButton').style.display = "none";
-            input.setAttribute("class", "form-control border border-danger");
+            $("#payVNDButton").css("display", "none");
+            $("#payUSDButton").css("display", "none");
+            $("#checkTrue").css("display", "none");
+            $("#checkFalse").css("display", "inline");
+
+            $("#enterTotalPrice").attr("class", "form-control border border-danger");
         }
+    } else {
+        $("#payVNDButton").css("display", "none");
+        $("#payUSDButton").css("display", "none");
+        $("#checkTrue").css("display", "none");
+        $("#checkFalse").css("display", "none");
+
+        $("#enterTotalPrice").attr("class", "form-control border border-primary");
     }
-}
+};

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\AccountRequest;
 use App\Model\User;
 use Auth;
 use Illuminate\Support\Str;
@@ -17,6 +18,17 @@ use Cloudder;
 class AccountController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return void
+     */
+    public function __construct(Request $request)
+    {
+        
+    }
+
+    /**
      * Show create account form.
      *
      * @return \Illuminate\Http\Response
@@ -25,75 +37,51 @@ class AccountController extends Controller
     {
         if (Auth::user()->role == 'admin') {
             return view('user.admin.account.create-account');
-        } else {
-            return view('404');
         }
+
+        return view('404');
     }
 
     /**
      * Create a new account.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\AccountRequest $request
      * @return \Illuminate\Http\Response
      */
-    protected function createAccount(Request $request)
+    protected function createAccount(AccountRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        // redirect back with errors if input is not validated
+        $validated = $request->validated();
 
-            $rules = [
-                'name' => ['required', 'string', 'max:255'],
-                'image' => ['required'],
-                'address' => ['required', 'string', 'max:255'],
-                'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-
-            // get image to store in cloud
-            if ($request->hasFile('image')){
-                // create path to store in cloud
-                $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
-                // upload to cloud
-                Cloudder::upload($request->file('image'), $public_id);
-                // get url of image
-                $resize = array("width" => 300, "height" => 300, "crop" => "fill");
-                $img_url = Cloudder::show($public_id, $resize);
-            }
-
-            // generate a random password
-            $password = Str::random(8);
-
-            // create new account
-            $user = User::create([
-                'user_id' => explode('@', $request->email)[0],
-                'area' => $request->area,
-                'role' => $request->role,
-                'name' => $request->name,
-                'image' => $img_url,
-                'address' => $request->address,
-                'phone' => $request->phone,
-                'email' => $request->email,
-                'password' => bcrypt($password),
-            ]);
-
-            // send a mail with password to user email
-            $user->notify(new SendMailAfterCreate($password));
-
-            DB::commit();
-
-            $success = Lang::get('notify.success.create-account');
-            return redirect()->back()->with('success', $success);
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            return redirect()->back()->with('errors', $e->getMessage());
+        // get image to store in cloud
+        if ($request->hasFile('image')){
+            // create path to store in cloud
+            $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
+            // upload to cloud
+            Cloudder::upload($request->file('image'), $public_id);
+            // get url of image
+            $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+            $img_url = Cloudder::show($public_id, $resize);
         }
-    }
+
+        // create new account
+        $user = User::create([
+            'user_id' => explode('@', $request->email)[0],
+            'area' => $request->area,
+            'role' => $request->role,
+            'name' => $request->name,
+            'image' => $img_url,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'password' => bcrypt(Str::random(8)),
+        ]);
+
+        // send a mail with password to user email
+        $user->notify(new SendMailAfterCreate($password));
+
+        $success = Lang::get('notify.success.create-account');
+        return redirect()->back()->with('success', $success);    }
 
     /**
      * Show account list.
@@ -105,9 +93,9 @@ class AccountController extends Controller
         if (Auth::user()->role == 'admin') {
             $accounts = User::all();
             return view('user.admin.account.account-list', compact('accounts'));
-        } else {
-            return view('404');
         }
+
+        return view('404');
     }
 
     /**
@@ -121,9 +109,9 @@ class AccountController extends Controller
         if (Auth::user()->role == 'admin') {
             $account = User::where('user_id', $user_id)->first();
             return view('user.admin.account.account-detail.account-detail', compact('account'));
-        } else {
-            return view('404');
         }
+
+        return view('404');
     }
 
     /**
@@ -177,26 +165,16 @@ class AccountController extends Controller
     /**
      * Edit account information.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\AccountRequest $request
      * @return \Illuminate\Http\Response
      */
-    protected function editAccount(Request $request)
+    protected function editAccount(AccountRequest $request)
     {
         try {
             DB::beginTransaction();
 
-            $rules = [
-                'user_id' => ['required'],
-                'name' => ['required', 'string', 'max:255'],
-                'address' => ['required', 'string', 'max:255'],
-                'phone' => ['required', 'regex:/(0)[0-9]{9}/'],
-                'email' => ['required', 'string', 'email', 'max:255'],
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+            // redirect back with errors if input is not validated
+            $validated = $request->validated();
 
             // update new account information
             $user = User::where('user_id', $request->user_id)->first();

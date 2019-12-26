@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Accountant;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\DepositRequest;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Lang;
 use App\Model\Deposit;
 use App\Model\User;
@@ -15,14 +13,14 @@ use Auth;
 class DepositController extends Controller
 {
     /**
-     *
+     * Email value, string to determine account.
      *
      * @var string
      */
     private $email;
 
     /**
-     *
+     * Password value, string to determine account.
      *
      * @var string
      */
@@ -84,7 +82,11 @@ class DepositController extends Controller
      */
     protected function showCreateDepositForm()
     {
-        return view('user.accountant.deposit.create-deposit');
+        if (Auth::user()->role == 'accountant') {
+            return view('user.accountant.deposit.create-deposit');
+        }
+
+        return view('404');
     }
 
     /**
@@ -94,13 +96,17 @@ class DepositController extends Controller
      */
     protected function showRepayDepositForm()
     {
-        return view('user.accountant.deposit.repay-deposit');
+        if (Auth::user()->role == 'accountant') {
+            return view('user.accountant.deposit.repay-deposit');
+        }
+
+        return view('404');
     }
 
     /**
      * Create new deposit for receptionist.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\DepositRequest $request
      * @return \Illuminate\Http\Response
      */
     protected function create(DepositRequest $request)
@@ -119,7 +125,7 @@ class DepositController extends Controller
     /**
      * Confirm to repay deposit of receptionist.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\DepositRequest $request
      * @return \Illuminate\Http\Response
      */
     protected function repay(DepositRequest $request)

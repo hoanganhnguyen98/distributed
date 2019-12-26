@@ -14,6 +14,7 @@ use App\Model\Food;
 use App\Model\Deposit;
 use Auth;
 use PDF;
+use App\Events\DisplayBillingTableInWaiterEvent;
 
 class BillController extends Controller
 {
@@ -31,6 +32,9 @@ class BillController extends Controller
             $table = Table::where('table_id', $table_id)->first();
             $table->status = $new_status;
             $table->save();
+
+            // push event to server Pusher to get in other screen
+            event(new DisplayBillingTableInWaiterEvent($table_id ,$new_status));
 
             return view('user.receptionist.bill.create-bill', compact('table_id'));
         } else {
@@ -52,6 +56,10 @@ class BillController extends Controller
             $table = Table::where('table_id', $table_id)->first();
             $table->status = $new_status;
             $table->save();
+
+            // push event to server Pusher to get in other screen
+            event(new DisplayBillingTableInWaiterEvent($table_id ,$new_status));
+
             return redirect()->route('home');
         } else {
             return view('404');
@@ -99,6 +107,9 @@ class BillController extends Controller
             ]);
 
             DB::commit();
+
+            // push event to server Pusher to get in other screen
+            event(new DisplayBillingTableInWaiterEvent($request->table_id ,$new_status));
 
             $success = Lang::get('notify.success.create-bill');
             return redirect()->route('home')->with('success', $success);
@@ -240,10 +251,14 @@ class BillController extends Controller
                 //update table
                 $current_table_id = explode('-', $table_id)[0];
                 $table = Table::where([['table_id', $current_table_id], ['status', 'run']])->first();
-                $table->status = 'ready'; // status of table, run -> ready
+                $new_status = 'ready';
+                $table->status = $new_status; // status of table, run -> ready
                 $table->save();
 
                 DB::commit();
+
+                // push event to server Pusher to get in other screen
+                event(new DisplayBillingTableInWaiterEvent($current_table_id ,$new_status));
 
                 // export a pdf as a invoice of customer
                 $user = Auth::user(); // get information of receptionist

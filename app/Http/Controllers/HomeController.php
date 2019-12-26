@@ -118,11 +118,9 @@ class HomeController extends Controller
     private function getWaiterHome($area)
     {
         // get table list
-        $table2s = Table::where([['area', $area], ['size', 2]])->get();
-        $table4s = Table::where([['area', $area], ['size', 4]])->get();
-        $table10s = Table::where([['area', $area], ['size', 10]])->get();
+        $tables = Table::where('area', $area)->get();
 
-        return view('user.waiter.home.home', compact('area', 'table2s', 'table4s', 'table10s'));
+        return view('user.waiter.home.home', compact('area', 'tables'));
     }
 
     /**

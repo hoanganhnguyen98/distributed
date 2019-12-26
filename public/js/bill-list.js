@@ -1,122 +1,65 @@
 // display sidebar after clicking
-document.getElementById('billSidebar').classList.add('show');
+$("#billSidebar").attr("class", "collapse show list-unstyled");
+
+// get table of bill to filter by columns
+var billTable = $("#billTable tr");
 
 // filter by id
-function searchID() {
-    var input, filter, tbody, td, tr, i, txtValue;
+$("#idInput").keyup(function() {
+    for (var i = 0; i < billTable.length; i++) {
+        var tr = billTable.eq(i);
+        var id = tr.find("td:eq(0)").html().toUpperCase();
 
-    input = document.getElementById("idInput");
-    filter = input.value.toUpperCase();
-    tbody = document.getElementById("currentBill");
-    tr = tbody.getElementsByTagName("tr");
-
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[0]; // 0 - first column
-        txtValue = td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
+        (id.indexOf($(this).val().toUpperCase()) > -1 ? tr.css("display", "") : tr.css("display", "none"))
     }
-}
+});
 
 // filter by table
-function searchTable() {
-    var input, filter, tbody, td, tr, i, txtValue;
+$("#tableInput").keyup(function() {
+    for (var i = 0; i < billTable.length; i++) {
+        var tr = billTable.eq(i);
+        var table = tr.find("td:eq(1)").html().toUpperCase();
 
-    input = document.getElementById("tableInput");
-    filter = input.value.toUpperCase();
-    tbody = document.getElementById("currentBill");
-    tr = tbody.getElementsByTagName("tr");
-
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1]; // 1 - second column
-        txtValue = td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
+        (table.indexOf($(this).val().toUpperCase()) > -1 ? tr.css("display", "") : tr.css("display", "none"))
     }
-}
+});
 
 // filter by name
-function searchName() {
-    var input, filter, tbody, td, tr, i, txtValue;
+$("#nameInput").keyup(function() {
+    for (var i = 0; i < billTable.length; i++) {
+        var tr = billTable.eq(i);
+        var name = tr.find("td:eq(2)").html().toUpperCase();
 
-    input = document.getElementById("nameInput");
-    filter = input.value.toUpperCase();
-    tbody = document.getElementById("currentBill");
-    tr = tbody.getElementsByTagName("tr");
-
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[2]; // 2 - third column
-        txtValue = td.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
+        (name.indexOf($(this).val().toUpperCase()) > -1 ? tr.css("display", "") : tr.css("display", "none"))
     }
-}
+});
 
 // filter by phone
-function searchPhone() {
-    var input, filter, tbody, td, tr, i, txtValue;
+$("#phoneInput").keyup(function() {
+    for (var i = 0; i < billTable.length; i++) {
+        var tr = billTable.eq(i);
+        var phone = tr.find("td:eq(3)").html().toUpperCase();
 
-    input = document.getElementById("phoneInput");
-    filter = input.value;
-    tbody = document.getElementById("currentBill");
-    tr = tbody.getElementsByTagName("tr");
-
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[3]; // 3 - fourth column
-        txtValue = td.innerText;
-        if (txtValue.indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
+        (phone.indexOf($(this).val().toUpperCase()) > -1 ? tr.css("display", "") : tr.css("display", "none"))
     }
-}
+});
 
 // filter by book time
-function searchBook() {
-    var input, filter, tbody, td, tr, i, txtValue;
+$("#bookInput").keyup(function() {
+    for (var i = 0; i < billTable.length; i++) {
+        var tr = billTable.eq(i);
+        var book = tr.find("td:eq(4)").html().toUpperCase();
 
-    input = document.getElementById("bookInput");
-    filter = input.value;
-    tbody = document.getElementById("currentBill");
-    tr = tbody.getElementsByTagName("tr");
-
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[4]; // 4 - fifth column
-        txtValue = td.innerText;
-        if (txtValue.indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
+        (book.indexOf($(this).val().toUpperCase()) > -1 ? tr.css("display", "") : tr.css("display", "none"))
     }
-}
+});
 
 // filter by pay time
-function searchPay() {
-    var input, filter, tbody, td, tr, i, txtValue;
+$("#payInput").keyup(function() {
+    for (var i = 0; i < billTable.length; i++) {
+        var tr = billTable.eq(i);
+        var pay = tr.find("td:eq(5)").html().toUpperCase();
 
-    input = document.getElementById("payInput");
-    filter = input.value;
-    tbody = document.getElementById("currentBill");
-    tr = tbody.getElementsByTagName("tr");
-
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[5]; // 5 - sixth column
-        txtValue = td.innerText;
-        if (txtValue.indexOf(filter) > -1) {
-            tr[i].style.display = "";
-        } else {
-            tr[i].style.display = "none";
-        }
+        (pay.indexOf($(this).val().toUpperCase()) > -1 ? tr.css("display", "") : tr.css("display", "none"))
     }
-}
+});

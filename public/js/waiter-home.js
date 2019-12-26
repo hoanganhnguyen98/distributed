@@ -1,16 +1,9 @@
-function searchTable() {
-    var input, divList, divTable, tableId, i;
+$( "#tableInput" ).keyup(function() {
+    var tableList = $( "#waiterTableList .row" );
+    for (var i = 0; i < tableList.length; i++) {
+        var table = tableList.eq(i);
+        var tableId = table.find("button:eq(0)").html();
 
-    input = document.getElementById("tableInput").value;
-    divList = document.getElementById("waiterTableList");
-    divTable = divList.getElementsByClassName("row");
-
-    for (i = 0; i < divTable.length; i++) {
-        tableId = divTable[i].getElementsByTagName("button")[0].innerText;
-        if (tableId.indexOf(input) > -1) {
-            divTable[i].style.display = "";
-        } else {
-            divTable[i].style.display = "none";
-        }
+        (tableId.indexOf($(this).val()) > -1) ? table.css("display", "") : table.css("display", "none")
     }
-}
+});
