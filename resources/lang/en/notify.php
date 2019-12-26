@@ -18,9 +18,11 @@ return [
         'edit-bill' => 'Edit bill successfully!',
         'pay-bill' => 'Pay bill successfully!',
         'create-deposit' => 'Create deposit successfully!',
+        'repay-deposit' => 'Repay deposit successfully!',
     ],
     'errors' => [
         'login' => 'Login failed, please try again!',
+        'login-deposit' => 'You must get deposit first!',
         'reset' => 'Incorrect email address, please try again!',
         'change_password' => 'Incorrect current password, please try again!',
         'create-deposit-account' => 'Email or password is incorrect!',

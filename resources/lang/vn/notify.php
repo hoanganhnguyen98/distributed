@@ -18,9 +18,11 @@ return [
         'edit-bill' => 'Sửa hóa đơn thành công!',
         'pay-bill' => 'Thanh toán hóa đơn thành công!',
         'create-deposit' => 'Lấy tiền cọc thành công!',
+        'repay-deposit' => 'Hoàn tiền thành công!',
     ],
     'errors' => [
         'login' => 'Đăng nhập thất bại, mời thử lại!',
+        'login-deposit' => 'Bạn phải lấy tiền cọc trước!',
         'reset' => 'Địa chỉ thư điện tử không đúng, mời thử lại!',
         'change_password' => 'Mật khẩu hiện tại không chính xác, mời thử lại!',
         'deposit' => [

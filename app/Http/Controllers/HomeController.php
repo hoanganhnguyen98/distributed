@@ -7,7 +7,9 @@ use App\Model\Table;
 use App\Model\BillDetail;
 use App\Model\Bill;
 use App\Model\Food;
+use App\Model\Deposit;
 use Auth;
+use Illuminate\Support\Facades\Lang;
 
 class HomeController extends Controller
 {
@@ -33,8 +35,14 @@ class HomeController extends Controller
         $area = Auth::user()->area;
 
         if ($role == 'receptionist') {
-            // show receptionist role homepage
-            return $this->getReceptionistHome($area);
+            $user_id = Auth::user()->user_id;
+            if ($this->gettedDeposit($user_id)) {
+                // show receptionist role homepage
+                return $this->getReceptionistHome($area);
+            } else {
+                Auth::logout();
+                return redirect()->back()->withErrors(Lang::get('notify.errors.login-deposit'))->withInput();
+            }
         } else if ($role == 'waiter') {
             // show waiter role homepage
             return $this->getWaiterHome($area);
@@ -44,9 +52,71 @@ class HomeController extends Controller
         } else if ($role == 'accountant') {
             // show accountant role homepage
             return $this->getAccountantHome($area);
-        } else {
-            return view('home');
+        } else if ($role == 'admin') {
+            return $this->getAdminHome($area);
         }
+    }
+
+    protected function gettedDeposit($user_id)
+    {
+        // $today = date('Y-m-d');
+        // $deposits = Deposit::whereDate('created_at', $today)->get();
+        // $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
+        // return $deposit != null;
+        return true;
+    }
+
+    /**
+     * Show homepage with admin role.
+     *
+     * @param $area
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    private function getAdminHome($area)
+    {
+        // get table list
+        $table2s = Table::where([['area', $area], ['size', 2]])->get();
+        $table4s = Table::where([['area', $area], ['size', 4]])->get();
+        $table10s = Table::where([['area', $area], ['size', 10]])->get();
+
+        // bisect the table10s array
+        $table10_1s = array();
+        $table10_2s = array();
+        foreach ($table10s as $key => $value) {
+            if ($key < 4) {
+                $table10_1s[] = $value;
+            } else {
+                $table10_2s[] = $value;
+            }
+        }
+        $ready = 0;
+        $run = 0;
+        foreach ($table2s as $table2) {
+            if ($table2->status == 'ready') {
+                $ready = $ready + 1;
+            } else if ($table2->status == 'run') {
+                $run = $run + 1;
+            }
+        }
+
+        foreach ($table4s as $table4) {
+            if ($table4->status == 'ready') {
+                $ready = $ready + 1;
+            } else if ($table4->status == 'run') {
+                $run = $run + 1;
+            }
+        }
+
+        foreach ($table10s as $table10) {
+            if ($table10->status == 'ready') {
+                $ready = $ready + 1;
+            } else if ($table10->status == 'run') {
+                $run = $run + 1;
+            }
+        }
+
+        return view('user.admin.home.home',
+            compact('area', 'table2s', 'table4s', 'table10_1s', 'table10_2s', 'ready', 'run'));
     }
 
     /**
@@ -111,7 +181,7 @@ class HomeController extends Controller
     private function getWaiterHome($area)
     {
         // get table list
-        $tables = Table::where('area', $area)->get();
+        $tables = Table::where('area', $area)->orderBy('id')->get();
 
         return view('user.waiter.home.home', compact('area', 'tables'));
     }
@@ -172,6 +242,10 @@ class HomeController extends Controller
      */
     private function getAccountantHome($area)
     {
-        return view('user.accountant.home.home', compact('area'));
+        $today = date('Y-m-d');
+        $today_bills = Bill::whereDate('created_at', $today);
+
+        $bills = $today_bills->sortable('id')->paginate(10);
+        return view('user.accountant.home.home', compact('area', 'bills'));
     }
 }
