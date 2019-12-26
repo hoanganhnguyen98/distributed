@@ -7,7 +7,9 @@ use App\Model\Table;
 use App\Model\BillDetail;
 use App\Model\Bill;
 use App\Model\Food;
+use App\Model\Deposit;
 use Auth;
+use Illuminate\Support\Facades\Lang;
 
 class HomeController extends Controller
 {
@@ -33,8 +35,15 @@ class HomeController extends Controller
         $area = Auth::user()->area;
 
         if ($role == 'receptionist') {
-            // show receptionist role homepage
-            return $this->getReceptionistHome($area);
+            $user_id = Auth::user()->user_id;
+            if ($this->gettedDeposit($user_id)) {
+                // show receptionist role homepage
+                return $this->getReceptionistHome($area);
+            } else {
+                Auth::logout();
+                return redirect()->back()->withErrors(Lang::get('notify.errors.login-deposit'))->withInput();
+            }
+
         } else if ($role == 'waiter') {
             // show waiter role homepage
             return $this->getWaiterHome($area);
@@ -47,6 +56,14 @@ class HomeController extends Controller
         } else {
             return view('home');
         }
+    }
+
+    protected function gettedDeposit($user_id)
+    {
+        $today = date('Y-m-d');
+        $deposits = Deposit::whereDate('created_at', $today)->get();
+        $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
+        return $deposit != null;
     }
 
     /**
@@ -111,7 +128,7 @@ class HomeController extends Controller
     private function getWaiterHome($area)
     {
         // get table list
-        $tables = Table::where('area', $area)->get();
+        $tables = Table::where('area', $area)->orderBy('id')->get();
 
         return view('user.waiter.home.home', compact('area', 'tables'));
     }

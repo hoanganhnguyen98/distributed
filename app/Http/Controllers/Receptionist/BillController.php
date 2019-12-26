@@ -235,6 +235,7 @@ class BillController extends Controller
                     //updaate deposit of receptionist
                     $deposit->usd = $deposit->usd + $usdPrice;
                 }
+
                 $bill->status = 'done'; // status of bill, new -> done
                 $bill->save();
                 $deposit->save();

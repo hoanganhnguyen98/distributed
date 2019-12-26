@@ -171,7 +171,7 @@ class DepositController extends Controller
         $this->deposit->status = 'done';
         $this->deposit->save();
 
-        return redirect()->back()->with('success', Lang::get('notify.success.create-deposit'));
+        return redirect()->back()->with('success', Lang::get('notify.success.repay-deposit'));
     }
 
     /**
