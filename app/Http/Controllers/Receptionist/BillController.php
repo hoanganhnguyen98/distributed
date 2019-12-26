@@ -15,6 +15,7 @@ use App\Model\Deposit;
 use Auth;
 use PDF;
 use App\Events\DisplayBillingTableInWaiterEvent;
+use Cloudder;
 
 class BillController extends Controller
 {
@@ -254,6 +255,7 @@ class BillController extends Controller
 
                 // export a pdf as a invoice of customer
                 $user = Auth::user(); // get information of receptionist
+                $path = 'C:\Users\admin\Desktop\invoice-ninjarestaurant'.$bill->id.'.pdf';
                 $now = date("Y-m-d H:i:s"); // get current time
                 $mpdf = new \Mpdf\Mpdf();
 
@@ -262,14 +264,19 @@ class BillController extends Controller
                         compact('user', 'bill', 'now', 'bill_details', 'vndPrice')));
                     $mpdf->debug = true;
                     // auto save file to path and return
-                    $mpdf->Output('C:\Users\admin\Documents\invoice-ninjarestaurant.pdf', 'F');
+                    $mpdf->Output($path, 'F');
                 } elseif ($type == 'usd') {
                     $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.usd-invoice',
                         compact('user', 'bill', 'now', 'bill_details', 'usdPrice')));
                     $mpdf->debug = true;
                     // auto save file to path and return
-                    $mpdf->Output('C:\Users\admin\Documents\invoice-ninjarestaurant.pdf', 'F');
+                    $mpdf->Output($path, 'F');
                 }
+
+                // create path to store pdf in cloud
+                $public_id = "ninja_restaurant/invoices/".$bill->id;
+                // upload to cloud
+                Cloudder::upload($path, $public_id);
 
                 $success = Lang::get('notify.success.pay-bill');
                 return redirect()->route('home')->with('success', $success);

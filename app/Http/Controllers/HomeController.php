@@ -43,7 +43,6 @@ class HomeController extends Controller
                 Auth::logout();
                 return redirect()->back()->withErrors(Lang::get('notify.errors.login-deposit'))->withInput();
             }
-
         } else if ($role == 'waiter') {
             // show waiter role homepage
             return $this->getWaiterHome($area);
@@ -60,10 +59,11 @@ class HomeController extends Controller
 
     protected function gettedDeposit($user_id)
     {
-        $today = date('Y-m-d');
-        $deposits = Deposit::whereDate('created_at', $today)->get();
-        $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
-        return $deposit != null;
+        // $today = date('Y-m-d');
+        // $deposits = Deposit::whereDate('created_at', $today)->get();
+        // $deposit = $deposits->where([['user_id', $user_id], ['status', 'new']])->first();
+        // return $deposit != null;
+        return true;
     }
 
     /**
@@ -242,6 +242,10 @@ class HomeController extends Controller
      */
     private function getAccountantHome($area)
     {
-        return view('user.accountant.home.home', compact('area'));
+        $today = date('Y-m-d');
+        $today_bills = Bill::whereDate('created_at', $today);
+
+        $bills = $today_bills->sortable('id')->paginate(10);
+        return view('user.accountant.home.home', compact('area', 'bills'));
     }
 }

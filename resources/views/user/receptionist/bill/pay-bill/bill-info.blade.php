@@ -126,13 +126,8 @@
                             {{ trans('messages.pay.cancel') }}
                         </button>
                         <button type="button" class="btn btn-primary font-weight-bold">
-                            <a href="">
-                                {{ trans('messages.pay.pay_vnd') }}
-                            </a>
-                        </button>
-                        <button type="button" class="btn btn-danger font-weight-bold">
                             <a href="pay-{{ $bill->table_id }}/vnd">
-                                {{ trans('messages.pay.pay_bill') }}
+                                {{ trans('messages.pay.pay_vnd') }}
                             </a>
                         </button>
                     </div>
@@ -161,13 +156,8 @@
                             {{ trans('messages.pay.cancel') }}
                         </button>
                         <button type="button" class="btn btn-primary font-weight-bold">
-                            <a href="">
-                                {{ trans('messages.pay.pay_usd') }}
-                            </a>
-                        </button>
-                        <button type="button" class="btn btn-danger font-weight-bold">
                             <a href="pay-{{ $bill->table_id }}/usd">
-                                {{ trans('messages.pay.pay_bill') }}
+                                {{ trans('messages.pay.pay_usd') }}
                             </a>
                         </button>
                     </div>
