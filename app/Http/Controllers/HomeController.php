@@ -161,7 +161,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('user.kitchen-manager.home.home', compact('tables', 'order_news', 'order_prepares'));
+        return view('user.kitchen-manager.home.home', compact('order_news', 'order_prepares'));
     }
 
     /**
