@@ -64,6 +64,8 @@ class AccountController extends Controller
             $img_url = Cloudder::show($public_id, $resize);
         }
 
+        $password = Str::random(8);
+
         // create new account
         $user = User::create([
             'user_id' => explode('@', $request->email)[0],
@@ -74,7 +76,7 @@ class AccountController extends Controller
             'address' => $request->address,
             'phone' => $request->phone,
             'email' => $request->email,
-            'password' => bcrypt(Str::random(8)),
+            'password' => bcrypt($password),
         ]);
 
         // send a mail with password to user email
