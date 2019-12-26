@@ -73,13 +73,10 @@ class HomeController extends Controller
             }
         }
         $ready = 0;
-        $prepare = 0;
         $run = 0;
         foreach ($table2s as $table2) {
             if ($table2->status == 'ready') {
                 $ready = $ready + 1;
-            } else if ($table2->status == 'prepare') {
-                $prepare = $prepare + 1;
             } else if ($table2->status == 'run') {
                 $run = $run + 1;
             }
@@ -88,8 +85,6 @@ class HomeController extends Controller
         foreach ($table4s as $table4) {
             if ($table4->status == 'ready') {
                 $ready = $ready + 1;
-            } else if ($table4->status == 'prepare') {
-                $prepare = $prepare + 1;
             } else if ($table4->status == 'run') {
                 $run = $run + 1;
             }
@@ -98,15 +93,13 @@ class HomeController extends Controller
         foreach ($table10s as $table10) {
             if ($table10->status == 'ready') {
                 $ready = $ready + 1;
-            } else if ($table10->status == 'prepare') {
-                $prepare = $prepare + 1;
             } else if ($table10->status == 'run') {
                 $run = $run + 1;
             }
         }
 
         return view('user.receptionist.home.home',
-            compact('area', 'table2s', 'table4s', 'table10_1s', 'table10_2s', 'ready', 'prepare', 'run'));
+            compact('area', 'table2s', 'table4s', 'table10_1s', 'table10_2s', 'ready', 'run'));
     }
 
     /**

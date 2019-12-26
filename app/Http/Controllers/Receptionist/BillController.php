@@ -27,15 +27,6 @@ class BillController extends Controller
     protected function showCreateBillForm($table_id)
     {
         if (Auth::user()->role == 'receptionist') {
-            // update status for table
-            $new_status = 'prepare';
-            $table = Table::where('table_id', $table_id)->first();
-            $table->status = $new_status;
-            $table->save();
-
-            // push event to server Pusher to get in other screen
-            event(new DisplayBillingTableInWaiterEvent($table_id ,$new_status));
-
             return view('user.receptionist.bill.create-bill', compact('table_id'));
         } else {
             return view('404');

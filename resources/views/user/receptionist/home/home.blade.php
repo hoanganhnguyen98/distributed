@@ -20,7 +20,6 @@
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-outline-success">{{ $ready }}</button>
-                <button type="button" class="btn btn-outline-primary">{{ $prepare }}</button>
                 <button type="button" class="btn btn-outline-danger">{{ $run }}</button>
             </div>
             <div class="col-auto">
