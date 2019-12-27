@@ -208,7 +208,7 @@ class BillController extends Controller
      * @param $table_id, $type
      * @return \Illuminate\Http\Response
      */
-    protected function payBill($table_id, $type, $option)
+    protected function payBill($table_id, $type)
     {
         if (Auth::user()->role == 'receptionist') {
             try {
