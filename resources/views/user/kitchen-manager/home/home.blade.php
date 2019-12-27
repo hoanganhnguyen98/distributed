@@ -79,8 +79,9 @@
                         </td> -->
                     </tr>
                     @endforeach
-                    <i id="addOrder">
-                    </i>
+                    <tr id="addOrder">
+                        
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -139,9 +140,6 @@
     // function to change status of table
     function addOrder(data) {
         console.log(data.food_name);
-        var tr = $("<tr></tr>")
-        $("#addOrder").append(tr);
-
         var tdName = $("<td></td>");
         tdName.html(data.food_name);
         $("#addOrder").append(tdName);
