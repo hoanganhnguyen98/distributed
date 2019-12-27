@@ -79,9 +79,9 @@
                         </td> -->
                     </tr>
                     @endforeach
-                    <div id="addOrder">
+                    <tr id="addOrder">
                         
-                    </div>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -140,24 +140,17 @@
     // function to change status of table
     function addOrder(data) {
         console.log(data.food_name);
-        var tr = $("<tr></tr>");
-
         var tdName = $("<td></td>");
-
         tdName.html(data.food_name);
-        tr.html(tdName);
-        // $("#addOrder").append(tdName);
+        $("#addOrder").append(tdName);
 
         var tdNumber = $("<td class='text-center'></td>");
         tdNumber.html(data.number);
-        tr.html(tdNumber);
-        // $("#addOrder").append(tdNumber);
+        $("#addOrder").append(tdNumber);
 
         var tdId = $("<td class='text-center'><a class='text-uppercase badge badge-pill badge-info'>{{ trans('messages.home.kitchen.prepare') }}</a></td>");
         tdId.find("a:eq(0)").attr("href","prepare-order-"+data.order_id);
-        tr.html(tdId);
-        // $("#addOrder").append(tdId);
-        $("#addOrder").append(tr);
+        $("#addOrder").append(tdId);
     }
 </script>
 @endsection
