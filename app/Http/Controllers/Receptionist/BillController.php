@@ -208,7 +208,7 @@ class BillController extends Controller
      * @param $table_id, $type
      * @return \Illuminate\Http\Response
      */
-    protected function payBill($table_id, $type)
+    protected function payBill($table_id, $type, $option)
     {
         if (Auth::user()->role == 'receptionist') {
             try {
@@ -223,6 +223,26 @@ class BillController extends Controller
                 $bill_details = $output[0];
                 $vndPrice  = $output[1];
                 $usdPrice  = $output[2];
+
+                if ($option == 1) {
+                    // export a pdf as a invoice of customer
+                    $user = Auth::user(); // get information of receptionist
+                    $now = date("Y-m-d H:i:s"); // get current time
+                    $mpdf = new \Mpdf\Mpdf();
+
+                    if ($type == 'vnd') {
+                        $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.vnd-invoice',
+                            compact('user', 'bill', 'now', 'bill_details', 'vndPrice')));
+                    } elseif ($type == 'usd') {
+                        $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.usd-invoice',
+                            compact('user', 'bill', 'now', 'bill_details', 'usdPrice')));
+                    }
+
+                    $mpdf->debug = true;
+                    // auto save file to path and return
+                    $mpdf->Output('invoice-ninjarestaurant.pdf', "I");
+                    exit();
+                }
 
                 // update bill
                 if ($type == 'vnd') {
@@ -252,28 +272,6 @@ class BillController extends Controller
 
                 // push event to server Pusher to get in other screen
                 event(new DisplayBillingTableInWaiterEvent($current_table_id ,$new_status));
-
-                // export a pdf as a invoice of customer
-                $user = Auth::user(); // get information of receptionist
-                $now = date("Y-m-d H:i:s"); // get current time
-                $mpdf = new \Mpdf\Mpdf();
-
-                if ($type == 'vnd') {
-                    $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.vnd-invoice',
-                        compact('user', 'bill', 'now', 'bill_details', 'vndPrice')));
-                } elseif ($type == 'usd') {
-                    $mpdf->WriteHTML(\View::make('user.receptionist.bill.pay-bill.usd-invoice',
-                        compact('user', 'bill', 'now', 'bill_details', 'usdPrice')));
-                }
-
-                $mpdf->debug = true;
-                // auto save file to path and return
-                $mpdf->Output('invoice-ninjarestaurant.pdf', 'S');
-
-                // create path to store pdf in cloud
-                $public_id = "ninja_restaurant/invoices/".$bill->id;
-                // upload to cloud
-                Cloudder::upload('invoice-ninjarestaurant.pdf', $public_id);
 
                 $success = Lang::get('notify.success.pay-bill');
                 return redirect()->route('home')->with('success', $success);

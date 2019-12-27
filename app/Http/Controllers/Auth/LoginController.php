@@ -94,7 +94,7 @@ class LoginController extends Controller
      */
     private function isNotFirstLogin()
     {
-        return Auth::attempt(['email' => $this->email, 'password' => $this->password, 'first_login' => 1], true);
+        return Auth::attempt(['email' => $this->email, 'password' => $this->password, 'first_login' => 1]);
     }
 
     /**

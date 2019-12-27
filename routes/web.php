@@ -55,7 +55,7 @@ Route::post('create-bill', 'Receptionist\BillController@createBill')->name('crea
 Route::get('cancel-create-bill-{table_id}', 'Receptionist\BillController@cancelCreateBill')->name('cancel-create-bill');
 Route::post('edit-bill', 'Receptionist\BillController@editBillForm')->name('edit-bill');
 Route::get('pay-bill-{table_id}', 'Receptionist\BillController@showPayBillForm')->name('pay-bill-form');
-Route::get('pay-{table_id}/{type}', 'Receptionist\BillController@payBill')->name('pay');
+Route::get('pay-{table_id}/{type}/{option}', 'Receptionist\BillController@payBill')->name('pay');
 Route::get('export-bill-{table_id}', 'Receptionist\BillController@exportRedBill')->name('export-bill');
 Route::get('bill-list', 'Receptionist\BillController@showBillList')->name('bill-list');
 // bill detail
