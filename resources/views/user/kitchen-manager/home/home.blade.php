@@ -35,7 +35,7 @@
                     <tr>
                         <th scope="col">{{ trans('messages.home.kitchen.food_name') }}</th>
                         <th scope="col" class="text-center">{{ trans('messages.home.kitchen.number') }}</th>
-                        <th colspan="2"></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,9 +79,9 @@
                         </td> -->
                     </tr>
                     @endforeach
-                    <tr id="addOrder">
+                    <div id="addOrder">
                         
-                    </tr>
+                    </div>
                 </tbody>
             </table>
         </div>
@@ -140,17 +140,24 @@
     // function to change status of table
     function addOrder(data) {
         console.log(data.food_name);
+        var tr = $("<tr></tr>");
+
         var tdName = $("<td></td>");
+
         tdName.html(data.food_name);
-        $("#addOrder").append(tdName);
+        tr.html(tdName);
+        // $("#addOrder").append(tdName);
 
         var tdNumber = $("<td class='text-center'></td>");
         tdNumber.html(data.number);
-        $("#addOrder").append(tdNumber);
+        tr.html(tdNumber);
+        // $("#addOrder").append(tdNumber);
 
         var tdId = $("<td class='text-center'><a class='text-uppercase badge badge-pill badge-info'>{{ trans('messages.home.kitchen.prepare') }}</a></td>");
         tdId.find("a:eq(0)").attr("href","prepare-order-"+data.order_id);
-        $("#addOrder").append(tdId);
+        tr.html(tdId);
+        // $("#addOrder").append(tdId);
+        $("#addOrder").append(tr);
     }
 </script>
 @endsection
