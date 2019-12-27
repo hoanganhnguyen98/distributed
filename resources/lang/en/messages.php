@@ -165,7 +165,7 @@ return [
         'pay_vnd' => 'Pay by VND',
         'pay_usd' => 'Pay by USD',
         'pay_modal' => 'Pay this bill?',
-        'pay_bill' => 'Export red bill',
+        'pay_bill' => 'Export bill',
         'edit' => 'Edit bill',
         'cancel' => 'Cancel',
         'suggest' => 'Enter total price of bill',
