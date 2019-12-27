@@ -80,9 +80,9 @@ class HomeController extends Controller
     private function getAdminHome($area)
     {
         // get table list
-        $table2s = Table::where([['area', $area], ['size', 2]])->get();
-        $table4s = Table::where([['area', $area], ['size', 4]])->get();
-        $table10s = Table::where([['area', $area], ['size', 10]])->get();
+        $table2s = Table::where([['area', $area], ['size', 2]])->orderBy('id')->get();
+        $table4s = Table::where([['area', $area], ['size', 4]])->orderBy('id')->get();
+        $table10s = Table::where([['area', $area], ['size', 10]])->orderBy('id')->get();
 
         // bisect the table10s array
         $table10_1s = array();
@@ -133,9 +133,9 @@ class HomeController extends Controller
     private function getReceptionistHome($area)
     {
         // get table list
-        $table2s = Table::where([['area', $area], ['size', 2]])->get();
-        $table4s = Table::where([['area', $area], ['size', 4]])->get();
-        $table10s = Table::where([['area', $area], ['size', 10]])->get();
+        $table2s = Table::where([['area', $area], ['size', 2]])->orderBy('id')->get();
+        $table4s = Table::where([['area', $area], ['size', 4]])->orderBy('id')->get();
+        $table10s = Table::where([['area', $area], ['size', 10]])->orderBy('id')->get();
 
         // bisect the table10s array
         $table10_1s = array();
