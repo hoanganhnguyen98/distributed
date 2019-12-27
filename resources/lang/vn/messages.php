@@ -165,7 +165,7 @@ return [
         'pay_vnd' => 'Thanh toán <VND>',
         'pay_usd' => 'Thanh toán <USD>',
         'pay_modal' => 'Thanh toán hóa đơn này?',
-        'pay_bill' => 'Xuất hóa đơn đỏ',
+        'pay_bill' => 'Xuất hóa đơn',
         'edit' => 'Sửa hóa đơn',
         'cancel' => 'Hủy',
         'suggest' => 'Nhập tổng số tiền của hóa đơn',

@@ -241,6 +241,11 @@ class BillController extends Controller
                     $mpdf->debug = true;
                     // auto save file to path and return
                     $mpdf->Output('invoice-ninjarestaurant.pdf', "I");
+
+                    // create path to store pdf in cloud
+                    $public_id = "ninja_restaurant/invoices/".$bill->id;
+                    // upload to cloud
+                    Cloudder::upload('invoice-ninjarestaurant.pdf', $public_id);
                     exit();
                 }
 
