@@ -19,6 +19,8 @@ class Food extends JsonResource
             'name' => $this->name,
             'image' => $this->image,
             'material' => $this->material,
+            'source' => $this->source,
+            'price' => $this->vnd_price,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),
         ];
