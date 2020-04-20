@@ -28,8 +28,11 @@ class UserController extends BaseController
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){ 
             $user = Auth::user(); 
-            $success['token'] =  123;
+            // $success['token'] =  123;
             $success['name'] =  $user->name;
+            $success['phone'] = $user->phone;
+            $success['address'] = $user->address;
+            $success['image'] = $user->image;
    
             return $this->sendResponse($success, 'User login successfully.');
         } 
