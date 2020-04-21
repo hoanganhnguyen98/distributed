@@ -68,6 +68,6 @@ class UserController extends BaseController
         $user->phone = $request->phone;
         $user->save();
    
-        return $this->sendResponse(new ProductResource($product), 'Product updated successfully.');
+        return $this->sendResponse('Updated', 'Updated successfully.');
     }
 }
