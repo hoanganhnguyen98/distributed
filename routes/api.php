@@ -18,5 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('login', 'API\UserController@login');
+Route::post('user/update', 'API\UserController@update');
 Route::get('index', 'API\UserController@index');
 Route::get('food/index/{source}', 'API\FoodController@index');
