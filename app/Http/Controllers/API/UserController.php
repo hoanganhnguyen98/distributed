@@ -40,4 +40,34 @@ class UserController extends BaseController
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
         } 
     }
+
+    /**
+     * Edit account information.
+     *
+     * @param App\Http\Requests\AccountRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function update(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+   
+        $user = User::where('email', $request->email)->first();
+        $user->name = $request->name;
+        $user->address = $request->address;
+        $user->phone = $request->phone;
+        $user->save();
+   
+        return $this->sendResponse(new ProductResource($product), 'Product updated successfully.');
+    }
 }
