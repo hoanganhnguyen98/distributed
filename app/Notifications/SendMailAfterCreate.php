@@ -41,12 +41,21 @@ class SendMailAfterCreate extends Notification
      */
     public function toMail($notifiable)
     {
+        // Below, Return in web with route
+        // return (new MailMessage)
+        //             ->line('You have just been registered for an account on '.env('APP_NAME').'!')
+        //             ->line('Your account is this email.')
+        //             ->line('With password: '.$this->password)
+        //             ->action('Click to login', url('/'))
+        //             ->line('Thank you for using our application!');
+
+        // Here, return in api with app
         return (new MailMessage)
-                    ->line('You have just been registered for an account on '.env('APP_NAME').'!')
-                    ->line('Your account is this email.')
-                    ->line('With password: '.$this->password)
-                    ->action('Click to login', url('/'))
-                    ->line('Thank you for using our application!');
+                ->line('You have just been registered for an account on Ninja Restaurant Mobile Application!')
+                ->line('Now, you can login with account as your email and password.')
+                ->action('Click to see us in Ninja Restaurant website', url('https://ninja-restaurant.herokuapp.com/index'))
+                ->line('Thank you for using our application!');
+
     }
 
     /**

@@ -7,18 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Model\User;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\SendMailAfterCreate;
+use App\Http\Requests\AccountRequest;
 use Validator;
 
 class UserController extends BaseController
 {
-    public function index()
-    {
-        $success['token'] = 1;
-        $success['name'] = "ninja";
-
-        return $this->sendResponse($success, 'OK');
-    }
-
     /**
      * Login api
      *
@@ -40,6 +34,54 @@ class UserController extends BaseController
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
         } 
     }
+
+    /**
+     * Create a new account.
+     *
+     * @param App\Http\Requests\AccountRequest $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function register(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'password' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
+        // create path to store in cloud
+        $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
+        // upload to cloud
+        Cloudder::upload("https://res.cloudinary.com/ninjahh/image/upload/v1587542244/ninja_restaurant/accounts/f4azx5ff6heoug2toz9r.jpg", $public_id);
+        // get url of image
+        $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+        $img_url = Cloudder::show($public_id, $resize);
+
+        // create new account
+        $user = User::create([
+            'user_id' => explode('@', $request->email)[0],
+            'area' => 'shuriken',
+            'role' => 'user',
+            'name' => $request->name,
+            'image' => $img_url,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // send a mail with password to user email
+        $user->notify(new SendMailAfterCreate($request->password));
+
+        return $this->sendResponse('Registed', 'Register successfully.');
 
     /**
      * Edit account information.
