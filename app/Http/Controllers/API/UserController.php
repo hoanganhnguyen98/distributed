@@ -86,6 +86,7 @@ class UserController extends BaseController
         $user->notify(new SendMailAfterCreate($request->password));
 
         return $this->sendResponse('Registed', 'Register successfully.');
+    }
 
     /**
      * Edit account information.
