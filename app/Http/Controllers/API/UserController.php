@@ -84,7 +84,7 @@ class UserController extends BaseController
         ]);
 
         // send a mail with password to user email
-        // $user->notify(new SendMailAfterCreate($request->password));
+        $user->notify(new SendMailAfterCreate($request->password));
 
         return $this->sendResponse('Registed', 'Register successfully.');
     }
