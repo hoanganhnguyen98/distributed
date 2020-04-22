@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Model\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use App\Notifications\SendMailAfterCreate;
 use App\Http\Requests\AccountRequest;
 use Validator;
+use Cloudder;
 
 class UserController extends BaseController
 {
@@ -45,7 +49,7 @@ class UserController extends BaseController
     {
         $rules = [
             'name' => 'required',
-            'email' => 'required',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => 'required',
             'address' => 'required',
             'password' => 'required',
