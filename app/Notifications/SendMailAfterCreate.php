@@ -53,7 +53,7 @@ class SendMailAfterCreate extends Notification
         return (new MailMessage)
                 ->line('You have just been registered for an account on Ninja Restaurant Mobile Application!')
                 ->line('Now, you can login with account as your email and password.')
-                ->action('Click to see us in Ninja Restaurant website', url('https://ninja-restaurant.herokuapp.com/index'))
+                ->action('Click to see us in Ninja Restaurant website', url('/index'))
                 ->line('Thank you for using our application!');
 
     }
