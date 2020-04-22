@@ -65,7 +65,7 @@ class UserController extends BaseController
         // create path to store in cloud
         $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
         // upload to cloud
-        Cloudder::upload(File::get(asset('/img/avt.jpg')), $public_id);
+        Cloudder::upload("https://res.cloudinary.com/ninjahh/image/upload/v1587546081/ninja_restaurant/accounts/test1.jpg", $public_id);
         // get url of image
         $resize = array("width" => 300, "height" => 300, "crop" => "fill");
         $img_url = Cloudder::show($public_id, $resize);
