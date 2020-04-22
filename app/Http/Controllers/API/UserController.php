@@ -14,6 +14,7 @@ use App\Notifications\SendMailAfterCreate;
 use App\Http\Requests\AccountRequest;
 use Validator;
 use Cloudder;
+use File;
 
 class UserController extends BaseController
 {
