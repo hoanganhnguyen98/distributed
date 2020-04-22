@@ -83,7 +83,8 @@ class AccountController extends Controller
         $user->notify(new SendMailAfterCreate($password));
 
         $success = Lang::get('notify.success.create-account');
-        return redirect()->back()->with('success', $success);    }
+        return redirect()->back()->with('success', $success);
+    }
 
     /**
      * Show account list.
