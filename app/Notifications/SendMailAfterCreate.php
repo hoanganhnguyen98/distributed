@@ -51,9 +51,10 @@ class SendMailAfterCreate extends Notification
 
         // Here, return in api with app
         return (new MailMessage)
+                ->from('ninjarestaurant@noreply.com', 'Welcome to Ninja Restaurant')
                 ->line('You have just been registered for an account on Ninja Restaurant Mobile Application!')
                 ->line('Now, you can login with account as your email and password.')
-                ->action('Click to see us in Ninja Restaurant website', url('/index'))
+                ->action('See us in website', url('/index'))
                 ->line('Thank you for using our application!');
 
     }
