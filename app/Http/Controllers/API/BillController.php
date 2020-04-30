@@ -27,6 +27,7 @@ class BillController extends BaseController
             'number' => $request->number,
             'user_id' => $request->user_id,
             'food_name' => $request->food_name,
+            'image' => $request->image,
             'price' => $request->price
         ]);
 
