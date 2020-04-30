@@ -18,6 +18,7 @@ class BillDetail extends Model
         'number',
         'food_name',
         'price',
-        'user_id'
+        'user_id',
+        'image'
     ];
 }
