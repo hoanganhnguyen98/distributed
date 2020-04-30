@@ -16,5 +16,8 @@ class BillDetail extends Model
         'status',
         'food_id',
         'number',
+        'food_name',
+        'price',
+        'user_id'
     ];
 }
