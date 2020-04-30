@@ -19,7 +19,7 @@ class CurrentCart extends JsonResource
             'user_id' => $this->user_id,
             'status' => $this->status,
             'food_name' => $this->food_name,
-            'number' => $this->number
+            'number' => $this->number,
             'price' => $this->price,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),
