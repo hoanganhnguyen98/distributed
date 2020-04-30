@@ -22,3 +22,6 @@ Route::post('register', 'API\UserController@register');
 Route::post('user/update', 'API\UserController@update');
 
 Route::get('food/index/{source}', 'API\FoodController@index');
+
+Route::post('addtocart', 'API\BillController@addToCart');
+Route::get('cart/currentcart/{user_id}', 'API\BillController@getCurrentCart');
