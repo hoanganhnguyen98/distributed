@@ -34,6 +34,14 @@ class BillController extends BaseController
         return $this->sendResponse('Added', 'Add to cart successfully.');
     }
 
+    protected function removeCart($id)
+    {
+        $food = BillDetail::where([['id', $id], ['status', 'new']])->first();
+        $food->delete();
+
+        return $this->sendResponse('Removed', 'Remove food successfully.');
+    }
+
     protected function getCurrentCart($user_id)
     {
     	$carts = BillDetail::where([['user_id', $user_id], ['status', 'new']])->get();
