@@ -26,3 +26,4 @@ Route::get('food/index/{source}', 'API\FoodController@index');
 Route::post('addtocart', 'API\BillController@addToCart');
 Route::get('cart/currentcart/{user_id}', 'API\BillController@getCurrentCart');
 Route::get('cart/currentcart/remove/{id}', 'API\BillController@removeCart');
+Route::post('cart/currentcart/order', 'API\BillController@orderNow');
