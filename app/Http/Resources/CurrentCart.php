@@ -22,8 +22,8 @@ class CurrentCart extends JsonResource
             'image' => $this->image,
             'number' => $this->number,
             'price' => $this->price,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -9,6 +9,7 @@ use App\Model\Food;
 use App\Model\Bill;
 use App\Model\BillDetail;
 use App\Http\Resources\CurrentCart as CurrentCart;
+use App\Http\Resources\CartHistory as CartHistory;
 use Carbon\Carbon;
 
 class BillController extends BaseController
@@ -42,6 +43,13 @@ class BillController extends BaseController
     	$carts = BillDetail::where([['user_id', $user_id], ['status', 'new']])->get();
     
         return $this->sendResponse(CurrentCart::collection($carts), 'Carts retrieved successfully.');
+    }
+
+    protected function getHistory($user_id)
+    {
+        $historys = Bill::where([['receptionist_id', $user_id], ['status', 'new']])->get();
+    
+        return $this->sendResponse(CartHistory::collection($history), 'Cart histories retrieved successfully.');
     }
 
     protected function orderNow(Request $request)
