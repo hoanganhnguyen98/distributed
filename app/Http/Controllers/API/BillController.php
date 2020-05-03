@@ -9,6 +9,7 @@ use App\Model\Food;
 use App\Model\Bill;
 use App\Model\BillDetail;
 use App\Http\Resources\CurrentCart as CurrentCart;
+use Carbon\Carbon;
 
 class BillController extends BaseController
 {
@@ -65,7 +66,9 @@ class BillController extends BaseController
             'city' => $request->address,
             'phone' => $request->phone,
             'email' => $request->email,
-            'total_price' => $request->total_price
+            'total_price' => $request->total_price,
+            "created_at" =>  Carbon::now(),
+            "updated_at" => Carbon::now(), 
         ]);
 
         $carts = BillDetail::where([['user_id', $request->user_id], ['status', 'new']])->get();
