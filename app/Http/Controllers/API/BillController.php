@@ -49,7 +49,7 @@ class BillController extends BaseController
     {
         $historys = Bill::where([['receptionist_id', $user_id], ['status', 'new']])->get();
     
-        return $this->sendResponse(CartHistory::collection($history), 'Cart histories retrieved successfully.');
+        return $this->sendResponse(CartHistory::collection($historys), 'Cart histories retrieved successfully.');
     }
 
     protected function orderNow(Request $request)
