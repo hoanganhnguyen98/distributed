@@ -12,12 +12,6 @@ use App\Http\Resources\CurrentCart as CurrentCart;
 
 class BillController extends BaseController
 {
-    /**
-     * Create new bill.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     protected function addToCart(Request $request)
     {
         BillDetail::create([
@@ -47,5 +41,41 @@ class BillController extends BaseController
     	$carts = BillDetail::where([['user_id', $user_id], ['status', 'new']])->get();
     
         return $this->sendResponse(CurrentCart::collection($carts), 'Carts retrieved successfully.');
+    }
+
+    protected function orderNow(Request $request)
+    {
+        // Bill::create([
+        //     'receptionist_id' => $request->user_id,
+        //     'table_id' => 'app',
+        //     'customer_name' => $request->name,
+        //     'street' => $request->address,
+        //     'district' => $request->address,
+        //     'city' => $request->address,
+        //     'phone' => $request->phone,
+        //     'email' => $request->email,
+        //     'total_price' => $request->total_price
+        // ]);
+        $id = Bill::insertGetId([
+            'receptionist_id' => $request->user_id,
+            'table_id' => 'app',
+            'customer_name' => $request->name,
+            'street' => $request->address,
+            'district' => $request->address,
+            'city' => $request->address,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'total_price' => $request->total_price
+        ]);
+
+        $carts = BillDetail::where([['user_id', $request->user_id], ['status', 'new']])->get();
+
+        foreach ($carts as $cart) {
+            $cart->bill_id = $id;
+            $cart->status = 'done';
+            $cart->save();
+        }
+
+        return $this->sendResponse('Order', 'Order successfully.');
     }
 }
