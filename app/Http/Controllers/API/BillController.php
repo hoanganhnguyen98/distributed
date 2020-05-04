@@ -47,7 +47,7 @@ class BillController extends BaseController
 
     protected function getHistory($user_id)
     {
-        $historys = Bill::where([['receptionist_id', $user_id], ['status', 'new']])->get();
+        $historys = Bill::where('receptionist_id', $user_id)->get();
     
         return $this->sendResponse(CartHistory::collection($historys), 'Cart histories retrieved successfully.');
     }
