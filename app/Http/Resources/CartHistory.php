@@ -23,8 +23,8 @@ class CartHistory extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'total_price' => $this->total_price,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }
