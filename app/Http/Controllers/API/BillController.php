@@ -52,6 +52,13 @@ class BillController extends BaseController
         return $this->sendResponse(CartHistory::collection($historys), 'Cart histories retrieved successfully.');
     }
 
+    protected function getHistoryDetail($bill_id)
+    {
+        $historys = BillDetail::where('bill_id', $bill_id)->get();
+    
+        return $this->sendResponse(CurrentCart::collection($historys), 'Detail histories retrieved successfully.');
+    }
+
     protected function orderNow(Request $request)
     {
         // Bill::create([
