@@ -17,7 +17,11 @@ class FoodController extends BaseController
      */
     public function index($source)
     {
-        $products = Food::where('source',$source)->get();
+        if ($source === 'all') {
+            $products = Food::all();
+        } else {
+            $products = Food::where('source',$source)->get();
+        }
     
         return $this->sendResponse(FoodResource::collection($products), 'Products retrieved successfully.');
     }
