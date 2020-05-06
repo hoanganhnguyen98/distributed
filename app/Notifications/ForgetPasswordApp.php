@@ -45,7 +45,7 @@ class ForgetPasswordApp extends Notification
                 ->subject('Reset password request')
                 ->from('ninjarestaurant@noreply.com', 'Ninja Restaurant')
                 ->line('You have just requested to reset your password at Ninja Restaurant Mobile Application!')
-                ->line('Your check code is '.$checkCode)
+                ->line('Your check code is '.$this->checkCode)
                 ->line('Get check code and reset password at app.')
                 ->action('See us in website', url('/index'))
                 ->line('Thank you for using our application!');

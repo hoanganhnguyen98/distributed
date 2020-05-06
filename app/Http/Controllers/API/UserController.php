@@ -159,13 +159,15 @@ class UserController extends BaseController
 
         $user = User::where('email', $request->email)->first();
 
-        if ($user != null) {
+        if ($user !== null) {
             $checkCode = Str::random(8);
-            // send mail
-            $user->notify(new ForgetPasswordApp($chekcCode));
+            $user->remember_token = $checkCode;
 
             $success['checkCode'] = $checkCode;
             $success['email'] = $request->email;
+
+            // send mail
+            $user->notify(new ForgetPasswordApp($chekcCode));
 
             return $this->sendResponse($success, 'Check email to get code!');
         } else {
@@ -177,7 +179,8 @@ class UserController extends BaseController
     {
         $rules = [
             'email' =>  'required|email',
-            'new_password' => 'required'
+            'new_password' => 'required',
+            'check_code' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -185,10 +188,15 @@ class UserController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $user = User::where('email', $request->email)->first();
-        $user->password = bcrypt($request->new_password);
-        $user->save();
+        $user = User::where([['email', $request->email], ['remember_token', $request->check_code]])->first();
+        
+        if ($user !== null) {
+            $user->password = bcrypt($request->new_password);
+            $user->save();
 
-        return $this->sendResponse('Reseted', 'Reset password successfully!');
+            return $this->sendResponse('Reseted', 'Reset password successfully!');
+        } else {
+            return $this->sendError('Fail', 'Fail');
+        }
     }
 }
