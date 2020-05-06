@@ -135,7 +135,7 @@ class UserController extends BaseController
    
         $user = User::where('user_id', $request->user_id)->first();
         if (Hash::check($request->old_password, $user->password)) {
-            $user->password = $request->new_password;
+            $user->password = bcrypt($request->new_password);
             $user->save();
 
             return $this->sendResponse('Changed', 'Changed password successfully.');
