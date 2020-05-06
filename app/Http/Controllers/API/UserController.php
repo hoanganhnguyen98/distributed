@@ -167,7 +167,7 @@ class UserController extends BaseController
             $success['email'] = $request->email;
 
             // send mail
-            $user->notify(new ForgetPasswordApp($chekcCode));
+            $user->notify(new ForgetPasswordApp($checkCode));
 
             return $this->sendResponse($success, 'Check email to get code!');
         } else {
