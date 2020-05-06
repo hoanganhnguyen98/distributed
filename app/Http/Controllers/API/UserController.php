@@ -118,4 +118,29 @@ class UserController extends BaseController
    
         return $this->sendResponse('Updated', 'Updated successfully.');
     }
+
+    protected function changePassword(Request $request)
+    {
+        $rules = [
+            'user_id' => 'required',
+            'new_password' => 'required',
+            'old_password' => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+   
+        $user = User::where('user_id', $request->user_id)->first();
+        if (Hash::check($request->old_password, $user->password)) {
+            $user->password = $request->new_password;
+            $user->save();
+
+            return $this->sendResponse('Changed', 'Changed password successfully.');
+        } else {
+            return $this->sendError('Incorrect old password', 'Incorrect old password');
+        }
+    }
 }

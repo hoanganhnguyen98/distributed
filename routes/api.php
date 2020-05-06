@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
 Route::post('user/update', 'API\UserController@update');
+Route::post('user/changepassword', 'API\UserController@changePassword');
 
 Route::get('food/index/{source}', 'API\FoodController@index');
 
