@@ -161,6 +161,7 @@ class UserController extends BaseController
         if ($user !== null) {
             $checkCode = Str::random(8);
             $user->remember_token = $checkCode;
+            $user->save();
 
             $success['checkCode'] = $checkCode;
             $success['email'] = $request->email;
