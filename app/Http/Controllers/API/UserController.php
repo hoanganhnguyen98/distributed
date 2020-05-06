@@ -16,7 +16,6 @@ use App\Http\Requests\AccountRequest;
 use Validator;
 use Cloudder;
 use File;
-use Illuminate\Support\Str;
 
 class UserController extends BaseController
 {
