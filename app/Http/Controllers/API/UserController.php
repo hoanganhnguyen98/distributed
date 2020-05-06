@@ -11,10 +11,12 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\SendMailAfterCreate;
+use App\Notifications\ForgetPasswordApp;
 use App\Http\Requests\AccountRequest;
 use Validator;
 use Cloudder;
 use File;
+use Illuminate\Support\Str;
 
 class UserController extends BaseController
 {
@@ -142,5 +144,51 @@ class UserController extends BaseController
         } else {
             return $this->sendError('Incorrect old password', 'Incorrect old password');
         }
+    }
+
+    protected function forgetPassword(Request $request)
+    {
+        $rules = [
+            'email' =>  'required|email'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user != null) {
+            $checkCode = Str::random(8);
+            // send mail
+            $user->notify(new ForgetPasswordApp($chekcCode));
+
+            $success['checkCode'] = $checkCode;
+            $success['email'] = $request->email;
+
+            return $this->sendResponse($success, 'Check email to get code!');
+        } else {
+            return $this->sendError('Incorrect email', 'Incorrect email');
+        }
+    }
+
+    protected function resetPassword(Request $request)
+    {
+        $rules = [
+            'email' =>  'required|email',
+            'new_password' => 'required'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = bcrypt($request->new_password);
+        $user->save();
+
+        return $this->sendResponse('Reseted', 'Reset password successfully!');
     }
 }

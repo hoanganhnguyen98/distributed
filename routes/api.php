@@ -21,6 +21,8 @@ Route::post('login', 'API\UserController@login');
 Route::post('register', 'API\UserController@register');
 Route::post('user/update', 'API\UserController@update');
 Route::post('user/changepassword', 'API\UserController@changePassword');
+Route::post('user/forgetpassword', 'API\UserController@forgetPassword');
+Route::post('user/resetpassword', 'API\UserController@resetPassword');
 
 Route::get('food/index/{source}', 'API\FoodController@index');
 
