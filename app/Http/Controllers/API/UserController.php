@@ -49,51 +49,51 @@ class UserController extends BaseController
      */
     protected function register(Request $request)
     {
-        $rules = [
-            'name' => 'required',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone' => 'required',
-            'address' => 'required',
-            'password' => 'required',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-   
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
-        // create path to store in cloud
-        $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
-        // upload to cloud
-        Cloudder::upload("https://res.cloudinary.com/ninjahh/image/upload/v1587546081/ninja_restaurant/accounts/test1.jpg", $public_id);
-        // get url of image
-        $resize = array("width" => 300, "height" => 300, "crop" => "fill");
-        $img_url = Cloudder::show($public_id, $resize);
-
-        // create new account
-        $user = User::create([
-            'user_id' => explode('@', $request->email)[0],
-            'area' => 'shuriken',
-            'role' => 'user',
-            'name' => $request->name,
-            'image' => $img_url,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        // send a mail with password to user email
-        // $user->notify(new SendMailAfterCreate($request->password));
-
         try {
-            $mail = $user->notify(new SendMailAfterCreate($request->password));
+            DB::beginTransaction();
+            $rules = [
+                'name' => 'required',
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'phone' => 'required',
+                'address' => 'required',
+                'password' => 'required',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if($validator->fails()){
+                return $this->sendError('Validation Error.', $validator->errors());
+            }
+
+            // create path to store in cloud
+            $public_id = "ninja_restaurant/accounts/".(explode('@', $request->email)[0]);
+            // upload to cloud
+            Cloudder::upload("https://res.cloudinary.com/ninjahh/image/upload/v1587546081/ninja_restaurant/accounts/test1.jpg", $public_id);
+            // get url of image
+            $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+            $img_url = Cloudder::show($public_id, $resize);
+
+            // create new account
+            $user = User::create([
+                'user_id' => explode('@', $request->email)[0],
+                'area' => 'shuriken',
+                'role' => 'user',
+                'name' => $request->name,
+                'image' => $img_url,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+
+            // send a mail with password to user email
+            $user->notify(new SendMailAfterCreate($request->password));
+
+            return $this->sendResponse('Registed', 'Register successfully.');
         } catch (Exception $e) {
+            DB::rollBack();
             return $this->sendError('Validation Error.', $e);
         }
-
-        return $this->sendResponse('Registed', 'Register successfully.');
     }
 
     /**
