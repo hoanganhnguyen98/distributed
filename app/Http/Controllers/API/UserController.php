@@ -60,7 +60,7 @@ class UserController extends BaseController
         $validator = Validator::make($request->all(), $rules);
    
         if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());       
+            return $this->sendError('Validation Error.', $validator->errors());
         }
 
         // create path to store in cloud
@@ -85,7 +85,13 @@ class UserController extends BaseController
         ]);
 
         // send a mail with password to user email
-        $user->notify(new SendMailAfterCreate($request->password));
+        // $user->notify(new SendMailAfterCreate($request->password));
+
+        try {
+            $mail = $user->notify(new SendMailAfterCreate($request->password));
+        } catch (Exception $e) {
+            return $this->sendError('Validation Error.', $e);
+        }
 
         return $this->sendResponse('Registed', 'Register successfully.');
     }
