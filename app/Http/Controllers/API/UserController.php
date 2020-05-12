@@ -90,8 +90,8 @@ class UserController extends BaseController
             // $user->notify(new SendMailAfterCreate($request->password));
 
             try {
-                $mail = $user->notify(new SendMailAfterCreate($request->password));
-            } catch (Exception $e) {
+                $user->notify(new SendMailAfterCreate($request->password));
+            } catch (\Exception $e) {
                 DB::rollBack();
                 return $this->sendError('Validation Error.', $e);
             }
