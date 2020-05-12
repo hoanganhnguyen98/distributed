@@ -87,8 +87,16 @@ class UserController extends BaseController
             ]);
 
             // send a mail with password to user email
-            $user->notify(new SendMailAfterCreate($request->password));
+            // $user->notify(new SendMailAfterCreate($request->password));
 
+            try {
+                $mail = $user->notify(new SendMailAfterCreate($request->password));
+            } catch (Exception $e) {
+                DB::rollBack();
+                return $this->sendError('Validation Error.', $e);
+            }
+
+            DB::commit();
             return $this->sendResponse('Registed', 'Register successfully.');
         } catch (Exception $e) {
             DB::rollBack();
