@@ -41,6 +41,8 @@ class ImageController extends Controller
         // Truyền message lên server Pusher
         event(new DemoPusherEvent($imageUrl));
 
+        return;
+
         // return redirect()->back()->with('success', "Upload image successfully!")->with('image', $img_url);
     }
 }

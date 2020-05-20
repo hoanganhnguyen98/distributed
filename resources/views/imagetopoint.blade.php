@@ -37,7 +37,7 @@
         </div>
 
         <div class="container mt-3 mb-3">
-            <img src="" width="80%" height="50%" id="imageToPoint">
+            <img src="https://res.cloudinary.com/ninjahh/image/upload/v1589959108/ninja_restaurant/imagetopoint/dgd5z0yzwuzlnuwjsmo3.png" width="80%" height="50%" id="imageToPoint">
         </div>
     </body>
 
@@ -58,7 +58,7 @@
             var channel = pusher.subscribe('channel-demo');
 
             //Bind một function addMesagePusher với sự kiện DemoPusherEvent
-            channel.bind('App\\Events\\DemoPusherEvent', addMessageDemo);
+            channel.bind('App\\Events\\DemoPusherEvent', showImage);
             });
 
             //function add message
