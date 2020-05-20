@@ -38,6 +38,12 @@
                 </div>
             </form>
         </div>
+
+        @if(Session::has('image'))
+        <div class="container mt-3">
+            <img src="{!! Session::get('iamge') !!}">
+        </div>
+        @endif
     </body>
 
     <!-- JQuery -->
