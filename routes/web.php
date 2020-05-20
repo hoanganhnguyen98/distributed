@@ -11,6 +11,10 @@
 |
 */
 
+//get image
+Route::get('/imagetopoint', 'ImageController@getUrl')->name('image-home');
+Route::post('/imagetopoint', 'ImageController@getImage')->name('get-image');
+
 // show main home page of website - customer can see
 Route::get('/index', 'UserController@index')->name('index');
 
