@@ -30,7 +30,7 @@
                 </form>
             </div>
             <div class="container col-5">
-                <img src="{{ $imageUrl }}" width="80%" height="80%">
+                <img src="{{ $imageUrl }}" width="80%" height="100%">
             </div>
             <div class="container col-1"></div>
         </div>
