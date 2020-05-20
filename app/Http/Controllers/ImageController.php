@@ -34,7 +34,7 @@ class ImageController extends Controller
             // upload to cloud
             Cloudder::upload($request->file('image'), $public_id);
             // get url of image
-            $resize = array("width" => 1000, "height" => 1700, "crop" => "fill");
+            $resize = array("width" => 500, "height" => 1000, "crop" => "fit");
             $imageUrl = Cloudder::show($public_id, $resize);
         }
 
