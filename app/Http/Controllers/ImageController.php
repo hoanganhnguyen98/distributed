@@ -25,7 +25,7 @@ class ImageController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
-            return redirect(-)>back()->with('errors', "Image null!");
+            return redirect()->back()->with('errors', "Image null!");
         }
 
         if ($request->hasFile('image')){
@@ -38,7 +38,7 @@ class ImageController extends Controller
             $imageUrl = Cloudder::show($public_id, $resize);
         }
 
-        session(['success' => 'Upload image successfully!']);
+        session(['success' => 'Upload image successfully']);
 
         return view('imagetopoint', compact('imageUrl'));
     }
