@@ -32,7 +32,9 @@
                 </div>
 
                 <div class="form-group">
-                    <input type="button" class="btn btn-primary" id="button" value="Upload">
+                    <button type="submit" class="btn btn-primary font-weight-bold">
+                        Upload
+                    </button>
                 </div>
             </form>
         </div>
