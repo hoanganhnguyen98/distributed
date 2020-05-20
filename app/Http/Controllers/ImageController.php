@@ -38,8 +38,6 @@ class ImageController extends Controller
             $imageUrl = Cloudder::show($public_id, $resize);
         }
 
-        session(['success' => 'Upload image successfully']);
-
         return view('imagetopoint', compact('imageUrl'));
     }
 }

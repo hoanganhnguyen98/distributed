@@ -12,20 +12,13 @@
 
     <body>
         <div class="row container mt-3">
+            <div class="container col-2"></div>
             <div class="container col-4">
-                @if(Session::has('success'))
-                    @include('layouts.toast.success')
-                @endif
-
-                @if($errors->any())
-                    @include('layouts.toast.errors')
-                @endif
-
                 <form method="POST" enctype="multipart/form-data" action="{{ route('get-image') }}">
                     @csrf
 
                     <div class="form-group">
-                        <label>Image to upload</label>
+                        <label><i class="fas fa-fan fa-spin mr-2"></i>Image to upload</label>
                         <input type="file" id="image" class="form-control-file" name="image" accept="image/jpeg, image/jpg, image/png" required>
                     </div>
 
@@ -36,9 +29,10 @@
                     </div>
                 </form>
             </div>
-            <div class="container col-8">
-                <img src="{{ $imageUrl }}" width="80%" height="100%" id="imageToPoint">
+            <div class="container col-5">
+                <img src="{{ $imageUrl }}" width="80%" height="80%">
             </div>
+            <div class="container col-1"></div>
         </div>
     </body>
 
