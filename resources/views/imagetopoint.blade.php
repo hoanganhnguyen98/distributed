@@ -41,7 +41,7 @@
 
         @if(Session::has('image'))
         <div class="container mt-3">
-            <img src="{!! Session::get('iamge') !!}">
+            <img src="{{ Session::get('image') }}">
         </div>
         @endif
     </body>
