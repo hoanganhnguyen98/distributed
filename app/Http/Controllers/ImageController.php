@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AccountRequest;
 use Illuminate\Support\Facades\Validator;
 use Cloudder;
+use App\Events\DemoPusherEvent;
 
 class ImageController extends Controller
 {
@@ -34,9 +35,12 @@ class ImageController extends Controller
             Cloudder::upload($request->file('image'), $public_id);
             // get url of image
             $resize = array("width" => 300, "height" => 300, "crop" => "fill");
-            $img_url = Cloudder::show($public_id, $resize);
+            $imageUrl = Cloudder::show($public_id, $resize);
         }
 
-        return redirect()->back()->with('success', "Upload image successfully!")->with('image', $img_url);
+        // Truyền message lên server Pusher
+        event(new DemoPusherEvent($imageUrl));
+
+        // return redirect()->back()->with('success', "Upload image successfully!")->with('image', $img_url);
     }
 }

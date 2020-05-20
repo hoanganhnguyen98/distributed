@@ -20,13 +20,11 @@ class DemoPusherEvent implements ShouldBroadcast
      * @return void
      */
 
-    public $messages;
-    public $number;
+    public $imageUrl;
 
-    public function __construct($messages, $number)
+    public function __construct($imageUrl)
     {
-        $this->messages = $messages;
-        $this->number = $number;
+        $this->imageUrl = $imageUrl;
     }
 
     /**

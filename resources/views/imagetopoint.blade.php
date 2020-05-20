@@ -36,14 +36,34 @@
             </form>
         </div>
 
-        @if(Session::has('image'))
-        <div class="container mt-3">
-            <img src="{{ Session::get('image') }}" width="100%">
+        <div class="container mt-3 mb-3">
+            <img src="" width="80%" height="50%" id="imageToPoint">
         </div>
-        @endif
     </body>
 
     @section('scripts')
         @include('layouts.partials.scripts')
     @show
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Khởi tạo một đối tượng Pusher với app_key
+            var pusher = new Pusher('6063520d51edaa14b9cf', {
+                cluster: 'ap1',
+                encrypted: true
+            });
+
+            //Đăng ký với kênh chanel-demo-real-time mà ta đã tạo trong file DemoPusherEvent.php
+            var channel = pusher.subscribe('channel-demo');
+
+            //Bind một function addMesagePusher với sự kiện DemoPusherEvent
+            channel.bind('App\\Events\\DemoPusherEvent', addMessageDemo);
+            });
+
+            //function add message
+            function showImage(data) {
+                $("#imageToPoint").attr("src", data.url);
+            }
+    </script>
 </html>
