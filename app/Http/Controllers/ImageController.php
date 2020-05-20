@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\AccountRequest;
 use Illuminate\Support\Facades\Validator;
 use Cloudder;
-use App\Events\DemoPusherEvent;
 
 class ImageController extends Controller
 {
     public function getUrl()
     {
-        return view('imagetopoint');
+        $imageUrl = "https://res.cloudinary.com/ninjahh/image/upload/v1589960245/ninja_restaurant/imagetopoint/smzo5oyarcqru4nvao7d.png";
+        return view('imagetopoint', compact('imageUrl'));
     }
 
     public function getImage(Request $request)
@@ -25,7 +25,7 @@ class ImageController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if($validator->fails()){
-            return redirect()->back()->with('errors', "Image null!");
+            return redirect(-)>back()->with('errors', "Image null!");
         }
 
         if ($request->hasFile('image')){
@@ -34,15 +34,12 @@ class ImageController extends Controller
             // upload to cloud
             Cloudder::upload($request->file('image'), $public_id);
             // get url of image
-            $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+            $resize = array("width" => 1000, "height" => 1700, "crop" => "fill");
             $imageUrl = Cloudder::show($public_id, $resize);
         }
 
-        // Truyền message lên server Pusher
-        event(new DemoPusherEvent($imageUrl));
+        session(['success' => 'Upload image successfully!']);
 
-        return;
-
-        // return redirect()->back()->with('success', "Upload image successfully!")->with('image', $img_url);
+        return view('imagetopoint', compact('imageUrl'));
     }
 }
