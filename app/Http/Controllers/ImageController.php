@@ -15,7 +15,7 @@ class ImageController extends Controller
         return view('imagetopoint');
     }
 
-    public function getImage(Requests $request)
+    public function getImage(Request $request)
     {
         $rules = [
             'image' => 'required',
