@@ -37,6 +37,6 @@ class ImageController extends Controller
             $img_url = Cloudder::show($public_id, $resize);
         }
 
-        return redirect()->back()->with('success', "Upload image successfully!");
+        return redirect()->back()->with([['success', "Upload image successfully!"],['image', $img_url]]);
     }
 }
