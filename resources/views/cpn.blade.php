@@ -1,4 +1,13 @@
+@extends('layouts.app')
+
+@section('htmlheader_title')
+    CPN
+@endsection
+
+@section('content')
 <form method="post" action=cpn-file enctype="multipart/form-data">
+    @csrf
+
     <div class="form-group">
         <label>Tải File Excel</label>
         <input type="file" name="file" class="form-control-file"
@@ -9,3 +18,4 @@
         <button type="submit">Tải lên</button>
     </div>
 </form>
+@endsection
