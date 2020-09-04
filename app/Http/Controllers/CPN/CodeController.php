@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Input;
 class CodeController extends Controller
 {
     public function getContent(Request $request){
-        $homepage = file_get_contents('http://www.vnpost.vn/vi-vn/dinh-vi/buu-pham?key=EA192662076VN');
+        $key = 'EA192662076VN';
+        $homepage = file_get_contents('http://www.vnpost.vn/vi-vn/dinh-vi/buu-pham?key='.$key);
         echo $homepage;
     }
 }
