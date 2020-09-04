@@ -12,11 +12,14 @@ class CodeController extends Controller
     public function getContent(Request $request){
         $arrayCode = [];
 
-        Excel::load($request->file, function ($reader) {
+        // Excel::load($request->file, function ($reader) {
 
-            foreach ($reader->toArray() as $row) {
-                echo $row;
-            }
-        });
+        //     foreach ($reader->toArray() as $row) {
+        //         echo $row;
+        //     }
+        // });
+        $rows = Excel::load($request->file)->get();
+
+        dd($rows)
     }
 }
