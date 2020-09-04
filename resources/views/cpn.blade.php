@@ -15,7 +15,7 @@
     </div>
 
     <div class="form-group">
-        <button type="submit">Tải lên</button>
+        <button type="submit" class="btn btn-primary">Tải lên</button>
     </div>
 </form>
 @endsection
