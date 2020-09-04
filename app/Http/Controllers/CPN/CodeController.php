@@ -10,16 +10,7 @@ use Illuminate\Support\Facades\Input;
 class CodeController extends Controller
 {
     public function getContent(Request $request){
-        $arrayCode = [];
-
-        // Excel::load($request->file, function ($reader) {
-
-        //     foreach ($reader->toArray() as $row) {
-        //         echo $row;
-        //     }
-        // });
-        $rows = Excel::load($request->file)->get();
-
-        dd($rows);
+        $homepage = file_get_contents('http://www.vnpost.vn/vi-vn/dinh-vi/buu-pham?key=EA192662076VN');
+        echo $homepage;
     }
 }
