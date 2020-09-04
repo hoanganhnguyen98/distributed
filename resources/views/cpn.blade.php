@@ -19,3 +19,10 @@
     </div>
 </form>
 @endsection
+
+@section('custom_js')
+<script type="text/javascript">
+    $(".mailer-prop-value").eq(3).html();
+    $(".liner-checker-last p").eq(0).html().substring(0, $(".liner-checker-last p").eq(0).html().length-5);
+</script>
+@endsection
