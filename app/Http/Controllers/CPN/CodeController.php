@@ -20,6 +20,6 @@ class CodeController extends Controller
         // });
         $rows = Excel::load($request->file)->get();
 
-        dd($rows)
+        dd($rows);
     }
 }
