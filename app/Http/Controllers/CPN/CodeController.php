@@ -11,7 +11,7 @@ class CodeController extends Controller
 {
     public function getContent(Request $request){
         $key = 'EA192662076VN';
-        $homepage = file_get_contents('http://www.vnpost.vn/vi-vn/dinh-vi/buu-pham?key='.$key);
+        $homepage = file_get_contents('https://247post.vn/dinh-vi-buu-pham/AP3680267402');
         echo $homepage;
     }
 }
