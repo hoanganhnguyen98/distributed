@@ -1,0 +1,16 @@
+.card-body .table {
+    width: 100%;
+}
+
+.table img {
+    width: 50%;
+}
+
+.table .action {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.action {
+	display: none;
+}
