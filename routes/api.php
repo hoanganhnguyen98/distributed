@@ -18,7 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // xu ly cong viec
-Route::post('api/handling/work-handler', 'Distributed\TaskController@workHandler');
+Route::post('handling/work-handler', 'Distributed\TaskController@workHandler');
 
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
