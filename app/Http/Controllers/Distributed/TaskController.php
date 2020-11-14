@@ -43,8 +43,8 @@ class TaskController extends BaseController
             return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
         }
 
-        $page = $request->get('id') ? $request->get('id') : -1;
-        $limit = $request->get('limit') ? $request->get('limit') : -1;
+        $page = $request->get('id') ? $request->get('id') : 0;
+        $limit = $request->get('limit') ? $request->get('limit') : 0;
 
         if (!$page || !$limit) {
             $tasks = Task::where('type',$type_id)->get();
@@ -63,6 +63,6 @@ class TaskController extends BaseController
             'tasks' => $tasks
         ];
 
-        return $this->sendResponse($tasks);
+        return $this->sendResponse($data);
     }
 }
