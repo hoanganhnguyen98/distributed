@@ -35,10 +35,17 @@ class TaskController extends BaseController
 
     }
 
-    public function taskListing()
+    public function taskListing(Request $request)
     {
-        $tanks = Task::all();
+        $type_id = $request->get('id');
 
-        return $this->sendResponse($tanks);
+        if(!$type_id) {
+            return $this->sendError('Không có giá trị định danh nhóm sự cố', 'Lưới điện: 000000, Đê điều: 111111, Cháy rừng: 222222, Cây trồng: 333333');
+        }
+
+
+        $tasks = Task::where('type',$type_id)->get();
+
+        return $this->sendResponse($tasks);
     }
 }
