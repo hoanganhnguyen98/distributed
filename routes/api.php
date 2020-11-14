@@ -18,10 +18,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // xu ly cong viec
-Route::post('handling/work-handler', 'Distributed\TaskController@workHandler');
+Route::post('task\handler', 'Distributed\TaskController@handler');
+Route::get('task\listing', 'Distributed\TaskController@listing');
 
-// listing
-Route::get('handling/task-listing', 'Distributed\TaskController@taskListing');
+// vien tro
+Route::get('support\listing', 'Distributed\SupportController@listing');
+
+// bao cao
+Route::get('report\listing', 'Distributed\ReportController@listing');
+
+
+
+
+
+
+
+
+
+
+
 
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------

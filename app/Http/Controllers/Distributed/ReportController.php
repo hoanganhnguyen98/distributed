@@ -4,37 +4,11 @@ namespace App\Http\Controllers\Distributed;
 
 use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
-use App\Model\Task;
+use App\Model\Report;
 use Carbon\Carbon;
 
-class TaskController extends BaseController
+class ReportController extends BaseController
 {
-    // param: id sự cố
-    public function handler(Request $request)
-    {
-        $id = $request->get('id');
-
-        if (!$id) {
-            return $this->sendError('Không có giá trị định danh sự cố');
-        }
-
-        // checking
-        // $incident = $this->incidentChecking($id);
-
-        // if (!$incident) {
-        //     return $this->sendError('Sự cố không tồn tại');
-        // }
-
-
-
-
-    }
-
-    public function incidentChecking($id)
-    {
-
-    }
-
     public function listing(Request $request)
     {
         $type_id = $request->get('id');
@@ -48,11 +22,11 @@ class TaskController extends BaseController
         $metadata = [];
 
         if (!$page || !$limit) {
-            $tasks = Task::where('type',$type_id)->get();
+            $lists = Report::where('type',$type_id)->get();
         } else {
-            $tasks = Task::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
+            $lists = Report::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
 
-            $count = Task::where('type',$type_id)->count();
+            $count = Report::where('type',$type_id)->count();
             $total = ceil($count / $limit);
 
             $metadata = [
@@ -64,7 +38,7 @@ class TaskController extends BaseController
 
         $data[] = [
             'metadata' => $metadata,
-            'tasks' => $tasks
+            'lists' => $lists
         ];
 
         return $this->sendResponse($data);
