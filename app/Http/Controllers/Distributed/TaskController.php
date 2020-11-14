@@ -43,23 +43,27 @@ class TaskController extends BaseController
             return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
         }
 
-        $page = $request->get('page') ? $request->get('page') : 0;
-        $limit = $request->get('limit') ? $request->get('limit') : 0;
+        $page = $request->get('page');
+        $limit = $request->get('limit');
+        $metadata = [];
 
         if (!$page || !$limit) {
             $tasks = Task::where('type',$type_id)->get();
         } else {
             $tasks = Task::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
+
+            $count = Task::where('type',$type_id)->count();
+            $total = ceil($count / $limit);
+
+            $metadata = [
+                'total' => (int) $total,
+                'page' => (int) $page,
+                'limit' => (int) $limit
+            ];
         }
 
-        $total = Task::where('type',$type_id)->count();
-
         $data[] = [
-            'metadata' => [
-                'total' => $total,
-                'page' => $page,
-                'limit' => $limit
-            ],
+            'metadata' => $metadata,
             'tasks' => $tasks
         ];
 
