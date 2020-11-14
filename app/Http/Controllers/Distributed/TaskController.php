@@ -40,11 +40,28 @@ class TaskController extends BaseController
         $type_id = $request->get('id');
 
         if(!$type_id) {
-            return $this->sendError('Không có giá trị định danh nhóm sự cố', 'Lưới điện: 000000, Đê điều: 111111, Cháy rừng: 222222, Cây trồng: 333333');
+            return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
         }
 
+        $page = $request->get('id') ? $request->get('id') : -1;
+        $limit = $request->get('limit') ? $request->get('limit') : -1;
 
-        $tasks = Task::where('type',$type_id)->get();
+        if (!$page || !$limit) {
+            $tasks = Task::where('type',$type_id)->get();
+        } else {
+            $tasks = Task::where('type',$type_id)->limit($limit)->offset(($page - 1) * $limit)->get();
+        }
+
+        $total = Task::where('type',$type_id)->count();
+
+        $data[] = [
+            'metadata' => [
+                'total' => $total,
+                'page' => $page,
+                'limit' => $limit
+            ],
+            'tasks' => $tasks
+        ];
 
         return $this->sendResponse($tasks);
     }

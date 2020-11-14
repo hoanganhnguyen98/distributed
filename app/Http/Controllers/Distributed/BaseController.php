@@ -11,11 +11,14 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($data)
+    public function sendResponse($data = [], $message = 'Thành công')
     {
     	$response = [
-            'success' => true,
-            'data'    => $data,
+            'data' => $data,
+            'error' => [
+                "code" => 200,
+                "message" => $message
+            ]
         ];
 
         return response()->json($response, 200);
@@ -26,12 +29,14 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($message = 'Lỗi chưa xác định', $comment = null, $code = 404)
+    public function sendError($message = 'Lỗi chưa xác định', $code = 404)
     {
     	$response = [
-            'success' => false,
-            'message' => $message,
-            'comment' => $comment
+            'data' => [],
+            'error' => [
+                "code" => $code,
+                "message" => $message
+            ]
         ];
 
         return response()->json($response, $code);
