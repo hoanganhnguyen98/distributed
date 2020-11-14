@@ -2,14 +2,9 @@
 
 namespace App\Http\Controllers\Distributed;
 
-use App\Http\Controllers\Controller;
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
-use App\Model\Food;
-use App\Model\Bill;
-use App\Model\BillDetail;
-use App\Http\Resources\CurrentCart as CurrentCart;
-use App\Http\Resources\CartHistory as CartHistory;
+use App\Model\Task;
 use Carbon\Carbon;
 
 class TaskController extends BaseController
@@ -38,5 +33,12 @@ class TaskController extends BaseController
     public function incidentChecking($id)
     {
 
+    }
+
+    public function taskListing()
+    {
+        $tanks = Task::all();
+
+        return $this->sendResponse($tanks);
     }
 }

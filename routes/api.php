@@ -20,6 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // xu ly cong viec
 Route::post('handling/work-handler', 'Distributed\TaskController@workHandler');
 
+// listing
+Route::get('handling/task-listing', 'Distributed\TaskController@taskListing');
+
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------
