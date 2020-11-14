@@ -27,7 +27,7 @@ class TaskController extends BaseController
 
 
 
-        // return $this->sendResponse('Removed', 'Remove food successfully.');
+
     }
 
     public function incidentChecking($id)
@@ -43,8 +43,8 @@ class TaskController extends BaseController
             return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
         }
 
-        $page = $request->get('id') ? $request->get('id') : 0;
-        $limit = $request->get('limit') ? $request->get('limit') : 0;
+        $page = $request->get('id');
+        $limit = $request->get('limit');
 
         if (!$page || !$limit) {
             $tasks = Task::where('type',$type_id)->get();
