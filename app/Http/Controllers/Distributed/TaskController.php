@@ -27,7 +27,7 @@ class TaskController extends BaseController
 
 
 
-        // return $this->sendResponse('Removed', 'Remove food successfully.');
+
     }
 
     public function incidentChecking($id)
