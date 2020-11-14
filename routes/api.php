@@ -18,14 +18,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 // xu ly cong viec
-Route::post('task\handler', 'Distributed\TaskController@handler');
-Route::get('task\listing', 'Distributed\TaskController@listing');
+Route::post('task/handler', 'Distributed\TaskController@handler');
+Route::get('task/listing', 'Distributed\TaskController@listing');
 
 // vien tro
-Route::get('support\listing', 'Distributed\SupportController@listing');
+Route::get('support/listing', 'Distributed\SupportController@listing');
 
 // bao cao
-Route::get('report\listing', 'Distributed\ReportController@listing');
+Route::get('report/listing', 'Distributed\ReportController@listing');
 
 
 

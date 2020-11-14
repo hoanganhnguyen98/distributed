@@ -22,9 +22,9 @@ class ReportController extends BaseController
         $metadata = [];
 
         if (!$page || !$limit) {
-            $lists = Report::where('type',$type_id)->get();
+            $list = Report::where('type',$type_id)->get();
         } else {
-            $lists = Report::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
+            $list = Report::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
 
             $count = Report::where('type',$type_id)->count();
             $total = ceil($count / $limit);
@@ -38,7 +38,7 @@ class ReportController extends BaseController
 
         $data[] = [
             'metadata' => $metadata,
-            'lists' => $lists
+            'list' => $list
         ];
 
         return $this->sendResponse($data);

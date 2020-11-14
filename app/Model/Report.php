@@ -12,5 +12,10 @@ class Report extends Model
      * @var array
      */
     protected $fillable = [
+        'employee_id',
+        'incident_id',
+        'content',
+        'status',
+        'type'
     ];
 }

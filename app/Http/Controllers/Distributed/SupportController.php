@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class SupportController extends BaseController
 {
-    public function Listing(Request $request)
+    public function listing(Request $request)
     {
         $type_id = $request->get('id');
 
@@ -22,9 +22,9 @@ class SupportController extends BaseController
         $metadata = [];
 
         if (!$page || !$limit) {
-            $lists = Support::where('type',$type_id)->get();
+            $list = Support::where('type',$type_id)->get();
         } else {
-            $lists = Support::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
+            $list = Support::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
 
             $count = Support::where('type',$type_id)->count();
             $total = ceil($count / $limit);
@@ -38,7 +38,7 @@ class SupportController extends BaseController
 
         $data[] = [
             'metadata' => $metadata,
-            'lists' => $lists
+            'list' => $list
         ];
 
         return $this->sendResponse($data);
