@@ -43,7 +43,7 @@ class TaskController extends BaseController
             return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
         }
 
-        $page = $request->get('id') ? $request->get('id') : 0;
+        $page = $request->get('page') ? $request->get('page') : 0;
         $limit = $request->get('limit') ? $request->get('limit') : 0;
 
         if (!$page || !$limit) {
