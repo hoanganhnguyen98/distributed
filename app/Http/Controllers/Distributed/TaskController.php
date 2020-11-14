@@ -49,7 +49,7 @@ class TaskController extends BaseController
         if (!$page || !$limit) {
             $tasks = Task::where('type',$type_id)->get();
         } else {
-            $tasks = Task::where('type',$type_id)->limit($limit)->offset(($page - 1) * $limit)->get();
+            $tasks = Task::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
         }
 
         $total = Task::where('type',$type_id)->count();
