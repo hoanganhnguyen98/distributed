@@ -5,34 +5,19 @@ namespace App\Http\Controllers\Distributed;
 use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Task;
+use App\Model\Employee;
 use Carbon\Carbon;
 
 class TaskController extends BaseController
 {
-    // param: id sự cố
-    public function handler(Request $request)
+    protected $incident;
+
+    protected $employees;
+
+    public function __construct()
     {
-        $id = $request->get('id');
-
-        if (!$id) {
-            return $this->sendError('Không có giá trị định danh sự cố');
-        }
-
-        // checking
-        // $incident = $this->incidentChecking($id);
-
-        // if (!$incident) {
-        //     return $this->sendError('Sự cố không tồn tại');
-        // }
-
-
-
-
-    }
-
-    public function incidentChecking($id)
-    {
-
+        $this->incident = [];
+        $this->employees = [];
     }
 
     public function listing(Request $request)
@@ -67,6 +52,190 @@ class TaskController extends BaseController
             'tasks' => $tasks
         ];
 
-        return $this->sendResponse($data);
+        return $this->sendResponse($data, 'Lấy danh sách công việc xử lý thành công');
+    }
+
+    public function handler(Request $request)
+    {
+        $incident_id = $request->get('id');
+
+        if (!$incident_id) {
+            return $this->sendError('Không có giá trị định danh sự cố', 400);
+        }
+
+        // checking to get incident information
+        $this->incident = $this->incidentChecking($incident_id);
+
+        // get employee to handler new task
+        $captain_id = $this->employeeGetting();
+
+        // create new task
+        $task_id = $this->createTask($captain_id);
+
+        foreach ($this->employees as $employee) {
+            $employee_id = $employee['employee_id'];
+            $name = $employee['name'];
+
+            $this->setNewTask($task_id, $employee_id, $name, $this->incident['priority']);
+        }
+
+        return $this->sendResponse([], 'Sự cố đang được xử lý');
+    }
+
+    public function createTask($captain_id)
+    {
+        $new_task = Task::create([
+            'incident_id' => $this->incident['incident_id'],
+            'status' => 'Đang xử lý',
+            'name' => $this->incident['name'],
+            'type' => $this->incident['type'],
+            'level' => $this->incident['level'],
+            'priority' => $this->incident['priority'],
+            'captain_id' => $captain_id,
+        ]);
+
+        return $new_task->id;
+    }
+
+    public function employeeGetting()
+    {
+        $this->employees = [
+            [
+                'employee_id' => 999,
+                'name' => 'Nguyen Van A'
+            ],
+            [
+                'employee_id' => 888,
+                'name' => 'Tran Van B'
+            ],
+            [
+                'employee_id' => 777,
+                'name' => 'Le Thi C'
+            ],
+        ];
+
+        return 999;
+    }
+
+    // khi co mot task moi
+    public function setNewTask($task_id, $employee_id, $name, $priority)
+    {
+        $existed_employee = Employee::where('employee_id', $employee_id)->first();
+
+        if ($existed_employee) {
+            $current_id = $existed_employee->current_id;
+            $pending_ids = $existed_employee->pending_ids;
+
+            if ($current_id) {
+                $current_task = Task::where([['id', $current_id], ['status', 'Đang xử lý']])->first();
+
+                if ($current_task) {
+                    $current_priority = $current_task->priority;
+
+                    if ($current_priority >= $priority) {
+                        $pending_ids .= $task_id . ',';
+                    } else {
+                        $new_current_id = $task_id;
+                        $existed_employee->current_id = $new_current_id;
+
+                        $pending_ids .= $current_id . ',';
+                    }
+
+                    $existed_employee->pending_ids = $pending_ids;
+                    $existed_employee->save();
+
+                    $this->notification('pending', 'add');
+                } else {
+                    $existed_employee->current_id = null;
+
+                    $pending_ids .= $task_id . ',';
+                    $existed_employee->pending_ids = $pending_ids;
+                    $existed_employee->save();
+
+                    $this->setCurrentTask($employee_id);
+                }
+            } else {
+                $pending_ids .= $task_id . ',';
+                $existed_employee->pending_ids = $pending_ids;
+                $existed_employee->save();
+
+                $this->setCurrentTask($employee_id);
+            }
+        } else {
+            Employee::create([
+                'employee_id' => $employee_id,
+                'name' => $name,
+                'current_id' => $task_id,
+                'pending_ids' => ','
+            ]);
+
+            $this->notification('current', 'create');
+        }
+    }
+
+    // khi nhan vien da hoan thanh mot task (task hien tai trong)
+    public function setCurrentTask($employee_id)
+    {
+        $employee = Employee::where('employee_id', $employee_id)->first();
+
+        $pending_ids = $employee->pending_ids;
+
+        // if pending task not null
+        if (strlen($pending_ids) > 1) {
+            $pending_ids_array = array_slice(explode(',', $pending_ids, 1, -1));
+
+            $list = [];
+            foreach ($pending_ids_array as $id) {
+                $task = Task::where([['id', $id], ['status', 'Đang xử lý']])->first();
+
+                if ($task) {
+                    $list[] = [
+                        'id' => $id,
+                        'priority' => $task->priority,
+                        'created_at' => $task->created_at
+                    ];
+                } else {
+                    // remove id from pending list
+                    $pending_ids = str_replace($id . ',', '', $pending_ids);
+
+                    $this->notification('pending', 'remove', $employee_id);
+                }
+            }
+
+            if (count($list)) {
+                array_multisort(array_column($list, "priority"), SORT_ASC, array_column($list, "created_at"), SORT_DESC, $list);
+
+                $current_task = end($task);
+                $new_current_id = end($task)['id'];
+
+                $employee->current_id = $new_current_id;
+                $employee->save();
+
+                $this->notification('current', 'push', $employee_id);
+
+                $pending_ids = str_replace($new_current_id . ',', '', $pending_ids);
+
+                $this->notification('pending', 'remove', $employee_id);
+            }
+
+            $employee->pending_ids = $pending_ids;
+            $employee->save();
+        }
+    }
+
+    public function incidentChecking($id)
+    {
+        return [
+            'incident_id' => $id,
+            'name' => 'Sự cố lưới điện ZZZ ' . rand(1000, 9999),
+            'type' => 000000,
+            'level' => 'Sự cố cấp I',
+            'priority' => rand(1,3)
+        ];
+    }
+
+    public function notification($type, $action, $employee_id)
+    {
+
     }
 }
