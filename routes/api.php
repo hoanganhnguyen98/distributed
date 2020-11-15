@@ -27,6 +27,9 @@ Route::get('support/listing', 'Distributed\SupportController@listing');
 // bao cao
 Route::get('report/listing', 'Distributed\ReportController@listing');
 
+// nhan vien
+Route::get('employee/detail', 'Distributed\EmployeeController@detail');
+
 
 
 
