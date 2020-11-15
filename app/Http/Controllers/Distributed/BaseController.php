@@ -21,7 +21,11 @@ class BaseController extends Controller
             ]
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, 200)->withHeaders([
+            'Access-Control-Allow-Headers' => 'Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
+            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, HEAD',
+            'Access-Control-Allow-Origin' => '*',
+        ]);
     }
 
     /**
@@ -39,6 +43,10 @@ class BaseController extends Controller
             ]
         ];
 
-        return response()->json($response, $code);
+        return response()->json($response, $code)->withHeaders([
+            'Access-Control-Allow-Headers' => 'Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
+            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, HEAD',
+            'Access-Control-Allow-Origin' => '*',
+        ]);
     }
 }
