@@ -182,7 +182,8 @@ class TaskController extends BaseController
 
         // if pending task not null
         if (strlen($pending_ids) > 1) {
-            $pending_ids_array = array_slice(explode(',', $pending_ids, 1, -1));
+            $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
+            // array_slice($array, 1, -1);
 
             $list = [];
             foreach ($pending_ids_array as $id) {

@@ -35,7 +35,7 @@ class EmployeeController extends BaseController
         $pending_tasks = [];
 
         if (strlen($pending_ids) > 1) {
-            $pending_ids_array = array_slice(explode(',', $pending_ids, 1, -1));
+            $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
 
             foreach ($pending_ids_array as $id) {
                 $task = Task::where([['id', $id], ['status', 'Đang xử lý']])->first();
