@@ -22,8 +22,6 @@ class EmployeeController extends BaseController
             return $this->sendError('Không có giá trị định danh nhân viên', 400);
         }
 
-        dd($employee_id);
-
         $employee = Employee::where('employee_id', $employee_id)->first();
 
         if (!$employee) {
