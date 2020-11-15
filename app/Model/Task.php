@@ -14,8 +14,10 @@ class Task extends Model
     protected $fillable = [
         'name',
         'type',
-        'captian_id',
+        'captain_id',
         'status',
-        'level'
+        'level',
+        'priority',
+        'incident_id'
     ];
 }
