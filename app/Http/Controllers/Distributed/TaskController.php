@@ -228,7 +228,7 @@ class TaskController extends BaseController
         return [
             'incident_id' => $id,
             'name' => 'Sự cố lưới điện ZZZ ' . rand(1000, 9999),
-            'type' => 000000,
+            'type' => '000000',
             'level' => 'Sự cố cấp I',
             'priority' => rand(1,3)
         ];
