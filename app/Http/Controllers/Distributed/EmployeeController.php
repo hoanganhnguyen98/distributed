@@ -16,12 +16,13 @@ class EmployeeController extends BaseController
 
     public function detail(Request $request)
     {
-        dd(1);
         $employee_id = $request->get('id');
 
         if (!$employee_id) {
             return $this->sendError('Không có giá trị định danh nhân viên', 400);
         }
+
+        dd($employee_id);
 
         $employee = Employee::where('employee_id', $employee_id)->first();
 
