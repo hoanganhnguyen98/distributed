@@ -233,9 +233,4 @@ class TaskController extends BaseController
             'priority' => rand(1,3)
         ];
     }
-
-    public function notification($type, $action, $employee_id)
-    {
-
-    }
 }
