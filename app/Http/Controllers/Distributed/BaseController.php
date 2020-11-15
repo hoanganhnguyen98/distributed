@@ -49,4 +49,9 @@ class BaseController extends Controller
             'Access-Control-Allow-Origin' => '*',
         ]);
     }
+
+    public function notification($type, $action, $employee_id)
+    {
+
+    }
 }
