@@ -52,7 +52,16 @@ class TaskController extends BaseController
             'tasks' => $tasks
         ];
 
-        return $this->sendResponse($data, 'Lấy danh sách công việc xử lý thành công');
+        return $this->sendResponse($data);
+    }
+
+    public function detail(Request $request)
+    {
+        $id = $request->get('id');
+
+        if (!$id) {
+            return $this->sendError('Không có giá trị định danh sự cố', 400);
+        }
     }
 
     public function handler(Request $request)
@@ -79,14 +88,14 @@ class TaskController extends BaseController
             $this->setNewTask($task_id, $employee_id, $name, $this->incident['priority']);
         }
 
-        return $this->sendResponse([], 'Sự cố đang được xử lý');
+        return $this->sendResponse(['task_id' => $task_id]);
     }
 
     public function createTask($captain_id)
     {
         $new_task = Task::create([
             'incident_id' => $this->incident['incident_id'],
-            'status' => 'Đang xử lý',
+            'status' => 'doing',
             'name' => $this->incident['name'],
             'type' => $this->incident['type'],
             'level' => $this->incident['level'],
@@ -127,7 +136,7 @@ class TaskController extends BaseController
             $pending_ids = $existed_employee->pending_ids;
 
             if ($current_id) {
-                $current_task = Task::where([['id', $current_id], ['status', 'Đang xử lý']])->first();
+                $current_task = Task::where([['id', $current_id], ['status', 'doing']])->first();
 
                 if ($current_task) {
                     $current_priority = $current_task->priority;
@@ -187,7 +196,7 @@ class TaskController extends BaseController
 
             $list = [];
             foreach ($pending_ids_array as $id) {
-                $task = Task::where([['id', $id], ['status', 'Đang xử lý']])->first();
+                $task = Task::where([['id', $id], ['status', 'doing']])->first();
 
                 if ($task) {
                     $list[] = [

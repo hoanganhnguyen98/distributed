@@ -29,7 +29,7 @@ class EmployeeController extends BaseController
         }
 
         $current_id = $employee->current_id;
-        $current_task = Task::where([['id', $current_id], ['status', 'Đang xử lý']])->first();
+        $current_task = Task::where([['id', $current_id], ['status', 'doing']])->first();
 
         $pending_ids = $employee->pending_ids;
         $pending_tasks = [];
@@ -38,7 +38,7 @@ class EmployeeController extends BaseController
             $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
 
             foreach ($pending_ids_array as $id) {
-                $task = Task::where([['id', $id], ['status', 'Đang xử lý']])->first();
+                $task = Task::where([['id', $id], ['status', 'doing']])->first();
 
                 if ($task) {
                     $pending_tasks[] = $task;
@@ -52,6 +52,6 @@ class EmployeeController extends BaseController
             'pending_tasks' => $pending_tasks
         ];
 
-        return $this->sendResponse($data, 'Lấy thông tin nhân viên thành công');
+        return $this->sendResponse($data);
     }
 }

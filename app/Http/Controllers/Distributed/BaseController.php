@@ -11,14 +11,10 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($data = [], $message = 'Thành công')
+    public function sendResponse($data = [])
     {
     	$response = [
-            'data' => $data,
-            'error' => [
-                "code" => 200,
-                "message" => $message
-            ]
+            'data' => $data
         ];
 
         return response()->json($response, 200)->withHeaders([
@@ -38,7 +34,6 @@ class BaseController extends Controller
     	$response = [
             'data' => [],
             'error' => [
-                "code" => $code,
                 "message" => $message
             ]
         ];
