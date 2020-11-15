@@ -144,7 +144,7 @@ class TaskController extends BaseController
                     $existed_employee->pending_ids = $pending_ids;
                     $existed_employee->save();
 
-                    $this->notification('pending', 'add');
+                    $this->notification('pending', 'add', $employee_id);
                 } else {
                     $existed_employee->current_id = null;
 
@@ -169,7 +169,7 @@ class TaskController extends BaseController
                 'pending_ids' => ','
             ]);
 
-            $this->notification('current', 'create');
+            $this->notification('current', 'create', $employee_id);
         }
     }
 
@@ -223,10 +223,10 @@ class TaskController extends BaseController
         }
     }
 
-    public function incidentChecking($id)
+    public function incidentChecking($incident_id)
     {
         return [
-            'incident_id' => $id,
+            'incident_id' => $incident_id,
             'name' => 'Sự cố lưới điện ZZZ ' . rand(1000, 9999),
             'type' => '000000',
             'level' => 'Sự cố cấp I',
