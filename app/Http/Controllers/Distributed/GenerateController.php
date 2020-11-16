@@ -43,7 +43,7 @@ class GenerateController extends BaseController
                 $employee_ids .= $employee->employee_id . ',';
             }
 
-            $schedule = Schedule::where([['day' => $i], ['month' => 11], ['year' => 2020]])->first();
+            $schedule = Schedule::where([['day', $i], ['month', 11], ['year', 2020]])->first();
 
             if ($schedule) {
                 $schedule->employee_ids =  $employee_ids;
@@ -66,7 +66,7 @@ class GenerateController extends BaseController
                 $employee_ids .= $employee->employee_id . ',';
             }
 
-            $schedule = Schedule::where([['day' => $i], ['month' => 12], ['year' => 2020]])->first();
+            $schedule = Schedule::where([['day', $i], ['month', 12], ['year', 2020]])->first();
 
             if ($schedule) {
                 $schedule->employee_ids =  $employee_ids;
