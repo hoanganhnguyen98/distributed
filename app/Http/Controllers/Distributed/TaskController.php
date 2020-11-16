@@ -62,6 +62,23 @@ class TaskController extends BaseController
         if (!$id) {
             return $this->sendError('Không có giá trị định danh sự cố', 400);
         }
+
+        $task = Task::where('id', $id)->first();
+
+        if (!$task) {
+            return $this->sendError('Công việc xử lý không tồn tại', 400);
+        }
+
+        $doing_employees = Employee::where('current_id', $id)->get();
+        $pending_employees = Employee::where('pending_ids', 'like', '%,'. $id . ',%')->get();
+
+        $data = [
+            'task' => $task,
+            'doing_employees' => $doing_employees,
+            'pending_employees' => $pending_employees
+        ];
+
+        return $this->sendResponse($data);
     }
 
     public function handler(Request $request)

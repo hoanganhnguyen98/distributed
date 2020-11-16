@@ -13,9 +13,7 @@ class BaseController extends Controller
      */
     public function sendResponse($data = [])
     {
-    	$response = [
-            'data' => $data
-        ];
+    	$response = $data;
 
         return response()->json($response, 200)->withHeaders([
             'Access-Control-Allow-Headers' => 'Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
@@ -32,7 +30,6 @@ class BaseController extends Controller
     public function sendError($message = 'Lỗi chưa xác định', $code = 404)
     {
     	$response = [
-            'data' => [],
             'error' => [
                 "message" => $message
             ]
