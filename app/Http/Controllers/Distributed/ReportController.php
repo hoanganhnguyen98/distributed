@@ -49,7 +49,16 @@ class ReportController extends BaseController
     public function accept(Request $request)
     {
         $id = $request->get('id');
-        $report = $this->isReportId($id);
+
+        if(!$id) {
+            return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
+        }
+
+        $report = Report::where([['id', $id], ['status', 'waiting']])->first();
+
+        if (!$report) {
+            return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
+        }
 
         $task_id = $report->task_id;
         $task = Task::where('task_id', $task_id)->first();
@@ -103,18 +112,7 @@ class ReportController extends BaseController
     public function reject(Request $request)
     {
         $id = $request->get('id');
-        $report = $this->isReportId($id);
 
-        dd($report);
-
-        $report->status = 'reject';
-        $report->save();
-
-        return $this->sendResponse();
-    }
-
-    public function isReportId($id)
-    {
         if(!$id) {
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
         }
@@ -125,8 +123,9 @@ class ReportController extends BaseController
             return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
         }
 
-        dd($report);
+        $report->status = 'reject';
+        $report->save();
 
-        return $report;
+        return $this->sendResponse();
     }
 }
