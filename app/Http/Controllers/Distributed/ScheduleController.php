@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Distributed;
 use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Schedule;
+use App\Model\Employee;
 use Carbon\Carbon;
 
 class ScheduleController extends BaseController
@@ -26,14 +27,17 @@ class ScheduleController extends BaseController
             $employee_ids = $schedule->employee_ids;
 
             if (strlen($employee_ids) > 1) {
-                $employees = array_slice(explode(',', $employee_ids), 1, -1);
+                $ids = array_slice(explode(',', $employee_ids), 1, -1);
 
-                foreach ($employees as $key => $employee) {
-                    $data[] = [
-                        'id' => $employee->id,
-                        'employee_id' => $employee->$employee_id,
-                        'name' => $employee->name
-                    ];
+                foreach ($ids as $key => $id) {
+                    $employee = Employee::where('employee_id', $id)->first();
+
+                    if ($employee) {
+                        $data[] = [
+                            'employee_id' => $employee->$employee_id,
+                            'name' => $employee->name
+                        ];
+                    }
                 }
             }
         }
