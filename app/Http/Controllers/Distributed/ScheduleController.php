@@ -19,7 +19,7 @@ class ScheduleController extends BaseController
             return $this->sendError('Cần có đủ 3 trường ngày, tháng, năm', 400);
         }
 
-        $schedule = Schedule::where([['day' => $day], ['month' => $month], ['year' => $year]])->first();
+        $schedule = Schedule::where([['day', $day], ['month', $month], ['year', $year]])->first();
 
         $data = [];
         if ($schedule) {
