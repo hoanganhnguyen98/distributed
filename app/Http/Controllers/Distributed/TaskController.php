@@ -125,20 +125,14 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $this->employees = [
-            [
-                'employee_id' => 999,
-                'name' => 'Nguyen Van A'
-            ],
-            [
-                'employee_id' => 888,
-                'name' => 'Tran Van B'
-            ],
-            [
-                'employee_id' => 777,
-                'name' => 'Le Thi C'
-            ],
-        ];
+        $employees = Employee::inRandomOrder()->limit(rand(5,8))->get();
+
+        foreach ($employees as $key => $employee) {
+            $this->employees[] = [
+                'employee_id' => $employee->employee_id,
+                'name' =>  $employee->name,
+            ];
+        }
 
         return 999;
     }
@@ -252,12 +246,17 @@ class TaskController extends BaseController
 
     public function incidentChecking($incident_id)
     {
+        $type = ['a', 'b', 'c', 'd', 'x', 'y', 'z', 'm', 'n', 'k'];
+        $key = ['000000', '111111', '222222', '333333'];
+        $imp = ['I', 'II', 'III'];
+
+
         return [
             'incident_id' => $incident_id,
-            'name' => 'Sự cố lưới điện ZZZ ' . rand(1000, 9999),
-            'type' => '000000',
-            'level' => 'Sự cố cấp I',
-            'priority' => rand(1,3)
+            'name' => 'Sự cố ' . $type[array_rand($type)].$type[array_rand($type)].$type[array_rand($type)] . ' ' . rand(1000, 9999),
+            'type' => $key[array_rand($key)],
+            'level' => 'Sự cố cấp ' . $imp[array_rand($imp)],
+            'priority' => rand(1,4)
         ];
     }
 }

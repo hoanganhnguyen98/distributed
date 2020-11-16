@@ -12,5 +12,9 @@ class Schedule extends Model
      * @var array
      */
     protected $fillable = [
+        'day',
+        'month',
+        'year',
+        'employee_ids'
     ];
 }

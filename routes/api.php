@@ -34,6 +34,12 @@ Route::post('report/reject', 'Distributed\ReportController@reject');
 // nhan vien
 Route::get('employee/detail', 'Distributed\EmployeeController@detail');
 
+// lich lam viec
+Route::get('schedule/detail', 'Distributed\ScheduleController@detail');
+
+// generate data
+Route::get('generate/employee', 'Distributed\GenerateController@generateEmployee');
+Route::get('generate/schedule', 'Distributed\GenerateController@generateSchedule');
 
 
 
