@@ -51,8 +51,8 @@ class ReportController extends BaseController
         $id = $request->get('id');
         $report = $this->isReportId($id);
 
-        $incident_id = $report->incident_id;
-        $task = Task::where('incident_id', $incident_id)->first();
+        $task_id = $report->task_id;
+        $task = Task::where('task_id', $task_id)->first();
 
         if (!$task) {
             return $this->sendError('Công việc xử lý của báo cáo không tồn tại', 400);

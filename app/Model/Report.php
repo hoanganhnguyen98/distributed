@@ -13,7 +13,7 @@ class Report extends Model
      */
     protected $fillable = [
         'employee_id',
-        'incident_id',
+        'task_id',
         'content',
         'status',
         'type'
