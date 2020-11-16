@@ -51,8 +51,6 @@ class ReportController extends BaseController
         $id = $request->get('id');
         $report = $this->isReportId($id);
 
-        dd($report);
-
         $task_id = $report->task_id;
         $task = Task::where('task_id', $task_id)->first();
 
@@ -106,6 +104,8 @@ class ReportController extends BaseController
     {
         $id = $request->get('id');
         $report = $this->isReportId($id);
+
+        dd($report);
 
         $report->status = 'reject';
         $report->save();
