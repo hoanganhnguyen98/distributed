@@ -125,7 +125,7 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $employees = Employee::inRandomOrder()->limit(rand(5,8))->get();
+        $employees = Employee::inRandomOrder()->limit(rand(3,5))->get();
 
         foreach ($employees as $key => $employee) {
             $this->employees[] = [

@@ -36,19 +36,26 @@ class GenerateController extends BaseController
     public function generateSchedule()
     {
         for ($i=1; $i < 31; $i++) {
-            $employees = Employee::inRandomOrder()->limit(rand(10,15))->get();
+            $employees = Employee::inRandomOrder()->limit(rand(5,8))->get();
 
             $employee_ids = ',';
             foreach ($employees as $key => $employee) {
                 $employee_ids .= $employee->employee_id . ',';
             }
 
-            Schedule::create([
-                'employee_ids' => $employee_ids,
-                'day' => $i,
-                'month' => 11,
-                'year' => 2020
-            ]);
+            $schedule = Schedule::where([['day' => $i], ['month' => 11], ['year' => 2020]])->first();
+
+            if ($schedule) {
+                $schedule->employee_ids =  $employee_ids;
+                $schedule->save();
+            } else {
+                Schedule::create([
+                    'employee_ids' => $employee_ids,
+                    'day' => $i,
+                    'month' => 11,
+                    'year' => 2020
+                ]);
+            }
         }
 
         for ($i=1; $i < 32; $i++) {
@@ -59,12 +66,19 @@ class GenerateController extends BaseController
                 $employee_ids .= $employee->employee_id . ',';
             }
 
-            Schedule::create([
-                'employee_ids' => $employee_ids,
-                'day' => $i,
-                'month' => 12,
-                'year' => 2020
-            ]);
+            $schedule = Schedule::where([['day' => $i], ['month' => 12], ['year' => 2020]])->first();
+
+            if ($schedule) {
+                $schedule->employee_ids =  $employee_ids;
+                $schedule->save();
+            } else {
+                Schedule::create([
+                    'employee_ids' => $employee_ids,
+                    'day' => $i,
+                    'month' => 12,
+                    'year' => 2020
+                ]);
+            }
         }
 
         return $this->sendResponse([]);
