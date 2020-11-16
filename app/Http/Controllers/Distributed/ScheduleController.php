@@ -34,7 +34,7 @@ class ScheduleController extends BaseController
 
                     if ($employee) {
                         $data[] = [
-                            'employee_id' => $employee->$employee_id,
+                            'employee_id' => $employee->employee_id,
                             'name' => $employee->name
                         ];
                     }
