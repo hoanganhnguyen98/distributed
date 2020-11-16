@@ -125,6 +125,8 @@ class ReportController extends BaseController
             return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
         }
 
+        dd($report);
+
         return $report;
     }
 }
