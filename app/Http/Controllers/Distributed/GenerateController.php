@@ -12,6 +12,10 @@ class GenerateController extends BaseController
 {
     public function generateEmployee(Request $request)
     {
+        if ($request->get('ninja') == 133) {
+            return $this->sendError('Không phải chỗ chơi, đi ra ngoài', 400);
+        }
+
         $first = ['Nguyễn ', 'Trần ', 'Lê ', 'Ngô ', 'Trịnh ', 'Hoàng ', 'Cao ', 'Phan '];
         $mid = ['Văn ', 'Như ', 'Minh ', 'Quang '];
         $last = ['Đạt', 'Hảo', 'Tâm', 'Linh', 'Ninh', 'Anh', 'Hùng', 'Kiều', 'Thành'];
