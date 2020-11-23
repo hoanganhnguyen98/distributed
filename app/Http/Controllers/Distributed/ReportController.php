@@ -38,7 +38,7 @@ class ReportController extends BaseController
             ];
         }
 
-        $data[] = [
+        $data = [
             'metadata' => $metadata,
             'list' => $list
         ];

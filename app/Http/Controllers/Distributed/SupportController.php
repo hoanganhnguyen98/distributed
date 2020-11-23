@@ -36,7 +36,7 @@ class SupportController extends BaseController
             ];
         }
 
-        $data[] = [
+        $data = [
             'metadata' => $metadata,
             'list' => $list
         ];

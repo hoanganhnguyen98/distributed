@@ -47,7 +47,7 @@ class TaskController extends BaseController
             ];
         }
 
-        $data[] = [
+        $data = [
             'metadata' => $metadata,
             'tasks' => $tasks
         ];
