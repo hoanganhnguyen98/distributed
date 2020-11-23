@@ -41,6 +41,8 @@ Route::get('schedule/detail', 'Distributed\ScheduleController@detail');
 Route::get('generate/employee', 'Distributed\GenerateController@generateEmployee');
 Route::get('generate/schedule', 'Distributed\GenerateController@generateSchedule');
 
+// external
+Route::get('external/report-listing', 'Distributed\ExternalController@reportListing');
 
 
 
