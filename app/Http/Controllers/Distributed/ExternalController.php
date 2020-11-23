@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\Report;
 use App\Model\Task;
 use App\Model\Support;
+use App\Model\Employee;
 use Carbon\Carbon;
 use App\Http\Controllers\Distributed\TaskController as TaskController;
 
