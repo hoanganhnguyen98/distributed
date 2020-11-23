@@ -46,7 +46,7 @@ class EmployeeController extends BaseController
             }
         }
 
-        $data[] = [
+        $data = [
             'employee' => $employee,
             'current_task' => $current_task,
             'pending_tasks' => $pending_tasks
