@@ -38,6 +38,7 @@ class ExternalController extends BaseController
         $waitings = $reports - $accepts - $rejects;
 
         return [
+            'label' => 'Báo cáo kết quả xử lý sự cố',
             'sent_total' => $reports,
             'accepted_total' => $accepts,
             'rejected_total' => $rejects,
@@ -53,6 +54,7 @@ class ExternalController extends BaseController
         $waitings = $supports - $accepts - $rejects;
 
         return [
+            'label' => 'Yêu cầu hỗ trợ xử lý sự cố',
             'sent_total' => $supports,
             'accepted_total' => $accepts,
             'rejected_total' => $rejects,
@@ -67,6 +69,7 @@ class ExternalController extends BaseController
         $done = Task::where('status', 'done')->get()->count();
 
         return [
+            'label' => 'Công việc xử lý sự cố',
             'created_total' => $tasks,
             'doing_total' => $doing,
             'done_total' => $done,
@@ -78,6 +81,7 @@ class ExternalController extends BaseController
         $employees = Employee::all()->count();
 
         return [
+            'label' => 'Nhân viên tham gia xử lý sự cố',
             'joined_total' => $employees
         ];
     }
