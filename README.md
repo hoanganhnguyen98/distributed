@@ -2,10 +2,12 @@
 ## Backend for incident handling task
 
 ## DSD08
-Nguyễn Hoàng Anh
-Vũ Tuấn Đạt
-Nguyễn Huy Đức
-Trần Minh Hiếu
-Phạm Ngọc Minh
+1.Nguyễn Hoàng Anh
+2.Vũ Tuấn Đạt
+3.Nguyễn Huy Đức
+4.Trần Minh Hiếu
+5.Phạm Ngọc Minh
 
-## PHP Laravel API - Heroku Server - Postgres Admin Database
+***PHP Laravel API
+***Heroku Server
+***Postgres Admin Database
