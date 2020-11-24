@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Distributed;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller as Controller;
+use GuzzleHttp\Psr7\Request as ApiRequest;
 
 class BaseController extends Controller
 {
@@ -45,5 +46,14 @@ class BaseController extends Controller
     public function notification($type, $action, $employee_id)
     {
 
+    }
+
+    public function callApi($method, $url, $header)
+    {
+        $client = new \GuzzleHttp\Client();
+        $request = new ApiRequest($method, $url, $header);
+        $response = $client->send($request);
+
+        return $response;
     }
 }

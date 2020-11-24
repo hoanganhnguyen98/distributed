@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Model\Task;
 use App\Model\Employee;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Http;
+// use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Psr7\Request as ApiRequest;
 
 class TaskController extends BaseController
 {
@@ -25,7 +26,7 @@ class TaskController extends BaseController
     {
         $type_id = $request->get('id');
 
-        if(!$type_id) {
+        if (!$type_id) {
             return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
         }
 
@@ -84,6 +85,17 @@ class TaskController extends BaseController
 
     public function handler(Request $request)
     {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        if (!$apiToken) {
+            return $this->sendError('Thiếu giá trị api-token ở Header', 400);
+        }
+
+        if (!$projectType) {
+            return $this->sendError('Thiếu giá trị project-type ở Header', 400);
+        }
+
         $incident_id = $request->get('id');
 
         if (!$incident_id) {
@@ -91,7 +103,7 @@ class TaskController extends BaseController
         }
 
         // checking to get incident information
-        $this->incident = $this->incidentChecking($incident_id);
+        $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
 
         // get employee to handler new task
         $captain_id = $this->employeeGetting();
@@ -118,7 +130,6 @@ class TaskController extends BaseController
             'type' => $this->incident['type'],
             'level' => $this->incident['level'],
             'priority' => $this->incident['priority'],
-            'captain_id' => $captain_id,
         ]);
 
         return $new_task->id;
@@ -245,19 +256,51 @@ class TaskController extends BaseController
         }
     }
 
-    public function incidentChecking($incident_id)
+    public function incidentChecking($incident_id, $apiToken, $projectType)
     {
-        $type = ['a', 'b', 'c', 'd', 'x', 'y', 'z', 'm', 'n', 'k'];
-        $key = ['000000', '111111', '222222', '333333'];
-        $imp = ['I', 'II', 'III'];
+        // // $body['name'] = "Testing";
+        // $url = "https://distributed-dsd08.herokuapp.com/api/task/listing?id=000000";
+        // $response = $client->request("POST", $url, ['form_params'=>$body]);
+        // $response = $client->send($response);
+        // return $response;
 
+        // $client = new \GuzzleHttp\Client();
+        // $response = $client->get('https://distributed-dsd08.herokuapp.com/api/task/listing?id=000000');
+        // dd($response->getBody());
+
+        // $apiToken = '4c901bcdba9f440a2a7c31c0bcbd78ec';
+        // $projectType = 'LUOI_DIEN';
+
+        $response = $this->callApi('GET', 'https://it4483.cf/api/incidents/'.$incident_id, [
+            'api-token' => $apiToken,
+            'project-type' => $projectType
+        ]);
+
+        $responseStatus = $response->getStatusCode();
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($responseStatus !== 200) {
+            if ($data['message']) {
+                return $this->sendError($data['message'], $responseStatus);
+            } else {
+                return $this->sendError('Lỗi chưa xác định đã xảy ra, hãy thử lại', $responseStatus);
+            }
+        }
+
+        if ($data['status']['code'] == 1) {
+            return $this->sendError('Sự cố đang trong quá trình xử lý', 400);
+        }
+
+        if ($data['status']['code'] == 2) {
+            return $this->sendError('Sự cố đã được xử lý xong', 400);
+        }
 
         return [
             'incident_id' => $incident_id,
-            'name' => 'Sự cố ' . $type[array_rand($type)].$type[array_rand($type)].$type[array_rand($type)] . ' ' . rand(1000, 9999),
-            'type' => $key[array_rand($key)],
-            'level' => 'Sự cố cấp ' . $imp[array_rand($imp)],
-            'priority' => rand(1,4)
+            'name' => $data['name'],
+            'type' => $data['type']['type'],
+            'level' => $data['level']['name'],
+            'priority' => $data['level']['code']
         ];
     }
 }
