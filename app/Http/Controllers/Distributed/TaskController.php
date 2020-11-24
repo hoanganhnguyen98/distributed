@@ -258,23 +258,17 @@ class TaskController extends BaseController
 
     public function incidentChecking($incident_id, $apiToken, $projectType)
     {
-        // // $body['name'] = "Testing";
-        // $url = "https://distributed-dsd08.herokuapp.com/api/task/listing?id=000000";
-        // $response = $client->request("POST", $url, ['form_params'=>$body]);
-        // $response = $client->send($response);
-        // return $response;
-
-        // $client = new \GuzzleHttp\Client();
-        // $response = $client->get('https://distributed-dsd08.herokuapp.com/api/task/listing?id=000000');
-        // dd($response->getBody());
-
         // $apiToken = '4c901bcdba9f440a2a7c31c0bcbd78ec';
         // $projectType = 'LUOI_DIEN';
 
-        $response = $this->callApi('GET', 'https://it4483.cf/api/incidents/'.$incident_id, [
+        $method = 'GET';
+        $url = 'https://it4483.cf/api/incidents/'.$incident_id;
+        $header = [
             'api-token' => $apiToken,
             'project-type' => $projectType
-        ]);
+        ];
+
+        $response = $this->callApi($method, $url, $header);
 
         $responseStatus = $response->getStatusCode();
         $data = json_decode($response->getBody()->getContents(), true);
@@ -295,12 +289,14 @@ class TaskController extends BaseController
             return $this->sendError('Sự cố đã được xử lý xong', 400);
         }
 
-        return [
+        $incident = [
             'incident_id' => $incident_id,
             'name' => $data['name'],
             'type' => $data['type']['type'],
             'level' => $data['level']['name'],
             'priority' => $data['level']['code']
         ];
+        dd($incident);
+        return $incident;
     }
 }
