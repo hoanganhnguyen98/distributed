@@ -11,6 +11,7 @@
         "php": "^7.2",
         "barryvdh/laravel-dompdf": "^0.8.5",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^7.2",
         "jrm2k6/cloudder": "^0.6.0",
         "kyslik/column-sortable": "^6.0",
         "laravel/framework": "^6.0",
