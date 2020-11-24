@@ -16,9 +16,11 @@ class TaskController extends BaseController
 
     protected $employees;
 
+    protected $responseMessage;
+    protected $statusCode;
+
     public function __construct()
     {
-        $this->incident = [];
         $this->employees = [];
     }
 
@@ -89,7 +91,7 @@ class TaskController extends BaseController
         $projectType = $request->header('project-type');
 
         if (!$apiToken) {
-            return $this->sendError('Thiếu giá trị api-token ở Header', 400);
+            return $this->sendError('Thiếu giá trị api-token ở Header', 401);
         }
 
         if (!$projectType) {
@@ -104,6 +106,10 @@ class TaskController extends BaseController
 
         // checking to get incident information
         $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
+
+        if (!$this->incident) {
+            return $this->sendError($this->responseMessage, $this->statusCode);
+        }
 
         // get employee to handler new task
         $captain_id = $this->employeeGetting();
@@ -137,7 +143,7 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $employees = Employee::inRandomOrder()->limit(rand(3,5))->get();
+        $employees = Employee::inRandomOrder()->limit(rand(5,7))->get();
 
         foreach ($employees as $key => $employee) {
             $this->employees[] = [
@@ -268,25 +274,52 @@ class TaskController extends BaseController
             'project-type' => $projectType
         ];
 
-        $response = $this->callApi($method, $url, $header);
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $request = new ApiRequest($method, $url, $header);
+            $response = $client->send($request);
+        } catch (\Throwable $th) {
+            $this->responseMessage = 'Đã có lỗi xảy ra từ khi kiểm tra sự cố hợp lệ';
+            $this->statusCode = 500;
+            return false;
+
+            // return $this->sendError('Đã có lỗi xảy ra', 500);
+        }
 
         $responseStatus = $response->getStatusCode();
         $data = json_decode($response->getBody()->getContents(), true);
 
         if ($responseStatus !== 200) {
             if ($data['message']) {
-                return $this->sendError($data['message'], $responseStatus);
+                $this->responseMessage = $data['message'];
+                $this->statusCode = $responseStatus;
+                return false;
+
+                // return $this->sendError($data['message'], $responseStatus);
             } else {
-                return $this->sendError('Lỗi chưa xác định đã xảy ra, hãy thử lại', $responseStatus);
+                $this->responseMessage = 'Lỗi chưa xác định đã xảy ra, hãy thử lại';
+                $this->statusCode = $responseStatus;
+                return false;
+
+                // return $this->sendError('Lỗi chưa xác định đã xảy ra, hãy thử lại', $responseStatus);
             }
         }
 
         if ($data['status']['code'] == 1) {
-            return $this->sendError('Sự cố đang trong quá trình xử lý', 400);
+            $this->responseMessage = 'Sự cố đang trong quá trình xử lý';
+            $this->statusCode = 400;
+            return false;
+
+            // return $this->sendError('Sự cố đang trong quá trình xử lý', 400);
         }
 
         if ($data['status']['code'] == 2) {
-            return $this->sendError('Sự cố đã được xử lý xong', 400);
+            $this->responseMessage = 'Sự cố đã được xử lý xong';
+            $this->statusCode = 400;
+            return false;
+
+            // return $this->sendError('Sự cố đã được xử lý xong', 400);
         }
 
         $incident = [
@@ -296,7 +329,7 @@ class TaskController extends BaseController
             'level' => $data['level']['name'],
             'priority' => $data['level']['code']
         ];
-        dd($incident);
+
         return $incident;
     }
 }
