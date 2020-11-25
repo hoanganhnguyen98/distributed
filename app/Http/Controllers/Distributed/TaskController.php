@@ -322,7 +322,7 @@ class TaskController extends BaseController
             return false;
         }
 
-        $existed_task = Task::where('id', $current_id)->first();
+        $existed_task = Task::where('incident_id', $incident_id)->first();
 
         if ($existed_task) {
             $this->responseMessage = 'Sự cố đã được tiến hành xử lý';
