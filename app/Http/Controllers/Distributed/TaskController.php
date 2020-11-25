@@ -230,7 +230,6 @@ class TaskController extends BaseController
         // if pending task not null
         if (strlen($pending_ids) > 1) {
             $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
-            // array_slice($array, 1, -1);
 
             $list = [];
             foreach ($pending_ids_array as $id) {
@@ -250,7 +249,7 @@ class TaskController extends BaseController
                 }
             }
 
-            if (count($list)) {
+            if (count($list) > 0) {
                 array_multisort(array_column($list, "priority"), SORT_ASC, array_column($list, "created_at"), SORT_DESC, $list);
 
                 $current_task = end($task);
@@ -318,6 +317,15 @@ class TaskController extends BaseController
 
         if ($data['status']['code'] == 2) {
             $this->responseMessage = 'Sự cố đã được xử lý xong';
+            $this->statusCode = 400;
+
+            return false;
+        }
+
+        $existed_task = Task::where('id', $current_id)->first();
+
+        if ($existed_task) {
+            $this->responseMessage = 'Sự cố đã được tiến hành xử lý';
             $this->statusCode = 400;
 
             return false;
