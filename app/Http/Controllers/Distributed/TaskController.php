@@ -249,6 +249,8 @@ class TaskController extends BaseController
                 }
             }
 
+            dd($list);
+
             if (count($list) > 0) {
                 array_multisort(array_column($list, "priority"), SORT_ASC, array_column($list, "created_at"), SORT_DESC, $list);
 
