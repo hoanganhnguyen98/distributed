@@ -136,7 +136,7 @@ class TaskController extends BaseController
         return $this->sendResponse(['task_id' => $task_id]);
     }
 
-    public function createTask($captain_id)
+    public function createTask($captain_id = null)
     {
         $new_task = Task::create([
             'incident_id' => $this->incident['incident_id'],
@@ -249,13 +249,11 @@ class TaskController extends BaseController
                 }
             }
 
-            dd($list);
-
             if (count($list) > 0) {
                 array_multisort(array_column($list, "priority"), SORT_ASC, array_column($list, "created_at"), SORT_DESC, $list);
 
-                $current_task = end($task);
-                $new_current_id = end($task)['id'];
+                $current_task = end($list);
+                $new_current_id = end($list)['id'];
 
                 $employee->current_id = $new_current_id;
                 $employee->save();
