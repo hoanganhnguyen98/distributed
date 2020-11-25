@@ -104,6 +104,14 @@ class TaskController extends BaseController
             return $this->sendError('Không có giá trị định danh sự cố', 400);
         }
 
+        // isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType);
+
+        // if (!isUpdated) {
+        //     dd($this->responseMessage);
+        // } else {
+        //     dd(isUpdated);
+        // }
+
         // checking to get incident information
         $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
 
@@ -124,6 +132,7 @@ class TaskController extends BaseController
             $this->setNewTask($task_id, $employee_id, $name, $this->incident['priority']);
         }
 
+        // $this->updateIncidentStatus($incident_id, $apiToken, $projectType);
         return $this->sendResponse(['task_id' => $task_id]);
     }
 
@@ -264,12 +273,9 @@ class TaskController extends BaseController
 
     public function incidentChecking($incident_id, $apiToken, $projectType)
     {
-        // $apiToken = '4c901bcdba9f440a2a7c31c0bcbd78ec';
-        // $projectType = 'LUOI_DIEN';
-
         $method = 'GET';
         $url = 'https://it4483.cf/api/incidents/'.$incident_id;
-        $header = [
+        $headers = [
             'api-token' => $apiToken,
             'project-type' => $projectType
         ];
@@ -277,14 +283,13 @@ class TaskController extends BaseController
         $client = new \GuzzleHttp\Client();
 
         try {
-            $request = new ApiRequest($method, $url, $header);
+            $request = new ApiRequest($method, $url, $headers);
             $response = $client->send($request);
         } catch (\Throwable $th) {
             $this->responseMessage = 'Đã có lỗi xảy ra từ khi kiểm tra sự cố hợp lệ';
             $this->statusCode = 500;
-            return false;
 
-            // return $this->sendError('Đã có lỗi xảy ra', 500);
+            return false;
         }
 
         $responseStatus = $response->getStatusCode();
@@ -294,32 +299,28 @@ class TaskController extends BaseController
             if ($data['message']) {
                 $this->responseMessage = $data['message'];
                 $this->statusCode = $responseStatus;
-                return false;
 
-                // return $this->sendError($data['message'], $responseStatus);
+                return false;
             } else {
-                $this->responseMessage = 'Lỗi chưa xác định đã xảy ra, hãy thử lại';
+                $this->responseMessage = 'Lỗi chưa xác định đã xảy ra khi kiểm tra sự cố hợp lệ';
                 $this->statusCode = $responseStatus;
-                return false;
 
-                // return $this->sendError('Lỗi chưa xác định đã xảy ra, hãy thử lại', $responseStatus);
+                return false;;
             }
         }
 
         if ($data['status']['code'] == 1) {
             $this->responseMessage = 'Sự cố đang trong quá trình xử lý';
             $this->statusCode = 400;
-            return false;
 
-            // return $this->sendError('Sự cố đang trong quá trình xử lý', 400);
+            return false;
         }
 
         if ($data['status']['code'] == 2) {
             $this->responseMessage = 'Sự cố đã được xử lý xong';
             $this->statusCode = 400;
-            return false;
 
-            // return $this->sendError('Sự cố đã được xử lý xong', 400);
+            return false;
         }
 
         $incident = [
@@ -331,5 +332,47 @@ class TaskController extends BaseController
         ];
 
         return $incident;
+    }
+
+    public function updateIncidentStatus($incident_id, $apiToken, $projectType, $status = 2)
+    {
+        $method = 'PUT';
+        $url = 'https://it4483.cf/api/incidents/'.$incident_id;
+        $headers = [
+            'api-token' => $apiToken,
+            'project-type' => $projectType
+        ];
+        $body = '{"status" : "'.$status.'"}';
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $request = new ApiRequest($method, $url, $headers, $body);
+            $response = $client->send($request);
+        } catch (\Throwable $th) {
+            $this->responseMessage = 'Đã có lỗi xảy ra từ khi cập nhật trạng thái sự cố';
+            $this->statusCode = 500;
+
+            return false;
+        }
+
+        $responseStatus = $response->getStatusCode();
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($responseStatus !== 200) {
+            if ($data['message']) {
+                $this->responseMessage = $data['message'];
+                $this->statusCode = $responseStatus;
+
+                return false;
+            } else {
+                $this->responseMessage = 'Lỗi chưa xác định đã xảy ra cập nhật trạng thái sự cố';
+                $this->statusCode = $responseStatus;
+
+                return false;
+            }
+        }
+
+        return true;
     }
 }
