@@ -59,13 +59,29 @@ class ReportController extends BaseController
 
     public function accept(Request $request)
     {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
         $id = $request->get('id');
+        $type = $projectType;
 
         if(!$id) {
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
         }
 
-        $report = Report::where([['id', $id], ['status', 'waiting']])->first();
+        $report = Report::where([['id', $id], ['status', 'waiting'], ['type', $type]])->first();
 
         if (!$report) {
             return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
@@ -122,13 +138,29 @@ class ReportController extends BaseController
 
     public function reject(Request $request)
     {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
         $id = $request->get('id');
+        $type = $projectType;
 
         if(!$id) {
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
         }
 
-        $report = Report::where([['id', $id], ['status', 'waiting']])->first();
+        $report = Report::where([['id', $id], ['status', 'waiting'], ['type', $type]])->first();
 
         if (!$report) {
             return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
