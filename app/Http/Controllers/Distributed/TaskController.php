@@ -230,6 +230,8 @@ class TaskController extends BaseController
     // khi co mot task moi
     public function setNewTask($task_id, $employee, $priority)
     {
+        $employee_id = $employee->employee_id;
+
         $current_id = $employee->current_id;
         $pending_ids = $employee->pending_ids;
 
