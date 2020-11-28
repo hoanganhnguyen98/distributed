@@ -20,6 +20,8 @@ class GenerateController extends BaseController
         $mid = ['Văn ', 'Như ', 'Minh ', 'Quang '];
         $last = ['Đạt', 'Hảo', 'Tâm', 'Linh', 'Ninh', 'Anh', 'Hùng', 'Kiều', 'Thành'];
 
+        $type = ['DE_DIEU', 'LUOI_DIEN', 'CHAY_RUNG', 'CAY_TRONG'];
+
         $number = $request->get('number');
 
         for ($i=0; $i < $number; $i++) {
@@ -29,6 +31,8 @@ class GenerateController extends BaseController
             Employee::create([
                 'employee_id' => $employee_id,
                 'name' => $name,
+                'role' => 'INCIDENT_STAFF',
+                'type' => $type[rand(0,3)],
                 'current_id' => null,
                 'pending_ids' => ','
             ]);

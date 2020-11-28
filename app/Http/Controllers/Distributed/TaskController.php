@@ -41,18 +41,18 @@ class TaskController extends BaseController
             }
         }
 
-        $type_id = $projectType;
+        $type = $projectType;
 
         $page = $request->get('page');
         $limit = $request->get('limit');
         $metadata = [];
 
         if (!$page || !$limit) {
-            $tasks = Task::where('type',$type_id)->get();
+            $tasks = Task::where('type', $type)->get();
         } else {
-            $tasks = Task::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
+            $tasks = Task::where('type', $type)->offset(($page - 1) * $limit)->limit($limit)->get();
 
-            $count = Task::where('type',$type_id)->count();
+            $count = Task::where('type', $type)->count();
             $total = ceil($count / $limit);
 
             $metadata = [
@@ -173,10 +173,7 @@ class TaskController extends BaseController
         $task_id = $this->createTask($captain_id);
 
         foreach ($this->employees as $employee) {
-            $employee_id = $employee['employee_id'];
-            $name = $employee['name'];
-
-            $this->setNewTask($task_id, $employee_id, $name, $this->incident['priority']);
+            $this->setNewTask($task_id, $employee, $this->incident['priority']);
         }
 
         $isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType, 1);
@@ -204,71 +201,72 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $employees = Employee::inRandomOrder()->limit(rand(5,7))->get();
+        $this->employees = Employee::inRandomOrder()->limit(rand(5,7))->get();
 
-        foreach ($employees as $key => $employee) {
-            $this->employees[] = [
-                'employee_id' => $employee->employee_id,
-                'name' =>  $employee->name,
-            ];
-        }
+        // foreach ($employees as $key => $employee) {
+        //     $employee_id = $employee['result']['id'];
+
+        //     $existedEmployee = Employee::where('employee_id', $employee_id)->first();
+
+        //     if ($existedEmployee) {
+        //         $this->employees[] = $existedEmployee;
+        //     } else {
+        //         $newEmployee = Employee::create([
+        //             'employee_id' => $employee_id,
+        //             'name' => $employee['result']['full_name'],
+        //             'role' => $employee['result']['role'],
+        //             'type' => $employee['result']['type'],
+        //             'current_id' => null,
+        //             'pending_ids' => ','
+        //         ]);
+
+        //         $this->employees[] = $newEmployee;
+        //     }
+        // }
 
         return 999;
     }
 
     // khi co mot task moi
-    public function setNewTask($task_id, $employee_id, $name, $priority)
+    public function setNewTask($task_id, $employee, $priority)
     {
-        $existed_employee = Employee::where('employee_id', $employee_id)->first();
+        $current_id = $employee->current_id;
+        $pending_ids = $employee->pending_ids;
 
-        if ($existed_employee) {
-            $current_id = $existed_employee->current_id;
-            $pending_ids = $existed_employee->pending_ids;
+        if ($current_id) {
+            $current_task = Task::where([['id', $current_id], ['status', 'doing']])->first();
 
-            if ($current_id) {
-                $current_task = Task::where([['id', $current_id], ['status', 'doing']])->first();
+            if ($current_task) {
+                $current_priority = $current_task->priority;
 
-                if ($current_task) {
-                    $current_priority = $current_task->priority;
-
-                    if ($current_priority >= $priority) {
-                        $pending_ids .= $task_id . ',';
-                    } else {
-                        $new_current_id = $task_id;
-                        $existed_employee->current_id = $new_current_id;
-
-                        $pending_ids .= $current_id . ',';
-                    }
-
-                    $existed_employee->pending_ids = $pending_ids;
-                    $existed_employee->save();
-
-                    $this->notification('pending', 'add', $employee_id);
-                } else {
-                    $existed_employee->current_id = null;
-
+                if ($current_priority >= $priority) {
                     $pending_ids .= $task_id . ',';
-                    $existed_employee->pending_ids = $pending_ids;
-                    $existed_employee->save();
+                } else {
+                    $new_current_id = $task_id;
+                    $employee->current_id = $new_current_id;
 
-                    $this->setCurrentTask($employee_id);
+                    $pending_ids .= $current_id . ',';
                 }
+
+                $employee->pending_ids = $pending_ids;
+                $employee->save();
+
+                $this->notification('pending', 'add', $employee_id);
             } else {
+                $employee->current_id = null;
+
                 $pending_ids .= $task_id . ',';
-                $existed_employee->pending_ids = $pending_ids;
-                $existed_employee->save();
+                $employee->pending_ids = $pending_ids;
+                $employee->save();
 
                 $this->setCurrentTask($employee_id);
             }
         } else {
-            Employee::create([
-                'employee_id' => $employee_id,
-                'name' => $name,
-                'current_id' => $task_id,
-                'pending_ids' => ','
-            ]);
+            $pending_ids .= $task_id . ',';
+            $employee->pending_ids = $pending_ids;
+            $employee->save();
 
-            $this->notification('current', 'create', $employee_id);
+            $this->setCurrentTask($employee_id);
         }
     }
 

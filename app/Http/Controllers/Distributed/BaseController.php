@@ -20,8 +20,6 @@ class BaseController extends Controller
             'Access-Control-Allow-Headers' => 'api-token, project-type, Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
             'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, HEAD',
             'Access-Control-Allow-Origin' => '*',
-            // 'api-token' => '*',
-            // 'project-type' => '*'
         ]);
     }
 
@@ -42,8 +40,6 @@ class BaseController extends Controller
             'Access-Control-Allow-Headers' => 'api-token, project-type, Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
             'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, HEAD',
             'Access-Control-Allow-Origin' => '*',
-            // 'api-token' => '*',
-            // 'project-type' => '*'
         ]);
     }
 
