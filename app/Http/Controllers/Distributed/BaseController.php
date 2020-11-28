@@ -19,7 +19,7 @@ class BaseController extends Controller
         return response()->json($response, 200)->withHeaders([
             'Access-Control-Allow-Headers' => 'Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
             'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, HEAD',
-            'Access-Control-Allow-Origin' => '*',
+            // 'Access-Control-Allow-Origin' => '*',
         ]);
     }
 
@@ -39,7 +39,7 @@ class BaseController extends Controller
         return response()->json($response, $code)->withHeaders([
             'Access-Control-Allow-Headers' => 'Authorization, Origin, X-Requested-With, Content-Type, Accept, DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Range',
             'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, HEAD',
-            'Access-Control-Allow-Origin' => '*',
+            // 'Access-Control-Allow-Origin' => '*',
         ]);
     }
 
@@ -99,6 +99,10 @@ class BaseController extends Controller
             } else {
                 $verifyApiToken['message'] = 'Lỗi chưa xác định đã xảy ra khi verify token';
             }
+        } else {
+            $verifyApiToken['id'] = $data['result']['id'];
+            $verifyApiToken['name'] = $data['result']['full_name'];
+            $verifyApiToken['role'] = $data['result']['role'];
         }
 
         $verifyApiToken['code'] = $responseStatus;
