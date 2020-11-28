@@ -50,7 +50,7 @@ class HistoryController extends BaseController
         return $this->sendResponse($histories);
     }
 
-    public function create($task_id, $action, $create_id, $support_id = null)
+    public function create($task_id, $action, $create_id, $support_ids = null)
     {
         $task = Task::where([['id', $task_id], ['status', 'doing']])->first();
 
