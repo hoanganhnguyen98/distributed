@@ -37,7 +37,7 @@ Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 
 // lich lam viec
 Route::get('schedule/detail-day', 'Distributed\ScheduleController@detail');
-Route::get('schedule/detail-employee', 'Distributed\ScheduleController@ ');
+Route::get('schedule/detail-employee', 'Distributed\ScheduleController@getSchedule');
 
 // lich su cong viec
 Route::get('history/detail', 'Distributed\HistoryController@detail');
