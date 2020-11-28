@@ -104,14 +104,6 @@ class TaskController extends BaseController
             return $this->sendError('Không có giá trị định danh sự cố', 400);
         }
 
-        // isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType);
-
-        // if (!isUpdated) {
-        //     dd($this->responseMessage);
-        // } else {
-        //     dd(isUpdated);
-        // }
-
         // checking to get incident information
         $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
 
@@ -132,7 +124,12 @@ class TaskController extends BaseController
             $this->setNewTask($task_id, $employee_id, $name, $this->incident['priority']);
         }
 
-        // $this->updateIncidentStatus($incident_id, $apiToken, $projectType);
+        $isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType, 1);
+
+        if (!$isUpdated) {
+            return $this->sendError($this->responseMessage, $this->statusCode);
+        }
+
         return $this->sendResponse(['task_id' => $task_id]);
     }
 
@@ -272,7 +269,6 @@ class TaskController extends BaseController
 
     public function incidentChecking($incident_id, $apiToken, $projectType)
     {
-        $method = 'GET';
         $url = 'https://it4483.cf/api/incidents/'.$incident_id;
         $headers = [
             'api-token' => $apiToken,
@@ -282,10 +278,11 @@ class TaskController extends BaseController
         $client = new \GuzzleHttp\Client();
 
         try {
-            $request = new ApiRequest($method, $url, $headers);
-            $response = $client->send($request);
+            $response = $client->get($url, [
+                'headers' => $headers
+            ]);
         } catch (\Throwable $th) {
-            $this->responseMessage = 'Đã có lỗi xảy ra từ khi kiểm tra sự cố hợp lệ';
+            $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api kiểm tra sự cố hợp lệ';
             $this->statusCode = 500;
 
             return false;
@@ -342,23 +339,28 @@ class TaskController extends BaseController
         return $incident;
     }
 
-    public function updateIncidentStatus($incident_id, $apiToken, $projectType, $status = 2)
+    public function updateIncidentStatus($incident_id, $apiToken, $projectType, $status)
     {
-        $method = 'PUT';
         $url = 'https://it4483.cf/api/incidents/'.$incident_id;
+
         $headers = [
             'api-token' => $apiToken,
-            'project-type' => $projectType
+            'project-type' => $projectType,
         ];
-        $body = '{"status" : "'.$status.'"}';
+
+        $body = [
+            'status' => $status
+        ];
 
         $client = new \GuzzleHttp\Client();
 
         try {
-            $request = new ApiRequest($method, $url, $headers, $body);
-            $response = $client->send($request);
+            $response = $client->put($url, [
+                'headers' => $headers,
+                'json' => $body,
+            ]);
         } catch (\Throwable $th) {
-            $this->responseMessage = 'Đã có lỗi xảy ra từ khi cập nhật trạng thái sự cố';
+            $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api cập nhật trạng thái sự cố';
             $this->statusCode = 500;
 
             return false;
