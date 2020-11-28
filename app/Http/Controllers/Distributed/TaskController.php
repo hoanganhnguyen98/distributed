@@ -6,9 +6,10 @@ use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Task;
 use App\Model\Employee;
+use App\Model\History;
 use Carbon\Carbon;
-// use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Psr7\Request as ApiRequest;
+use App\Http\Controllers\Distributed\HistoryController;
 
 class TaskController extends BaseController
 {
@@ -19,9 +20,10 @@ class TaskController extends BaseController
     protected $responseMessage;
     protected $statusCode;
 
-    public function __construct()
+    public function __construct(HistoryController $history)
     {
         $this->employees = [];
+        $this->history = $history;
     }
 
     public function listing(Request $request)
@@ -97,14 +99,17 @@ class TaskController extends BaseController
         $task = Task::where([['id', $id], ['type', $type]])->first();
 
         if (!$task) {
-            return $this->sendError('Công việc xử lý không tồn tại', 400);
+            return $this->sendError('Công việc xử lý không tồn tại', 404);
         }
+
+        $histories = History::where('task_id', $id)->orderBy('created_at', 'asc')->get();
 
         $doing_employees = Employee::where('current_id', $id)->get();
         $pending_employees = Employee::where('pending_ids', 'like', '%,'. $id . ',%')->get();
 
         $data = [
             'task' => $task,
+            'histories' => $histories,
             'doing_employees' => $doing_employees,
             'pending_employees' => $pending_employees
         ];
@@ -175,6 +180,10 @@ class TaskController extends BaseController
         foreach ($this->employees as $employee) {
             $this->setNewTask($task_id, $employee, $this->incident['priority']);
         }
+
+        $action = "Tiến hành xử lý sự cố";
+        $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+        (new HistoryController)->create($task_id, $action, $create_id);
 
         $isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType, 1);
 

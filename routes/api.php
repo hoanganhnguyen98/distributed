@@ -36,7 +36,11 @@ Route::get('employee/detail', 'Distributed\EmployeeController@detail');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 
 // lich lam viec
-Route::get('schedule/detail', 'Distributed\ScheduleController@detail');
+Route::get('schedule/detail-day', 'Distributed\ScheduleController@detail');
+Route::get('schedule/detail-employee', 'Distributed\ScheduleController@ ');
+
+// lich su cong viec
+Route::get('history/detail', 'Distributed\HistoryController@detail');
 
 // generate data
 Route::get('generate/employee', 'Distributed\GenerateController@generateEmployee');

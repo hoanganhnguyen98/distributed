@@ -8,6 +8,7 @@ use App\Model\Report;
 use App\Model\Task;
 use Carbon\Carbon;
 use App\Http\Controllers\Distributed\TaskController as TaskController;
+use App\Http\Controllers\Distributed\HistoryController;
 
 class ReportController extends BaseController
 {
@@ -105,8 +106,15 @@ class ReportController extends BaseController
             $report->status = 'accept';
             $report->save();
 
+            $action = "Chấp nhận báo cáo kết quả";
+            $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+            (new HistoryController)->create($task_id, $action, $create_id);
+
             $task->status = 'done';
             $task->save();
+
+            $action = "Sự cố đã được xử lý";
+            (new HistoryController)->create($task_id, $action, $create_id);
 
             $task_id = $task->id;
             $doing_employees = Employee::where('current_id', $task_id)->get();
