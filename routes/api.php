@@ -43,6 +43,7 @@ Route::get('generate/schedule', 'Distributed\GenerateController@generateSchedule
 
 // external
 Route::get('external/report-listing', 'Distributed\ExternalController@reportListing');
+Route::get('external/task-by-incident', 'Distributed\ExternalController@getTaskByIncidentId');
 
 
 

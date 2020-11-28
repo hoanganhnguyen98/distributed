@@ -16,6 +16,21 @@ class EmployeeController extends BaseController
 
     public function detail(Request $request)
     {
+        // $apiToken = $request->header('api-token');
+        // $projectType = $request->header('project-type');
+
+        // $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        // if(empty($verifyApiToken)) {
+        //     return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        // } else {
+        //     $statusCode = $verifyApiToken['code'];
+
+        //     if ($statusCode != 200) {
+        //         return $this->sendError($verifyApiToken['message'], $statusCode);
+        //     }
+        // }
+
         $employee_id = $request->get('id');
 
         if (!$employee_id) {

@@ -26,11 +26,22 @@ class TaskController extends BaseController
 
     public function listing(Request $request)
     {
-        $type_id = $request->get('id');
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
 
-        if (!$type_id) {
-            return $this->sendError('Không có giá trị định danh nhóm sự cố', 400);
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
         }
+
+        $type_id = $projectType;
 
         $page = $request->get('page');
         $limit = $request->get('limit');
@@ -61,13 +72,29 @@ class TaskController extends BaseController
 
     public function detail(Request $request)
     {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
         $id = $request->get('id');
+        $type = $projectType;
 
         if (!$id) {
             return $this->sendError('Không có giá trị định danh sự cố', 400);
         }
 
-        $task = Task::where('id', $id)->first();
+        $task = Task::where([['id', $id], ['type', $type]])->first();
 
         if (!$task) {
             return $this->sendError('Công việc xử lý không tồn tại', 400);
@@ -98,10 +125,38 @@ class TaskController extends BaseController
             return $this->sendError('Thiếu giá trị project-type ở Header', 400);
         }
 
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
         $incident_id = $request->get('id');
 
         if (!$incident_id) {
             return $this->sendError('Không có giá trị định danh sự cố', 400);
+        }
+
+        $existedTask = Task::where('incident_id', $incident_id)->first();
+
+        if ($existedTask) {
+            if ($existedTask->status == 'doing') {
+                $this->responseMessage = 'Sự cố đang trong quá trình xử lý';
+                $this->statusCode = 400;
+            }
+
+            if ($existedTask->status == 'done') {
+                $this->responseMessage = 'Sự cố đã được xử lý xong';
+                $this->statusCode = 400;
+            }
+
+            return $this->sendError($this->responseMessage, $this->statusCode);
         }
 
         // checking to get incident information
@@ -282,8 +337,14 @@ class TaskController extends BaseController
                 'headers' => $headers
             ]);
         } catch (\Throwable $th) {
-            $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api kiểm tra sự cố hợp lệ';
-            $this->statusCode = 500;
+
+            if ($th->getCode() == 404) {
+                $this->responseMessage = 'Không tìm thấy sự cố theo id đã nhập';
+            } else {
+                $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api kiểm tra sự cố hợp lệ';
+            }
+
+            $this->statusCode = $th->getCode();
 
             return false;
         }
@@ -361,7 +422,7 @@ class TaskController extends BaseController
             ]);
         } catch (\Throwable $th) {
             $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api cập nhật trạng thái sự cố';
-            $this->statusCode = 500;
+            $this->statusCode = $th->getCode();
 
             return false;
         }

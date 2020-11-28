@@ -13,6 +13,49 @@ use App\Http\Controllers\Distributed\TaskController as TaskController;
 
 class ExternalController extends BaseController
 {
+    public function getTaskByIncidentId(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        $incident_id = $request->get('id');
+
+        if (!$incident_id) {
+            return $this->sendError('Không có giá trị định danh sự cố', 400);
+        }
+
+        $task = Task::where([['incident_id', $incident_id], ['type', $projectType]])->first();
+
+        if (!$task) {
+            return $this->sendError('Công việc xử lý không tồn tại', 400);
+        }
+
+        $id = $task->id;
+
+        $doing_employees = Employee::where('current_id', $id)->get();
+        $pending_employees = Employee::where('pending_ids', 'like', '%,'. $id . ',%')->get();
+
+        $data = [
+            'task' => $task,
+            'doing_employees' => $doing_employees,
+            'pending_employees' => $pending_employees
+        ];
+
+        return $this->sendResponse($data);
+    }
+
     public function reportListing()
     {
         $reports = $this->reportCounting();
