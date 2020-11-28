@@ -33,6 +33,7 @@ Route::post('report/reject', 'Distributed\ReportController@reject');
 
 // nhan vien
 Route::get('employee/detail', 'Distributed\EmployeeController@detail');
+Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 
 // lich lam viec
 Route::get('schedule/detail', 'Distributed\ScheduleController@detail');
