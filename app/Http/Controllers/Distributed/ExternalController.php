@@ -8,6 +8,7 @@ use App\Model\Report;
 use App\Model\Task;
 use App\Model\Support;
 use App\Model\Employee;
+use App\Model\History;
 use Carbon\Carbon;
 use App\Http\Controllers\Distributed\TaskController as TaskController;
 
@@ -44,11 +45,14 @@ class ExternalController extends BaseController
 
         $id = $task->id;
 
+        $histories = History::where('task_id', $id)->orderBy('created_at', 'asc')->get();
+
         $doing_employees = Employee::where('current_id', $id)->get();
         $pending_employees = Employee::where('pending_ids', 'like', '%,'. $id . ',%')->get();
 
         $data = [
             'task' => $task,
+            'histories' => $histories,
             'doing_employees' => $doing_employees,
             'pending_employees' => $pending_employees
         ];
