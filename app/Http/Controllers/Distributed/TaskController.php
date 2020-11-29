@@ -172,14 +172,16 @@ class TaskController extends BaseController
         }
 
         // get employee to handler new task
-        $captain_id = $this->employeeGetting();
+        $employeeGetting = $this->employeeGetting();
 
         // create new task
-        $task_id = $this->createTask($captain_id);
+        $task_id = $this->createTask();
 
-        foreach ($this->employees as $employee) {
+        foreach ($employeeGetting as $employee) {
             $this->setNewTask($task_id, $employee, $this->incident['priority']);
         }
+
+        $this->setCaptainForTask($task_id);
 
         $action = "Tiến hành xử lý sự cố";
         $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
@@ -194,15 +196,59 @@ class TaskController extends BaseController
         return $this->sendResponse(['task_id' => $task_id]);
     }
 
-    public function createTask($captain_id = null)
+    public function setCaptainForTask($task_id)
+    {
+        $task = Task::where('id', $task_id)->first();
+
+        $current_employees = Employee::where('current_id', $id)->get();
+
+        if ($current_employees) {
+            $captain_id = null;
+            $min_pending = 0;
+
+            foreach ($current_employees as $employee) {
+
+                if ($captain_id) {
+                    if (strlen($employee->pending_ids) > 1) {
+                        $total_pending = count(explode(',', $employee->pending_ids));
+
+                        if ($total_pending < $min_pending) {
+                            $min_pending = $total_pending;
+
+                            $captain_id = $employee->id;
+                        }
+                    }  else {
+                        $captain_id = $employee->id;
+
+                        break;
+                    }
+                } else {
+                    $captain_id = $employee->id;
+
+                    if (strlen($employee->pending_ids) > 1) {
+                        $min_pending = count(explode(',', $employee->pending_ids));
+                    }  else {
+                        break;
+                    }
+                }
+            }
+
+            $task->captain_id = $employee->id();
+            $task->save();
+        }
+    }
+
+    public function createTask()
     {
         $new_task = Task::create([
             'incident_id' => $this->incident['incident_id'],
-            'status' => 'doing',
+            'status' => 'pending',
             'name' => $this->incident['name'],
             'type' => $this->incident['type'],
             'level' => $this->incident['level'],
             'priority' => $this->incident['priority'],
+            'captain_id' => null,
+            'active_ids' => ','
         ]);
 
         return $new_task->id;
@@ -210,8 +256,9 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $this->employees = Employee::inRandomOrder()->limit(rand(5,7))->get();
+        $employees = Employee::inRandomOrder()->limit(rand(5,7))->get();
 
+        // $employees = [];
         // foreach ($employees as $key => $employee) {
         //     $employee_id = $employee['result']['id'];
 
@@ -226,14 +273,15 @@ class TaskController extends BaseController
         //             'role' => $employee['result']['role'],
         //             'type' => $employee['result']['type'],
         //             'current_id' => null,
-        //             'pending_ids' => ','
+        //             'pending_ids' => ',',
+        //              'all_ids' => ','
         //         ]);
 
-        //         $this->employees[] = $newEmployee;
+        //         $employees[] = $newEmployee;
         //     }
         // }
 
-        return 999;
+        return $employee;
     }
 
     // khi co mot task moi
@@ -245,7 +293,7 @@ class TaskController extends BaseController
         $pending_ids = $employee->pending_ids;
 
         if ($current_id) {
-            $current_task = Task::where([['id', $current_id], ['status', 'doing']])->first();
+            $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
 
             if ($current_task) {
                 $current_priority = $current_task->priority;
@@ -255,6 +303,9 @@ class TaskController extends BaseController
                 } else {
                     $new_current_id = $task_id;
                     $employee->current_id = $new_current_id;
+
+                    $old_all_ids = $employee->all_ids;
+                    $employee->all_ids = $old_all_ids . $new_current_id . ',';
 
                     $pending_ids .= $current_id . ',';
                 }
@@ -294,7 +345,7 @@ class TaskController extends BaseController
 
             $list = [];
             foreach ($pending_ids_array as $id) {
-                $task = Task::where([['id', $id], ['status', 'doing']])->first();
+                $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
 
                 if ($task) {
                     $list[] = [
@@ -317,6 +368,10 @@ class TaskController extends BaseController
                 $new_current_id = end($list)['id'];
 
                 $employee->current_id = $new_current_id;
+
+                $old_all_ids = $employee->all_ids;
+                $employee->all_ids = $old_all_ids . $new_current_id . ',';
+
                 $employee->save();
 
                 $this->notification('current', 'push', $employee_id);

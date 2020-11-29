@@ -14,6 +14,96 @@ use App\Http\Controllers\Distributed\TaskController as TaskController;
 
 class ExternalController extends BaseController
 {
+    public function getUserTasks(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        $employee_id = $verifyApiToken['id'];
+
+        if (!$employee_id) {
+            return $this->sendError('Không có giá trị định danh nhân viên', 404);
+        }
+
+        $existedEmployee = Employee::where('employee_id', $employee_id)->first();
+
+        if (!$existedEmployee) {
+            $name = $verifyApiToken['name'];
+            $role = $verifyApiToken['role'];
+
+            $newEmployee = Employee::create([
+                'employee_id' => $employee_id,
+                'name' => $name,
+                'role' => $role,
+                'type' => $projectType,
+                'current_id' => null,
+                'pending_ids' => ',',
+                'all_ids' => ','
+            ]);
+
+            $data = [
+                'current_task' => null,
+                'pending_tasks' => [],
+                'done_tasks' => []
+            ];
+
+            return $this->sendResponse($data);
+        }
+
+        $current_id = $existedEmployee->current_id;
+        $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+
+        $pending_ids = $existedEmployee->pending_ids;
+        $pending_tasks = [];
+
+        if (strlen($pending_ids) > 1) {
+            $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
+
+            foreach ($pending_ids_array as $id) {
+                $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
+
+                if ($task) {
+                    $pending_tasks[] = $task;
+                }
+            }
+        }
+
+        $all_ids = $existedEmployee->all_ids;
+        $done_tasks = [];
+
+        if (strlen($all_ids) > 1) {
+            $done_ids_array = array_slice(explode(',', $all_ids), 1, -1);
+
+            foreach ($all_ids_array as $id) {
+                $task = Task::where([['id', $id], ['status' ,'done']])->first();
+
+                if ($task) {
+                    $done_tasks[] = $task;
+                }
+            }
+        }
+
+        $data = [
+            'current_task' => $current_task,
+            'pending_tasks' => $pending_tasks,
+            'done_tasks' => $done_tasks
+        ];
+
+        return $this->sendResponse($data);
+    }
+
     public function getTaskByIncidentId(Request $request)
     {
         $apiToken = $request->header('api-token');

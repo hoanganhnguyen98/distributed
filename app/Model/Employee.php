@@ -17,6 +17,7 @@ class Employee extends Model
         'role',
         'type',
         'current_id',
-        'pending_ids'
+        'pending_ids',
+        'all_ids'
     ];
 }

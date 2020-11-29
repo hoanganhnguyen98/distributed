@@ -34,6 +34,7 @@ Route::post('report/reject', 'Distributed\ReportController@reject');
 // nhan vien
 Route::get('employee/detail', 'Distributed\EmployeeController@detail');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
+Route::post('employee/active', 'Distributed\EmployeeController@active');
 
 // lich lam viec
 Route::get('schedule/detail-day', 'Distributed\ScheduleController@detail');
@@ -49,6 +50,7 @@ Route::get('generate/schedule', 'Distributed\GenerateController@generateSchedule
 // external
 Route::get('external/report-listing', 'Distributed\ExternalController@reportListing');
 Route::get('external/task-by-incident', 'Distributed\ExternalController@getTaskByIncidentId');
+Route::get('external/user-tasks', 'Distributed\ExternalController@getUserTasks');
 
 
 

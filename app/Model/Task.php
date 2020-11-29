@@ -17,6 +17,8 @@ class Task extends Model
         'status',
         'level',
         'priority',
-        'incident_id'
+        'incident_id',
+        'captain_id',
+        'active_ids'
     ];
 }

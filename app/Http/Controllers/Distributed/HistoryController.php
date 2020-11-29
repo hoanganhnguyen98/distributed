@@ -52,7 +52,7 @@ class HistoryController extends BaseController
 
     public function create($task_id, $action, $create_id, $support_ids = null)
     {
-        $task = Task::where([['id', $task_id], ['status', 'doing']])->first();
+        $task = Task::where('id', $task_id)->first();
 
         if ($task) {
             $doing_ids = $this->getDoingIds($task_id);
