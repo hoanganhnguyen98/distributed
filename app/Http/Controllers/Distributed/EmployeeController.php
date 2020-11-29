@@ -46,7 +46,7 @@ class EmployeeController extends BaseController
         $active_ids = $task->active_ids;
         $user_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
 
-        if (strpos($active_ids, $user_id) !== false) {
+        if (strpos($active_ids, $active_ids, ',' . $user_id . ',') !== false) {
             return $this->sendError('Công việc đã được khởi động', 403);
         }
 
@@ -158,7 +158,7 @@ class EmployeeController extends BaseController
         if ($current_task) {
             $active_ids = $current_task->active_ids;
 
-            if (strpos($active_ids, $current_id) !== false) {
+            if (strpos($active_ids, ',' . $existedEmployee->id . ',') !== false) {
                 $active_task = true;
             }
         }
