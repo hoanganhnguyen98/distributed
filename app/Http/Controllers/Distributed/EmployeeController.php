@@ -52,6 +52,8 @@ class EmployeeController extends BaseController
 
         $active_ids .= $user_id . ',';
         $task->active_ids = $active_ids;
+
+        $task->status = 'doing';
         $task->save();
 
         return $this->sendResponse();
@@ -145,6 +147,7 @@ class EmployeeController extends BaseController
                 'employee' => $newEmployee,
                 'current_task' => null,
                 'active_current_task' => false,
+                'is_captain' => false,
                 'pending_tasks' => []
             ];
 
@@ -153,6 +156,8 @@ class EmployeeController extends BaseController
 
         $current_id = $existedEmployee->current_id;
         $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+
+        $is_captain = $existedEmployee->id == $current_task->captain_id ? true : false;
 
         $active_task = false;
         if ($current_task) {
@@ -182,6 +187,7 @@ class EmployeeController extends BaseController
             'employee' => $existedEmployee,
             'current_task' => $current_task,
             'active_current_task' => $active_task,
+            'is_captain' => $is_captain,
             'pending_tasks' => $pending_tasks
         ];
 
