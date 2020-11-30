@@ -6,12 +6,95 @@ use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Report;
 use App\Model\Task;
+use App\Model\Employee;
 use Carbon\Carbon;
 use App\Http\Controllers\Distributed\TaskController as TaskController;
 use App\Http\Controllers\Distributed\HistoryController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Cloudder;
 
 class ReportController extends BaseController
 {
+    public function create(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        $task_id = $request->get('id');
+
+        if(!$task_id) {
+            return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
+        }
+
+        $task = Task::where([['id', $task_id], ['status', '<>', 'done']])->first();
+
+        if (!$task) {
+            return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 404);
+        }
+
+        $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+
+        if ($task->captain_id != $create_id) {
+            return $this->sendError('Bạn không có quyền gửi báo cáo kết quả', 403);
+        }
+
+        $rules = [
+            'title' => ['required', 'string'],
+            'content' => ['required', 'string'],
+            'image' => ['required'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->sendError('Thông tin gửi đi không hợp lệ', 400);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            if ($request->hasFile('image')){
+                // create path to store in cloud
+                $public_id = "ninja_restaurant/distributed/" . ($create_id . '_' . Carbon::now()->timestamp);
+                // upload to cloud
+                Cloudder::upload($request->file('image'), $public_id);
+                // get url of image
+                $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+                $img_url = Cloudder::show($public_id, $resize);
+            }
+
+            Report::create([
+                'title' => $request->get('title'),
+                'content' => $request->get('content'),
+                'task_id' => $task_id,
+                'image' => $img_url,
+                'status' => 'waiting',
+                'type' => $projectType,
+                'create_id' => $create_id
+            ]);
+
+            DB::commit();
+
+            return $this->sendResponse();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return $this->sendError('Đã có lỗi xảy ra khi tạo báo cáo', 500);
+        }
+    }
+
     public function listing(Request $request)
     {
         $apiToken = $request->header('api-token');

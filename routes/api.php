@@ -27,6 +27,7 @@ Route::get('support/listing', 'Distributed\SupportController@listing');
 
 // bao cao
 Route::get('report/listing', 'Distributed\ReportController@listing');
+Route::post('report/create', 'Distributed\ReportController@create');
 
 Route::post('report/accept', 'Distributed\ReportController@accept');
 Route::post('report/reject', 'Distributed\ReportController@reject');
