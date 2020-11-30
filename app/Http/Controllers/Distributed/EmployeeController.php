@@ -10,6 +10,72 @@ use Carbon\Carbon;
 
 class EmployeeController extends BaseController
 {
+    public function forwardCaptain(Request $request)
+    {
+        // $apiToken = $request->header('api-token');
+        // $projectType = $request->header('project-type');
+
+        // $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        // if(empty($verifyApiToken)) {
+        //     return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        // } else {
+        //     $statusCode = $verifyApiToken['code'];
+
+        //     if ($statusCode != 200) {
+        //         return $this->sendError($verifyApiToken['message'], $statusCode);
+        //     }
+        // }
+
+        $task_id = $request->get('id');
+
+        if (!$task_id) {
+            return $this->sendError('Không có giá trị định danh sự cố', 400);
+        }
+
+        $user_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+        $task = Task::where([['id', $task_id], ['captain_id', $user_id], ['status', '<>', 'done']])->first();
+
+        if (!$task) {
+            return $this->sendError('Công việc xử lý không tồn tại', 404);
+        }
+
+        if ($request->isMethod('get')) {
+            $employees = Employee::where('current_id', $task_id)->get();
+
+            $data = [];
+            if (!empty($employees)) {
+                foreach ($employees as $employee) {
+                    $data[] = [
+                        'id' => $employee->id,
+                        'name' => $employee->name
+                    ];
+                }
+            }
+
+            return $this->sendResponse($data);
+        }
+
+        if ($request->isMethod('post')) {
+            $forward_id = $request->get('forward_id');
+
+            if (!$forward_id) {
+                return $this->sendError('Không có giá trị định danh nhân viên ủy quyền', 400);
+            }
+
+            $employee = Employee::where([['id', $forward_id], ['current_id', $task_id]])->first();
+
+            if (!$employee) {
+                return $this->sendError('Nhân viên được chọn không hợp lệ', 404);
+            }
+
+            $task->captain_id = $forward_id;
+            $task->save();
+
+            return $this->sendResponse();
+        }
+    }
+
     public function active(Request $request)
     {
         $apiToken = $request->header('api-token');

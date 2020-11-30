@@ -37,6 +37,9 @@ Route::get('employee/detail', 'Distributed\EmployeeController@detail');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 Route::post('employee/active', 'Distributed\EmployeeController@active');
 
+Route::get('employee/forward', 'Distributed\EmployeeController@forwardCaptain');
+Route::post('employee/forward', 'Distributed\EmployeeController@forwardCaptain');
+
 // lich lam viec
 Route::get('schedule/detail-day', 'Distributed\ScheduleController@detail');
 Route::get('schedule/detail-employee', 'Distributed\ScheduleController@getSchedule');
