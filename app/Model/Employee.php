@@ -18,6 +18,7 @@ class Employee extends Model
         'type',
         'current_id',
         'pending_ids',
-        'all_ids'
+        'all_ids',
+        'is_captain'
     ];
 }

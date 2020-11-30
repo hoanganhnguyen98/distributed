@@ -72,6 +72,13 @@ class EmployeeController extends BaseController
             $task->captain_id = $forward_id;
             $task->save();
 
+            $user = Employee::where('id', $user_id)->first();
+            $user->is_captain = false;
+            $user->save();
+
+            $employee->is_captain = true;
+            $employee->save();
+
             return $this->sendResponse();
         }
     }
@@ -118,8 +125,6 @@ class EmployeeController extends BaseController
 
         $active_ids .= $user_id . ',';
         $task->active_ids = $active_ids;
-
-        $task->status = 'doing';
         $task->save();
 
         return $this->sendResponse();

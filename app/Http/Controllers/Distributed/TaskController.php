@@ -233,8 +233,12 @@ class TaskController extends BaseController
                 }
             }
 
-            $task->captain_id = $employee->id();
+            $task->captain_id = $captain_id;
             $task->save();
+
+            $captain = Employee::where('id', $captain_id)->first();
+            $captain->is_captain = true;
+            $captain->save();
         }
     }
 
@@ -256,7 +260,7 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $employees = Employee::inRandomOrder()->limit(rand(5,7))->get();
+        $employees = Employee::where('is_captain', '<>', true)->inRandomOrder()->limit(rand(5,7))->get();
 
         // $employees = [];
         // foreach ($employees as $key => $employee) {
@@ -274,14 +278,15 @@ class TaskController extends BaseController
         //             'type' => $employee['result']['type'],
         //             'current_id' => null,
         //             'pending_ids' => ',',
-        //              'all_ids' => ','
+        //              'all_ids' => ',',
+        //              'is_captain' => false
         //         ]);
 
         //         $employees[] = $newEmployee;
         //     }
         // }
 
-        return $employee;
+        return $employees;
     }
 
     // khi co mot task moi
