@@ -67,7 +67,7 @@ class ReportController extends BaseController
 
             if ($request->hasFile('image')){
                 // create path to store in cloud
-                $public_id = "ninja_restaurant/distributed/" . ($create_id . '_' . Carbon::now()->timestamp);
+                $public_id = "ninja_restaurant/distributed/reports/" . ($create_id . '_' . Carbon::now()->timestamp);
                 // upload to cloud
                 Cloudder::upload($request->file('image'), $public_id);
                 // get url of image

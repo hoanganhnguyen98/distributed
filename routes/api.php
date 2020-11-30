@@ -24,11 +24,11 @@ Route::get('task/detail', 'Distributed\TaskController@detail');
 
 // vien tro
 Route::get('support/listing', 'Distributed\SupportController@listing');
+Route::post('support/create', 'Distributed\SupportController@create');
 
 // bao cao
 Route::get('report/listing', 'Distributed\ReportController@listing');
 Route::post('report/create', 'Distributed\ReportController@create');
-
 Route::post('report/accept', 'Distributed\ReportController@accept');
 Route::post('report/reject', 'Distributed\ReportController@reject');
 
