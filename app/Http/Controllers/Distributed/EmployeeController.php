@@ -125,6 +125,7 @@ class EmployeeController extends BaseController
 
         $active_ids .= $user_id . ',';
         $task->active_ids = $active_ids;
+        $task->status = 'doing';
         $task->save();
 
         return $this->sendResponse();
