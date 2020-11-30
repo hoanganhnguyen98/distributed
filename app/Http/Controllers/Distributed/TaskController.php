@@ -200,7 +200,7 @@ class TaskController extends BaseController
     {
         $task = Task::where('id', $task_id)->first();
 
-        $current_employees = Employee::where('current_id', $id)->get();
+        $current_employees = Employee::where('current_id', $task_id)->get();
 
         if ($current_employees) {
             $captain_id = null;
