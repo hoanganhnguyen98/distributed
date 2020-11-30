@@ -262,7 +262,7 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $employees = Employee::where('is_captain', '<>', true)->inRandomOrder()->limit(rand(5,7))->get();
+        $employees = Employee::where('is_captain', '<>', true)->limit(rand(7,10))->get();
 
         // $employees = [];
         // foreach ($employees as $key => $employee) {
