@@ -73,10 +73,10 @@ class EmployeeController extends BaseController
             $task->save();
 
             $user = Employee::where('id', $user_id)->first();
-            $user->is_captain = false;
+            $user->is_captain = 0;
             $user->save();
 
-            $employee->is_captain = true;
+            $employee->is_captain = 1;
             $employee->save();
 
             return $this->sendResponse();
@@ -212,7 +212,8 @@ class EmployeeController extends BaseController
                 'type' => $projectType,
                 'current_id' => null,
                 'pending_ids' => ',',
-                'all_ids' => ','
+                'all_ids' => ',',
+                'is_captain' => 0
             ]);
 
             $data = [

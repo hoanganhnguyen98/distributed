@@ -235,7 +235,7 @@ class TaskController extends BaseController
 
             if ($captain_id != null) {
                 $captain = Employee::where('id', $captain_id)->first();
-                $captain->is_captain = true;
+                $captain->is_captain = 1;
                 $captain->save();
             }
 
@@ -262,7 +262,7 @@ class TaskController extends BaseController
 
     public function employeeGetting()
     {
-        $employees = Employee::where('is_captain', '<>', true)->limit(rand(7,10))->get();
+        $employees = Employee::where('is_captain', '<>', 1)->limit(rand(7,10))->get();
 
         // $employees = [];
         // foreach ($employees as $key => $employee) {
@@ -281,7 +281,7 @@ class TaskController extends BaseController
         //             'current_id' => null,
         //             'pending_ids' => ',',
         //              'all_ids' => ',',
-        //              'is_captain' => false
+        //              'is_captain' => 0
         //         ]);
 
         //         $employees[] = $newEmployee;
