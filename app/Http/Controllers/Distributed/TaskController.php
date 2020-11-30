@@ -233,12 +233,14 @@ class TaskController extends BaseController
                 }
             }
 
+            if ($captain_id != null) {
+                $captain = Employee::where('id', $captain_id)->first();
+                $captain->is_captain = true;
+                $captain->save();
+            }
+
             $task->captain_id = $captain_id;
             $task->save();
-
-            $captain = Employee::where('id', $captain_id)->first();
-            $captain->is_captain = true;
-            $captain->save();
         }
     }
 
