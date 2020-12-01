@@ -71,7 +71,7 @@ class ReportController extends BaseController
                 // upload to cloud
                 Cloudder::upload($request->file('image'), $public_id);
                 // get url of image
-                $resize = array("width" => 300, "height" => 300, "crop" => "fill");
+                $resize = array("width" => null, "height" => null, "crop" => null);
                 $img_url = Cloudder::show($public_id, $resize);
             }
 
