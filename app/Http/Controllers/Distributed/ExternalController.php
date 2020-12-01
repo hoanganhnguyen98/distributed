@@ -86,7 +86,7 @@ class ExternalController extends BaseController
         if (strlen($all_ids) > 1) {
             $done_ids_array = array_slice(explode(',', $all_ids), 1, -1);
 
-            foreach ($all_ids_array as $id) {
+            foreach ($done_ids_array as $id) {
                 $task = Task::where([['id', $id], ['status' ,'done']])->first();
 
                 if ($task) {
