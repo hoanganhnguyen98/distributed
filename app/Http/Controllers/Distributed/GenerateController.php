@@ -12,7 +12,7 @@ class GenerateController extends BaseController
 {
     public function generateEmployee(Request $request)
     {
-        if ($request->get('ninja') !== 133) {
+        if ((int) $request->get('ninja') !== 133) {
             return $this->sendError('Không phải chỗ chơi, đi ra ngoài', 400);
         }
 
