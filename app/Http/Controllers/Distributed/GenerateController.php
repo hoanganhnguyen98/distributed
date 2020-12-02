@@ -34,7 +34,9 @@ class GenerateController extends BaseController
                 'role' => 'INCIDENT_STAFF',
                 'type' => $type[rand(0,3)],
                 'current_id' => null,
-                'pending_ids' => ','
+                'pending_ids' => ',',
+                'is_captain' => false,
+                'all_ids' => ','
             ]);
         }
 
