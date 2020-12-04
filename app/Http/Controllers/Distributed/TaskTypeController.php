@@ -32,16 +32,16 @@ class TaskTypeController extends BaseController
             }
         }
 
-        $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+        // $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
 
         try {
-            DB::beginTransaction();
+            // DB::beginTransaction();
 
             $rules = [
                 'title' => ['required', 'string'],
                 'description' => ['required', 'string'],
                 'employee_number' => ['required', 'numeric'],
-                'prioritize' => ['required', 'numeric', 'min:0|max:1']
+                'prioritize' => ['required', 'numeric', 'min:0', 'max:1']
             ];
 
             $validator = Validator::make($request->all(), $rules);
