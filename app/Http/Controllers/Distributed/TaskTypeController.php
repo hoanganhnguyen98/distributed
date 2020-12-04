@@ -41,7 +41,7 @@ class TaskTypeController extends BaseController
                 'title' => ['required', 'string'],
                 'description' => ['required', 'string'],
                 'employee_number' => ['required', 'numeric'],
-                'prioritize' => ['required', 'bool']
+                'prioritize' => ['required', 'numeric', 'min:0|max:1']
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -49,12 +49,14 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
+            $prioritize = (int) $request->get('prioritize') == 1 ? true : false;
+
             $newTaskType = TaskType::create([
                 'title' => $request->get('title'),
                 'description' => $request->get('description'),
-                'employee_number' => $request->get('employee_number'),
+                'employee_number' => (int) $request->get('employee_number'),
                 'project_type' => $projectType,
-                'prioritize' => $request->get('prioritize'),
+                'prioritize' => $prioritize,
                 'create_id' => $create_id
             ]);
 
