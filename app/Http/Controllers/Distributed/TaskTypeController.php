@@ -38,7 +38,7 @@ class TaskTypeController extends BaseController
             DB::beginTransaction();
 
             $rules = [
-                'title' => ['required', 'string'],
+                'name' => ['required', 'string'],
                 'description' => ['required', 'string'],
                 'employee_number' => ['required', 'numeric'],
                 'prioritize' => ['required', 'numeric', 'min:0', 'max:1']
@@ -56,7 +56,7 @@ class TaskTypeController extends BaseController
             }
 
             $newTaskType = TaskType::create([
-                'title' => $request->get('title'),
+                'name' => $request->get('name'),
                 'description' => $request->get('description'),
                 'employee_number' => (int) $request->get('employee_number'),
                 'project_type' => $projectType,
@@ -96,7 +96,7 @@ class TaskTypeController extends BaseController
 
             $rules = [
                 'id' => ['required'],
-                'title' => ['string'],
+                'name' => ['string'],
                 'description' => ['string'],
                 'employee_number' => ['numeric'],
                 'prioritize' => ['bool']
@@ -113,7 +113,7 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
             }
 
-            $updates = ['title', 'description', 'employee_number', 'prioritize'];
+            $updates = ['name', 'description', 'employee_number', 'prioritize'];
 
             foreach ($updates as $update) {
                 if ($request->get($update)) {
