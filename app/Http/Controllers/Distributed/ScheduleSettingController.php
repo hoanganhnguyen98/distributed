@@ -57,8 +57,18 @@ class ScheduleSettingController extends BaseController
             $off_sunday = $setting->off_sunday;
             $off_days = $setting->off_days;
 
-            $month = $request->get('month');
-            $year = $request->get('year');
+            if ($setting->off_days) {
+                if (strpos($setting->off_days, ',') < 0) {
+                    $off_days = [$setting->off_days];
+                } else {
+                    $off_days = explode(',', $setting->off_days);
+                }
+            } else {
+                $off_days = [];
+            }
+
+            $month = (int) $request->get('month');
+            $year = (int) $request->get('year');
 
             $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
