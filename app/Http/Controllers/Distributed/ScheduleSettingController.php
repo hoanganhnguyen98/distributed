@@ -70,7 +70,7 @@ class ScheduleSettingController extends BaseController
             $month = (int) $request->get('month');
             $year = (int) $request->get('year');
 
-            $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
 
             for ($i=1; $i <= $days; $i++) {
                 $schedule = Schedule::where([['day', $i], ['month', $month], ['year', $year]])->first();
