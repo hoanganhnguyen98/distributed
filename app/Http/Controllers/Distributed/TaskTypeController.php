@@ -32,10 +32,10 @@ class TaskTypeController extends BaseController
             }
         }
 
-        // $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+        $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
 
         try {
-            // DB::beginTransaction();
+            DB::beginTransaction();
 
             $rules = [
                 'title' => ['required', 'string'],
