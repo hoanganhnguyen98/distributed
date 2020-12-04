@@ -18,6 +18,7 @@ class ScheduleSetting extends Model
         'month',
         'year',
         'off_saturday',
-        'off_sunday'
+        'off_sunday',
+        'off_days'
     ];
 }
