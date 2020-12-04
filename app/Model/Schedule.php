@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Schedule extends Model
 {
+    protected $casts = [
+        'absent_ids' => 'array',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
