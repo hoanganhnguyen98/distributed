@@ -141,13 +141,14 @@ class ScheduleSettingController extends BaseController
                     if ((int) $request->get('off_days') == null) {
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     } else {
-                        $off_days = [$request->get('off_days')];
+                        $off_days = $request->get('off_days');
                     }
                 } else {
-                    $off_days = explode(',', $request->get('off_days'));
+                    $off_days = $request->get('off_days');
+                    $days = explode(',', $request->get('off_days'));
 
-                    if (!empty($off_days)) {
-                        foreach ($off_days as $day) {
+                    if (!empty($days)) {
+                        foreach ($days as $day) {
                             if ((int) $day == null) {
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                             }
@@ -157,7 +158,7 @@ class ScheduleSettingController extends BaseController
                     }
                 }
             } else {
-                $off_days = array();
+                $off_days = null;
             }
 
             $setting = ScheduleSetting::where([['month', $request->get('month')], ['year', $request->get('year')]])->first();
@@ -171,7 +172,7 @@ class ScheduleSettingController extends BaseController
                 'year' => $request->get('year'),
                 'off_saturday' => ((int) $request->get('off_saturday')) == 1 ? true : false,
                 'off_sunday' => ((int) $request->get('off_sunday')) == 1 ? true : false,
-                'off_days' => serialize($off_days)
+                'off_days' => $off_days
             ]);
 
             DB::commit();
@@ -206,9 +207,8 @@ class ScheduleSettingController extends BaseController
 
             $rules = [
                 'id' => ['required'],
-                'off_saturday' => ['numeric', 'min:0', 'max:1'],
-                'off_sunday' => ['numeric', 'min:0', 'max:1'],
-                'off_days' => ['string']
+                'off_saturday' => ['required', 'numeric', 'min:0', 'max:1'],
+                'off_sunday' => ['required', 'numeric', 'min:0', 'max:1'],
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -221,13 +221,14 @@ class ScheduleSettingController extends BaseController
                     if ((int) $request->get('off_days') == null) {
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     } else {
-                        $off_days = [$request->get('off_days')];
+                        $off_days = $request->get('off_days');
                     }
                 } else {
-                    $off_days = explode(',', $request->get('off_days'));
+                    $off_days = $request->get('off_days');
+                    $days = explode(',', $request->get('off_days'));
 
-                    if (!empty($off_days)) {
-                        foreach ($off_days as $day) {
+                    if (!empty($days)) {
+                        foreach ($days as $day) {
                             if ((int) $day == null) {
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                             }
@@ -247,9 +248,7 @@ class ScheduleSettingController extends BaseController
             $updates = ['off_saturday', 'off_sunday'];
 
             foreach ($updates as $update) {
-                if ($request->get($update)) {
-                    $setting->{$update} = ((int) $request->get($update)) == 1 ? true : false;
-                }
+                $setting->{$update} = ((int) $request->get($update)) == 1 ? true : false;
             }
 
             if ($request->get('off_days')) {
