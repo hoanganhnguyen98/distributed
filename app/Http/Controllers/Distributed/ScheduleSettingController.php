@@ -129,12 +129,28 @@ class ScheduleSettingController extends BaseController
                 'year' => ['required', 'numeric', 'min:2020'],
                 'off_saturday' => ['required', 'numeric', 'min:0', 'max:1'],
                 'off_sunday' => ['required', 'numeric', 'min:0', 'max:1'],
-                'off_days' => ['required', 'array']
+                'off_days' => ['required', 'string']
             ];
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 404);
+            }
+
+            if ($request->get('off_days')) {
+                $off_days = explode(',', $request->get('off_days'));
+
+                if (!empty($off_days)) {
+                    foreach ($off_days as $day) {
+                        if ((int) $day == null) {
+                            return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                        }
+                    }
+                } else {
+                    return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                }
+            } else {
+                $off_days = [];
             }
 
             $setting = ScheduleSetting::where([['month', $request->get('month')], ['year', $request->get('year')]])->first();
@@ -148,7 +164,7 @@ class ScheduleSettingController extends BaseController
                 'year' => $request->get('year'),
                 'off_saturday' => ((int) $request->get('off_saturday')) == 1 ? true : false,
                 'off_sunday' => ((int) $request->get('off_sunday')) == 1 ? true : false,
-                'off_days' => $request->get('off_days')
+                'off_days' => $off_days
             ]);
 
             DB::commit();
@@ -183,14 +199,28 @@ class ScheduleSettingController extends BaseController
 
             $rules = [
                 'id' => ['required'],
-                'off_saturday' => ['bool'],
-                'off_sunday' => ['bool'],
-                'off_days' => ['array']
+                'off_saturday' => ['numeric', 'min:0', 'max:1'],
+                'off_sunday' => ['numeric', 'min:0', 'max:1'],
+                'off_days' => ['string']
             ];
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
+            }
+
+            if ($request->get('off_days')) {
+                $off_days = explode(',', $request->get('off_days'));
+
+                if (!empty($off_days)) {
+                    foreach ($off_days as $day) {
+                        if ((int) $day == null) {
+                            return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                        }
+                    }
+                } else {
+                    return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                }
             }
 
             $setting = ScheduleSetting::where('id', $request->get('id'))->first();
@@ -208,7 +238,7 @@ class ScheduleSettingController extends BaseController
             }
 
             if ($request->get('off_days')) {
-                $setting->off_days = $request->get('off_days');
+                $setting->off_days = $off_days;
             }
 
             $setting->save();
