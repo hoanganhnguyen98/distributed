@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ScheduleSetting extends Model
 {
+    protected $casts = [
+        'off_days' => 'array',
+    ];
     /**
      * The attributes that are mass assignable.
      *
