@@ -92,7 +92,7 @@ class ScheduleSettingController extends BaseController
                     'day' => $i,
                     'month' => $month,
                     'year' => $year,
-                    'absent_ids' => [],
+                    'absent_ids' => null,
                     'off' => $off
                 ]);
             }
