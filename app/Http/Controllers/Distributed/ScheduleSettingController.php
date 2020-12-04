@@ -122,14 +122,13 @@ class ScheduleSettingController extends BaseController
         }
 
         try {
-            DB::beginTransaction();
+            // DB::beginTransaction();
 
             $rules = [
                 'month' => ['required', 'numeric', 'min:1', 'max:12'],
                 'year' => ['required', 'numeric', 'min:2020'],
                 'off_saturday' => ['required', 'numeric', 'min:0', 'max:1'],
                 'off_sunday' => ['required', 'numeric', 'min:0', 'max:1'],
-                'off_days' => ['string']
             ];
 
             $validator = Validator::make($request->all(), $rules);

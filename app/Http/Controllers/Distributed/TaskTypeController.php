@@ -160,12 +160,13 @@ class TaskTypeController extends BaseController
             DB::beginTransaction();
 
             $rules = [
-                'id' => ['required']
+                'id' => ['required', 'numeric']
             ];
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
-                return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
+                // return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
+                return $this->sendError($validator, 400);
             }
 
             $taskType = TaskType::where('id', $request->get('id'))->first();
