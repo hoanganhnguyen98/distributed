@@ -56,7 +56,7 @@ Route::get('external/report-listing', 'Distributed\ExternalController@reportList
 Route::get('external/task-by-incident', 'Distributed\ExternalController@getTaskByIncidentId');
 Route::get('external/user-tasks', 'Distributed\ExternalController@getUserTasks');
 
-Route::post('incident/listing', 'Distributed\IncidentController@listing');
+Route::get('incident/listing', 'Distributed\IncidentController@listing');
 
 // task-type
 Route::post('task-type/create', 'Distributed\TaskTypeController@create');
