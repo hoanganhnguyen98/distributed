@@ -129,7 +129,7 @@ class ScheduleSettingController extends BaseController
                 'year' => ['required', 'numeric', 'min:2020'],
                 'off_saturday' => ['required', 'numeric', 'min:0', 'max:1'],
                 'off_sunday' => ['required', 'numeric', 'min:0', 'max:1'],
-                'off_days' => ['required', 'string']
+                'off_days' => ['string']
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -138,16 +138,24 @@ class ScheduleSettingController extends BaseController
             }
 
             if ($request->get('off_days')) {
-                $off_days = explode(',', $request->get('off_days'));
-
-                if (!empty($off_days)) {
-                    foreach ($off_days as $day) {
-                        if ((int) $day == null) {
-                            return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
-                        }
+                if (strpos($request->get('off_days'), ',') < 0) {
+                    if ((int) $request->get('off_days') == null) {
+                        return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                    } else {
+                        $off_days = [$request->get('off_days')];
                     }
                 } else {
-                    return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                    $off_days = explode(',', $request->get('off_days'));
+
+                    if (!empty($off_days)) {
+                        foreach ($off_days as $day) {
+                            if ((int) $day == null) {
+                                return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                            }
+                        }
+                    } else {
+                        return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                    }
                 }
             } else {
                 $off_days = [];
@@ -210,16 +218,24 @@ class ScheduleSettingController extends BaseController
             }
 
             if ($request->get('off_days')) {
-                $off_days = explode(',', $request->get('off_days'));
-
-                if (!empty($off_days)) {
-                    foreach ($off_days as $day) {
-                        if ((int) $day == null) {
-                            return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
-                        }
+                if (strpos($request->get('off_days'), ',') < 0) {
+                    if ((int) $request->get('off_days') == null) {
+                        return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                    } else {
+                        $off_days = [$request->get('off_days')];
                     }
                 } else {
-                    return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                    $off_days = explode(',', $request->get('off_days'));
+
+                    if (!empty($off_days)) {
+                        foreach ($off_days as $day) {
+                            if ((int) $day == null) {
+                                return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                            }
+                        }
+                    } else {
+                        return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
+                    }
                 }
             }
 
