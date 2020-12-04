@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Model\Schedule;
 use App\Model\Employee;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends BaseController
 {
@@ -37,7 +39,7 @@ class ScheduleController extends BaseController
         }
 
         $id = $employee->id;
-        $schedule = Schedule::where('pending_ids', 'like', '%,'. $id . ',%')->get();
+        $schedule = Schedule::where('employee_ids', 'like', '%,'. $id . ',%')->get();
 
         return $this->sendResponse($schedule);
     }

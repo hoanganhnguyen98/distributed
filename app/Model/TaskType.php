@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Schedule extends Model
+class TaskType extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,10 +12,11 @@ class Schedule extends Model
      * @var array
      */
     protected $fillable = [
-        'day',
-        'month',
-        'year',
-        'absent_ids',
-        'off'
+        'name',
+        'description',
+        'employee_number',
+        'project_type',
+        'prioritize',
+        'create_id'
     ];
 }

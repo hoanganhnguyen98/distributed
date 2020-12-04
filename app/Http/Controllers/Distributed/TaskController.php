@@ -517,4 +517,35 @@ class TaskController extends BaseController
 
         return true;
     }
+
+    public function handlerIncident($incident_id, $apiToken, $projectType)
+    {
+        $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
+
+        if ($this->incident) {
+            // get employee to handler new task
+            $employeeGetting = $this->employeeGetting();
+
+            // create new task
+            $task_id = $this->createTask();
+
+            foreach ($employeeGetting as $employee) {
+                $this->setNewTask($task_id, $employee, $this->incident['priority']);
+            }
+
+            $this->setCaptainForTask($task_id);
+
+            $action = "Tiến hành xử lý sự cố";
+            $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+            (new HistoryController)->create($task_id, $action, $create_id);
+
+            $isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType, 1);
+
+            if (!$isUpdated) {
+                return $this->sendError($this->responseMessage, $this->statusCode);
+            }
+
+            return $this->sendResponse(['task_id' => $task_id]);
+        }
+    }
 }

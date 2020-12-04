@@ -56,6 +56,20 @@ Route::get('external/report-listing', 'Distributed\ExternalController@reportList
 Route::get('external/task-by-incident', 'Distributed\ExternalController@getTaskByIncidentId');
 Route::get('external/user-tasks', 'Distributed\ExternalController@getUserTasks');
 
+Route::post('incident/listing', 'Distributed\IncidentController@listing');
+
+// task-type
+Route::post('task-type/create', 'Distributed\TaskTypeController@create');
+Route::put('task-type/update', 'Distributed\TaskTypeController@update');
+Route::delete('task-type/delete', 'Distributed\TaskTypeController@delete');
+Route::get('task-type/listing', 'Distributed\TaskTypeController@listing');
+
+Route::post('schedule-setting/create', 'Distributed\ScheduleSettingController@create');
+Route::post('schedule-setting/set', 'Distributed\ScheduleSettingController@set');
+Route::put('schedule-setting/update', 'Distributed\ScheduleSettingController@update');
+Route::get('schedule-setting/listing', 'Distributed\ScheduleSettingController@listing');
+
+
 
 
 
