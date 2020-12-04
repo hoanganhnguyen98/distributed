@@ -49,7 +49,7 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
-            $prioritize = (int) $request->get('prioritize') == 1 ? true : false;
+            $prioritize = ((int) $request->get('prioritize')) == 1 ? true : false;
 
             $newTaskType = TaskType::create([
                 'title' => $request->get('title'),
