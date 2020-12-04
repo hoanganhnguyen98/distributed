@@ -38,8 +38,8 @@ class ScheduleSettingController extends BaseController
             DB::beginTransaction();
 
             $rules = [
-                'month' => ['required', 'numeric|min:1|max:12'],
-                'year' => ['required', 'numeric|min:2020'],
+                'month' => ['required', 'numeric', 'min:1', 'max:12'],
+                'year' => ['required', 'numeric', 'min:2020'],
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -125,10 +125,10 @@ class ScheduleSettingController extends BaseController
             DB::beginTransaction();
 
             $rules = [
-                'month' => ['required', 'numeric|min:1|max:12'],
-                'year' => ['required', 'numeric|min:2020'],
-                'off_saturday' => ['required', 'bool'],
-                'off_sunday' => ['required', 'bool'],
+                'month' => ['required', 'numeric', 'min:1', 'max:12'],
+                'year' => ['required', 'numeric', 'min:2020'],
+                'off_saturday' => ['required', 'numeric', 'min:0', 'max:1'],
+                'off_sunday' => ['required', 'numeric', 'min:0', 'max:1'],
                 'off_days' => ['required', 'array']
             ];
 
@@ -146,8 +146,8 @@ class ScheduleSettingController extends BaseController
             ScheduleSetting::create([
                 'month' => $request->get('month'),
                 'year' => $request->get('year'),
-                'off_saturday' => $request->get('off_saturday'),
-                'off_sunday' => $request->get('off_sunday'),
+                'off_saturday' => ((int) $request->get('off_saturday')) == 1 ? true : false,
+                'off_sunday' => ((int) $request->get('off_sunday')) == 1 ? true : false,
                 'off_days' => $request->get('off_days')
             ]);
 
@@ -199,12 +199,16 @@ class ScheduleSettingController extends BaseController
                 return $this->sendError('Không tìm thấy cấu hình của lịch làm việc hợp lệ', 404);
             }
 
-            $updates = ['off_saturday', 'off_sunday', 'off_days'];
+            $updates = ['off_saturday', 'off_sunday'];
 
             foreach ($updates as $update) {
                 if ($request->get($update)) {
-                    $setting->{$update} = $request->get($update);
+                    $setting->{$update} = ((int) $request->get($update)) == 1 ? true : false;
                 }
+            }
+
+            if ($request->get('off_days')) {
+                $setting->off_days = $request->get('off_days');
             }
 
             $setting->save();

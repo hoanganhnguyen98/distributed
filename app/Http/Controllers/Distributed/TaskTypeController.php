@@ -49,13 +49,7 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
-            if ((int) $request->get('prioritize') == 1) {
-                $prioritize = true;
-            } else {
-                $prioritize = false;
-            }
-
-            // dd($prioritize);
+            $prioritize = ((int) $request->get('prioritize')) == 1 ? true : false;
 
             $newTaskType = TaskType::create([
                 'name' => $request->get('name'),
@@ -101,7 +95,7 @@ class TaskTypeController extends BaseController
                 'name' => ['string'],
                 'description' => ['string'],
                 'employee_number' => ['numeric'],
-                'prioritize' => ['bool']
+                'prioritize' => ['numeric', 'min:0', 'max:1']
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -109,13 +103,23 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
+
+
             $taskType = TaskType::where('id', $request->get('id'))->first();
 
             if (!$taskType) {
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
             }
 
-            $updates = ['name', 'description', 'employee_number', 'prioritize'];
+            if ($request->get('employee_number')) {
+                $taskType->employee_number = (int) $request->get('employee_number');
+            }
+
+            if ($request->get('prioritize')) {
+                $taskType->employee_number = ((int) $request->get('prioritize')) == 1 ? true : false;
+            }
+
+            $updates = ['name', 'description'];
 
             foreach ($updates as $update) {
                 if ($request->get($update)) {
