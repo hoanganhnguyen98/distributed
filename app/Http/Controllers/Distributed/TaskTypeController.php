@@ -92,10 +92,10 @@ class TaskTypeController extends BaseController
 
             $rules = [
                 'id' => ['required'],
-                'name' => ['string'],
-                'description' => ['string'],
-                'employee_number' => ['numeric'],
-                'prioritize' => ['numeric', 'min:0', 'max:1']
+                'name' => ['required', 'string'],
+                'description' => ['required', 'string'],
+                'employee_number' => ['required', 'numeric'],
+                'prioritize' => ['required', 'numeric', 'min:0', 'max:1']
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -103,7 +103,7 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
-
+            $prioritize = ((int) $request->get('prioritize')) == 1 ? true : false;
 
             $taskType = TaskType::where('id', $request->get('id'))->first();
 
@@ -111,21 +111,10 @@ class TaskTypeController extends BaseController
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
             }
 
-            if ($request->get('employee_number')) {
-                $taskType->employee_number = (int) $request->get('employee_number');
-            }
-
-            if ($request->get('prioritize')) {
-                $taskType->employee_number = ((int) $request->get('prioritize')) == 1 ? true : false;
-            }
-
-            $updates = ['name', 'description'];
-
-            foreach ($updates as $update) {
-                if ($request->get($update)) {
-                    $taskType->{$update} = $request->get($update);
-                }
-            }
+            $taskType->name = $request->get('name');
+            $taskType->description = $request->get('description');
+            $taskType->employee_number = (int) $request->get('employee_number');
+            $taskType->prioritize = $prioritize;
 
             $taskType->save();
 
@@ -165,7 +154,6 @@ class TaskTypeController extends BaseController
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
-                // return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
                 return $this->sendError($validator, 400);
             }
 
