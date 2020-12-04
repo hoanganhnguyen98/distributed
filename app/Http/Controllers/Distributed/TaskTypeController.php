@@ -55,6 +55,8 @@ class TaskTypeController extends BaseController
                 $prioritize = false;
             }
 
+            // dd($prioritize);
+
             $newTaskType = TaskType::create([
                 'name' => $request->get('name'),
                 'description' => $request->get('description'),
