@@ -171,7 +171,7 @@ class ScheduleSettingController extends BaseController
                 'year' => $request->get('year'),
                 'off_saturday' => ((int) $request->get('off_saturday')) == 1 ? true : false,
                 'off_sunday' => ((int) $request->get('off_sunday')) == 1 ? true : false,
-                'off_days' => $off_days
+                'off_days' => json_encode($off_days)
             ]);
 
             DB::commit();
