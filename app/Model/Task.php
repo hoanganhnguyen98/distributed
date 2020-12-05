@@ -15,6 +15,7 @@ class Task extends Model
         'task_type_id',
         'status',
         'incident_id',
-        'employee_ids'
+        'employee_ids',
+        'active_ids'
     ];
 }

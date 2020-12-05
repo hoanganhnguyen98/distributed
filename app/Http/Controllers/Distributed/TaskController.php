@@ -306,7 +306,8 @@ class TaskController extends BaseController
                         'incident_id' => $incident_id,
                         'status' => 'pending',
                         'task_type_ids' => $task_type_id,
-                        'employee_ids' => $employee_ids
+                        'employee_ids' => $employee_ids,
+                        'active_ids'  => null
                     ]);
 
                     $this->setNewTask($apiToken, $projectType, $new_task->id, $employee_ids);

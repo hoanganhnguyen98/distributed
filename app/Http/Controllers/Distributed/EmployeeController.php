@@ -10,79 +10,6 @@ use Carbon\Carbon;
 
 class EmployeeController extends BaseController
 {
-    public function forwardCaptain(Request $request)
-    {
-        // $apiToken = $request->header('api-token');
-        // $projectType = $request->header('project-type');
-
-        // $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
-
-        // if(empty($verifyApiToken)) {
-        //     return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
-        // } else {
-        //     $statusCode = $verifyApiToken['code'];
-
-        //     if ($statusCode != 200) {
-        //         return $this->sendError($verifyApiToken['message'], $statusCode);
-        //     }
-        // }
-
-        $task_id = $request->get('id');
-
-        if (!$task_id) {
-            return $this->sendError('Không có giá trị định danh sự cố', 400);
-        }
-
-        $user_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
-        $task = Task::where([['id', $task_id], ['captain_id', $user_id], ['status', '<>', 'done']])->first();
-
-        if (!$task) {
-            return $this->sendError('Công việc xử lý không tồn tại', 404);
-        }
-
-        if ($request->isMethod('get')) {
-            $employees = Employee::where('current_id', $task_id)->get();
-
-            $data = [];
-            if (!empty($employees)) {
-                foreach ($employees as $employee) {
-                    $data[] = [
-                        'id' => $employee->id,
-                        'name' => $employee->name
-                    ];
-                }
-            }
-
-            return $this->sendResponse($data);
-        }
-
-        if ($request->isMethod('post')) {
-            $forward_id = $request->get('forward_id');
-
-            if (!$forward_id) {
-                return $this->sendError('Không có giá trị định danh nhân viên ủy quyền', 400);
-            }
-
-            $employee = Employee::where([['id', $forward_id], ['current_id', $task_id]])->first();
-
-            if (!$employee) {
-                return $this->sendError('Nhân viên được chọn không hợp lệ', 404);
-            }
-
-            $task->captain_id = $forward_id;
-            $task->save();
-
-            $user = Employee::where('id', $user_id)->first();
-            $user->is_captain = 0;
-            $user->save();
-
-            $employee->is_captain = 1;
-            $employee->save();
-
-            return $this->sendResponse();
-        }
-    }
-
     public function active(Request $request)
     {
         $apiToken = $request->header('api-token');
@@ -130,6 +57,7 @@ class EmployeeController extends BaseController
 
         return $this->sendResponse();
     }
+
     public function listing(Request $request)
     {
         $apiToken = $request->header('api-token');
@@ -178,49 +106,60 @@ class EmployeeController extends BaseController
 
     public function login(Request $request)
     {
-        $apiToken = $request->header('api-token');
-        $projectType = $request->header('project-type');
+        $url = 'https://distributed.de-lalcool.com/api/login';
 
-        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+        $headers = [
+            'Content-Type' => 'application/json',
+        ];
 
-        if(empty($verifyApiToken)) {
-            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
-        } else {
-            $statusCode = $verifyApiToken['code'];
+        $body = [
+            "username" => $username,
+            "password" => $password
+        ];
 
-            if ($statusCode != 200) {
-                return $this->sendError($verifyApiToken['message'], $statusCode);
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->post($url, [
+                'headers' => $headers,
+                'json' => $body,
+            ]);
+        } catch (\Throwable $th) {
+            $message = 'Đã có lỗi xảy ra từ khi gọi api login';
+
+            return $this->sendError($message, $th->getCode());
+        }
+
+        $responseStatus = $response->getStatusCode();
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($responseStatus !== 200) {
+            if ($data['message']) {
+                $message = $data['message'];
+            } else {
+                $message = 'Lỗi chưa xác định đã xảy ra khi gọi api login';
             }
+
+            return $this->sendError($message, $responseStatus);
         }
 
-        $employee_id = $verifyApiToken['id'];
-
-        if (!$employee_id) {
-            return $this->sendError('Không có giá trị định danh nhân viên', 404);
-        }
+        $employee = $data['result'];
+        $employee_id = $employee['id'];
 
         $existedEmployee = Employee::where('employee_id', $employee_id)->first();
 
         if (!$existedEmployee) {
-            $name = $verifyApiToken['name'];
-            $role = $verifyApiToken['role'];
-
             $newEmployee = Employee::create([
                 'employee_id' => $employee_id,
-                'name' => $name,
-                'role' => $role,
-                'type' => $projectType,
                 'current_id' => null,
-                'pending_ids' => ',',
-                'all_ids' => ',',
-                'is_captain' => 0
+                'pending_ids' => null,
+                'all_ids' => null
             ]);
 
             $data = [
                 'employee' => $newEmployee,
                 'current_task' => null,
                 'active_current_task' => false,
-                'is_captain' => false,
                 'pending_tasks' => []
             ];
 
@@ -230,37 +169,64 @@ class EmployeeController extends BaseController
         $current_id = $existedEmployee->current_id;
         $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
 
-        $is_captain = $existedEmployee->id == $current_task->captain_id ? true : false;
+        $current_task_info = [];
+        if ($current_task) {
+            $current_task_type_id = $current_task->task_type_id;
+            $current_task_type = TaskType::where('id', $current_task_type_id)->first();
+
+            $current_task_info['status'] = $current_task->status;
+            $current_task_info['task_type'] = $current_task_type;
+        }
 
         $active_task = false;
         if ($current_task) {
             $active_ids = $current_task->active_ids;
 
-            if (strpos($active_ids, ',' . $existedEmployee->id . ',') !== false) {
-                $active_task = true;
+            if ($active_ids) {
+                if (strpos($active_ids, ',') > 0) {
+                    if (in_array($employee_id, explode(',', $active_ids))) {
+                        $active_task = true;
+                    }
+                } else {
+                    if ($employee_id === (int) $active_ids) {
+                        $active_task = true;
+                    }
+                }
             }
         }
 
         $pending_ids = $existedEmployee->pending_ids;
         $pending_tasks = [];
 
-        if (strlen($pending_ids) > 1) {
-            $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
+        if ($pending_ids) {
+            if (strpos($pending_ids, ',') > 0) {
+                $pending_ids_list = explode(',', $pending_ids);
+            } else {
+                $pending_ids_list = [$pending_ids];
+            }
 
-            foreach ($pending_ids_array as $id) {
+            foreach ($pending_ids_list as $id) {
                 $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
 
                 if ($task) {
+                    $task_data = [];
+
+                    $task_data['status'] = $task->status;
+
+                    $task_type_id = $task->id;
+                    $task_type = TaskType::where('id', $task_type_id)->first();
+                    $task_data['task_type'] = $task_type;
+
                     $pending_tasks[] = $task;
                 }
             }
         }
 
+
         $data = [
             'employee' => $existedEmployee,
-            'current_task' => $current_task,
+            'current_task' =>$current_task_info,
             'active_current_task' => $active_task,
-            'is_captain' => $is_captain,
             'pending_tasks' => $pending_tasks
         ];
 
