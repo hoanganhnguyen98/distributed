@@ -162,7 +162,7 @@ class TaskController extends BaseController
 
         $tasks = Task::where('incident_id', $incident_id)->get();
 
-        if (empty($tasks)) {
+        if (count($tasks)) {
             return $this->sendError('Không tìm thấy công việc xử lý nào hợp lệ', 404);
         }
 
