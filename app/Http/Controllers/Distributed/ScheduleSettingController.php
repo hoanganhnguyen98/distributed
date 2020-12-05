@@ -17,93 +17,49 @@ use App\Http\Controllers\Distributed\HistoryController;
 
 class ScheduleSettingController extends BaseController
 {
-    public function create(Request $request)
+    public function create($month, $year)
     {
-        $apiToken = $request->header('api-token');
-        $projectType = $request->header('project-type');
+        $setting = ScheduleSetting::where([['month', $request->get('month')], ['year', $request->get('year')]])->first();
 
-        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+        $off_saturday = $setting->off_saturday;
+        $off_sunday = $setting->off_sunday;
+        $off_days = $setting->off_days;
 
-        if(empty($verifyApiToken)) {
-            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
-        } else {
-            $statusCode = $verifyApiToken['code'];
-
-            if ($statusCode != 200) {
-                return $this->sendError($message, $th->getCode());
+        if ($setting->off_days) {
+            if (strpos($setting->off_days, ',') < 0) {
+                $off_days = [$setting->off_days];
+            } else {
+                $off_days = explode(',', $setting->off_days);
             }
+        } else {
+            $off_days = [];
         }
 
-        try {
-            DB::beginTransaction();
+        $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
 
-            $rules = [
-                'month' => ['required', 'numeric', 'min:1', 'max:12'],
-                'year' => ['required', 'numeric', 'min:2020'],
-            ];
+        for ($i=1; $i <= $days; $i++) {
+            $schedule = Schedule::where([['day', $i], ['month', $month], ['year', $year]])->first();
 
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 404);
+            if($schedule) {
+                $schedule->delete();
             }
 
-            $setting = ScheduleSetting::where([['month', $request->get('month')], ['year', $request->get('year')]])->first();
+            $date = (string) $year . '-' . $month . '-' . $i;
+            $dayOfWeek = $this->getDayofWeek($date);
 
-            if (!$setting) {
-                return $this->sendError('Lịch làm việc của tháng '. $request->get('month') . ' năm '. $request->get('year') . ' chưa được cấu hình.', 400);
-            }
-
-            $off_saturday = $setting->off_saturday;
-            $off_sunday = $setting->off_sunday;
-            $off_days = $setting->off_days;
-
-            if ($setting->off_days) {
-                if (strpos($setting->off_days, ',') < 0) {
-                    $off_days = [$setting->off_days];
-                } else {
-                    $off_days = explode(',', $setting->off_days);
-                }
+            if ((in_array($i, $off_days)) || ($dayOfWeek == 'Saturday' && $off_saturday) || ($dayOfWeek == 'Sunday' && $off_sunday)) {
+                $off = true;
             } else {
-                $off_days = [];
+                $off = false;
             }
 
-            $month = (int) $request->get('month');
-            $year = (int) $request->get('year');
-
-            $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
-
-            for ($i=1; $i <= $days; $i++) {
-                $schedule = Schedule::where([['day', $i], ['month', $month], ['year', $year]])->first();
-
-                if($schedule) {
-                    $schedule->delete();
-                }
-
-                $date = (string) $year . '-' . $month . '-' . $i;
-                $dayOfWeek = $this->getDayofWeek($date);
-
-                if ((in_array($i, $off_days)) || ($dayOfWeek == 'Saturday' && $off_saturday) || ($dayOfWeek == 'Sunday' && $off_sunday)) {
-                    $off = true;
-                } else {
-                    $off = false;
-                }
-
-                Schedule::create([
-                    'day' => $i,
-                    'month' => $month,
-                    'year' => $year,
-                    'absent_ids' => null,
-                    'off' => $off
-                ]);
-            }
-
-            DB::commit();
-
-            return $this->sendResponse();
-        } catch (Exception $e) {
-            DB::rollBack();
-
-            return $this->sendError('Có lỗi khi tạo lịch làm việc', 500);
+            Schedule::create([
+                'day' => $i,
+                'month' => $month,
+                'year' => $year,
+                'absent_ids' => null,
+                'off' => $off
+            ]);
         }
     }
 
@@ -184,6 +140,8 @@ class ScheduleSettingController extends BaseController
                 'off_sunday' => ((int) $request->get('off_sunday')) == 1 ? true : false,
                 'off_days' => $off_days
             ]);
+
+            $this->create((int) $request->get('month'), (int) $request->get('year'));
 
             DB::commit();
 
@@ -266,6 +224,8 @@ class ScheduleSettingController extends BaseController
             }
 
             $setting->save();
+
+            $this->create($setting->month, $setting->year);
 
             DB::commit();
 

@@ -19,7 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // xu ly cong viec
 Route::post('task/handler', 'Distributed\TaskController@handler');
-Route::get('task/listing', 'Distributed\TaskController@listing');
+Route::get('task/incident-listing', 'Distributed\TaskController@incidentListing');
+Route::get('task/employee-listing', 'Distributed\TaskController@getEmployeeListing');
 Route::get('task/detail', 'Distributed\TaskController@detail');
 
 // vien tro
@@ -33,19 +34,13 @@ Route::post('report/accept', 'Distributed\ReportController@accept');
 Route::post('report/reject', 'Distributed\ReportController@reject');
 
 // nhan vien
-Route::get('employee/detail', 'Distributed\EmployeeController@detail');
+Route::get('employee/login', 'Distributed\EmployeeController@detail');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 Route::post('employee/active', 'Distributed\EmployeeController@active');
-
-Route::get('employee/forward', 'Distributed\EmployeeController@forwardCaptain');
-Route::post('employee/forward', 'Distributed\EmployeeController@forwardCaptain');
 
 // lich lam viec
 Route::get('schedule/detail-day', 'Distributed\ScheduleController@detail');
 Route::get('schedule/detail-employee', 'Distributed\ScheduleController@getSchedule');
-
-// lich su cong viec
-Route::get('history/detail', 'Distributed\HistoryController@detail');
 
 // generate data
 Route::get('generate/employee', 'Distributed\GenerateController@generateEmployee');
@@ -64,7 +59,6 @@ Route::put('task-type/update', 'Distributed\TaskTypeController@update');
 Route::delete('task-type/delete', 'Distributed\TaskTypeController@delete');
 Route::get('task-type/listing', 'Distributed\TaskTypeController@listing');
 
-Route::post('schedule-setting/create', 'Distributed\ScheduleSettingController@create');
 Route::post('schedule-setting/set', 'Distributed\ScheduleSettingController@set');
 Route::put('schedule-setting/update', 'Distributed\ScheduleSettingController@update');
 Route::get('schedule-setting/listing', 'Distributed\ScheduleSettingController@listing');

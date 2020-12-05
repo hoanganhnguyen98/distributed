@@ -176,7 +176,7 @@ class EmployeeController extends BaseController
         return $this->sendResponse($data);
     }
 
-    public function detail(Request $request)
+    public function login(Request $request)
     {
         $apiToken = $request->header('api-token');
         $projectType = $request->header('project-type');
