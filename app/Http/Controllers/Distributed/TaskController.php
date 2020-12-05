@@ -156,11 +156,11 @@ class TaskController extends BaseController
 
         $incident_id = $request->get('incident_id');
 
-        if ($incident_id) {
+        if (!$incident_id) {
             return $this->sendError('Không có giá trị định danh sự cố', 400);
         }
 
-        $tasks = Task::where([['incident_id', $incident_id], ['type',  $projectType]])->get();
+        $tasks = Task::where('incident_id', $incident_id)->get();
 
         if (!$tasks) {
             return $this->sendError('Không tìm thấy công việc xử lý nào hợp lệ', 404);
