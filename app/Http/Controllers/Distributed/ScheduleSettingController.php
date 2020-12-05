@@ -196,24 +196,34 @@ class ScheduleSettingController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
-            if ($request->get('off_days')) {
-                if (strpos($request->get('off_days'), ',') < 0) {
+            $month = $request->get('month');
+            $year = $request->get('year');
+            $off_days = $request->get('off_days');
+
+            if ($off_days) {
+                if (strpos($off_days, ',') < 0) {
                     if ((int) $request->get('off_days') == null) {
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
-                    } else {
-                        $off_days = $request->get('off_days');
                     }
                 } else {
-                    $off_days = $request->get('off_days');
                     $days = explode(',', $request->get('off_days'));
+
+                    $daysInMonth = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
 
                     if (!empty($days)) {
                         foreach ($days as $day) {
+                            // chứa 2 dấu phẩy liên tiếp
                             if ((int) $day == null) {
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                             }
+
+                            // chứa ngày không có trong tháng
+                            if ((int) $day > $daysInMonth || (int) $day < 1) {
+                                return $this->sendError('Chuỗi ngày nghỉ off_days chứa ngày không hợp lệ', 400);
+                            }
                         }
                     } else {
+                        // chứa toàn dấu phẩy và space
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     }
                 }
