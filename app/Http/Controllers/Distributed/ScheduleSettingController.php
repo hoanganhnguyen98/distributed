@@ -196,8 +196,14 @@ class ScheduleSettingController extends BaseController
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
-            $month = $request->get('month');
-            $year = $request->get('year');
+            $setting = ScheduleSetting::where('id', $request->get('id'))->first();
+
+            if (!$setting) {
+                return $this->sendError('Không tìm thấy cấu hình của lịch làm việc hợp lệ', 404);
+            }
+
+            $month = $setting->month;
+            $year = $setting->year;
             $off_days = $request->get('off_days');
 
             if ($off_days) {
@@ -229,25 +235,19 @@ class ScheduleSettingController extends BaseController
                 }
             }
 
-            $setting = ScheduleSetting::where('id', $request->get('id'))->first();
-
-            if (!$setting) {
-                return $this->sendError('Không tìm thấy cấu hình của lịch làm việc hợp lệ', 404);
-            }
-
             $updates = ['off_saturday', 'off_sunday'];
 
             foreach ($updates as $update) {
                 $setting->{$update} = ((int) $request->get($update)) == 1 ? true : false;
             }
 
-            if ($request->get('off_days')) {
+            if ($off_days) {
                 $setting->off_days = $off_days;
             }
 
             $setting->save();
 
-            $this->create($setting->month, $setting->year);
+            $this->create($month, $year);
 
             DB::commit();
 
