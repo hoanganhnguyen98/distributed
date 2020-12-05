@@ -13,12 +13,8 @@ class Employee extends Model
      */
     protected $fillable = [
         'employee_id',
-        'name',
-        'role',
-        'type',
         'current_id',
         'pending_ids',
-        'all_ids',
-        'is_captain'
+        'all_ids'
     ];
 }

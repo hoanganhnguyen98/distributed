@@ -27,7 +27,7 @@ class EmployeeController extends BaseController
             }
         }
 
-        $task_id = $request->get('id');
+        $task_id = $request->get('task_id');
 
         if (!$task_id) {
             return $this->sendError('Không có giá trị định danh sự cố', 400);
@@ -43,15 +43,45 @@ class EmployeeController extends BaseController
             return $this->sendError('Công việc xử lý đã hoàn tất', 403);
         }
 
-        $active_ids = $task->active_ids;
-        $user_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+        $employee_id = $verifyApiToken['id'];
+        $employee_ids = $task->employee_ids;
 
-        if (strpos($active_ids, $active_ids, ',' . $user_id . ',') !== false) {
-            return $this->sendError('Công việc đã được khởi động', 403);
+        if (strpos($employee_ids, ',') > 0) {
+            $employee_area = explode(',', $employee_ids);
+        } else {
+            $employee_area = [$employee_ids];
         }
 
-        $active_ids .= $user_id . ',';
-        $task->active_ids = $active_ids;
+        if (!in_array($employee_id, $employee_area)) {
+            return $this->sendError('Không thuộc phạm vi quản lý công việc', 403);
+        }
+
+        $active_ids = $task->active_ids;
+        $active_task = false;
+
+        if ($active_ids) {
+            if (strpos($active_ids, ',') > 0) {
+                if (in_array($employee_id, explode(',', $active_ids))) {
+                    $active_task = true;
+                }
+            } else {
+                if ($employee_id === (int) $active_ids) {
+                    $active_task = true;
+                }
+            }
+        }
+
+        if ($active_task) {
+            return $this->sendError('Công việc đã được xác nhận từ trước', 403);
+        }
+
+        if ($active_ids) {
+            $new_active_ids = $active_ids . ',' . $employee_id;
+        } else {
+            $new_active_ids = $employee_id;
+        }
+
+        $task->active_ids = $new_active_ids;
         $task->status = 'doing';
         $task->save();
 
