@@ -114,7 +114,7 @@ class TaskController extends BaseController
                 // 'json' => $body,
             ]);
         } catch (\Throwable $th) {
-            $message = 'Đã có lỗi xảy ra từ khi gọi api cập nhật trạng thái sự cố';
+            $message = 'Đã có lỗi xảy ra từ khi gọi api lấy danh sách sự cố';
 
             return $this->sendError($message, $th->getCode());
         }
@@ -126,7 +126,7 @@ class TaskController extends BaseController
             if ($data['message']) {
                 $message = $data['message'];
             } else {
-                $message = 'Lỗi chưa xác định đã xảy ra khi tìm kiếm danh sách sự cố chưa được xử lý';
+                $message = 'Lỗi chưa xác định đã xảy ra khi gọi api lấy danh sách sự cố';
             }
 
             return $this->sendError($message, $responseStatus);
