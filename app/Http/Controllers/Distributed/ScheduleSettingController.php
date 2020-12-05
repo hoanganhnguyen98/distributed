@@ -40,7 +40,9 @@ class ScheduleSettingController extends BaseController
         for ($i=1; $i <= $days; $i++) {
             $schedule = Schedule::where([['day', $i], ['month', $month], ['year', $year]])->first();
 
+            $absent_ids = null;
             if($schedule) {
+                $absent_ids = $schedule->absent_ids;
                 $schedule->delete();
             }
 
@@ -57,7 +59,7 @@ class ScheduleSettingController extends BaseController
                 'day' => $i,
                 'month' => $month,
                 'year' => $year,
-                'absent_ids' => null,
+                'absent_ids' => $absent_ids,
                 'off' => $off
             ]);
         }
