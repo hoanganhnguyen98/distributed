@@ -102,9 +102,9 @@ class TaskController extends BaseController
             'project-type' => $projectType,
         ];
 
-        $body = [
-            'status' => $status
-        ];
+        // $body = [
+        //     'status' => $status
+        // ];
 
         $client = new \GuzzleHttp\Client();
 
