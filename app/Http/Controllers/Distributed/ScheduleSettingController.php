@@ -241,10 +241,7 @@ class ScheduleSettingController extends BaseController
                 $setting->{$update} = ((int) $request->get($update)) == 1 ? true : false;
             }
 
-            if ($off_days) {
-                $setting->off_days = $off_days;
-            }
-
+            $setting->off_days = $off_days;
             $setting->save();
 
             $this->create($month, $year);
