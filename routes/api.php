@@ -34,7 +34,7 @@ Route::post('report/accept', 'Distributed\ReportController@accept');
 Route::post('report/reject', 'Distributed\ReportController@reject');
 
 // nhan vien
-Route::get('employee/login', 'Distributed\EmployeeController@detail');
+Route::post('employee/login', 'Distributed\EmployeeController@detail');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 Route::post('employee/active', 'Distributed\EmployeeController@active');
 
