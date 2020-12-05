@@ -30,7 +30,14 @@ class EmployeeController extends BaseController
         $task_id = $request->get('task_id');
 
         if (!$task_id) {
-            return $this->sendError('Không có giá trị định danh sự cố', 400);
+            return $this->sendError('Không có giá trị định danh công việc', 400);
+        }
+
+        $employee_id = $verifyApiToken['id'];
+        $employee = Employee::where('employee_id', $employee_id)->first();
+
+        if ($employee->current_id !== $task_id) {
+            return $this->sendError('Định danh công việc không trùng với công việc hiện tại', 403);
         }
 
         $task = Task::where('id', $task_id)->first();
@@ -43,7 +50,6 @@ class EmployeeController extends BaseController
             return $this->sendError('Công việc xử lý đã hoàn tất', 403);
         }
 
-        $employee_id = $verifyApiToken['id'];
         $employee_ids = $task->employee_ids;
 
         if (strpos($employee_ids, ',') > 0) {
