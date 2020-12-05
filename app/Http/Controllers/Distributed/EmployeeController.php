@@ -106,6 +106,18 @@ class EmployeeController extends BaseController
 
     public function login(Request $request)
     {
+        $username = $request->get('username');
+
+        if (!$username) {
+            return $this->sendError('Thiếu giá trị username', 400);
+        }
+
+        $password = $request->get('password');
+
+        if (!$password) {
+            return $this->sendError('Thiếu giá trị password', 400);
+        }
+
         $url = 'https://distributed.de-lalcool.com/api/login';
 
         $headers = [
