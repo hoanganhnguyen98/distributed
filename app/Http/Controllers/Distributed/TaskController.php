@@ -111,7 +111,7 @@ class TaskController extends BaseController
         try {
             $response = $client->post($url, [
                 'headers' => $headers,
-                'json' => $body,
+                // 'json' => $body,
             ]);
         } catch (\Throwable $th) {
             $message = 'Đã có lỗi xảy ra từ khi gọi api cập nhật trạng thái sự cố';
