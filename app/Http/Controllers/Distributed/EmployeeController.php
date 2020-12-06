@@ -205,8 +205,7 @@ class EmployeeController extends BaseController
             ]);
 
             $data = [
-                'user' => $user,
-                'employee' => $newEmployee,
+                'employee' => $user,
                 'current_task' => null,
                 'active_current_task' => false,
                 'pending_tasks' => []
@@ -278,8 +277,7 @@ class EmployeeController extends BaseController
 
 
         $data = [
-            'user' => $user,
-            'employee' => $existedEmployee,
+            'employee' => $user,
             'current_task' =>$current_task_info,
             'active_current_task' => $active_task,
             'pending_tasks' => $pending_tasks
