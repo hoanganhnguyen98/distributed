@@ -253,21 +253,21 @@ class TaskController extends BaseController
             }
         }
 
-        // $incident_id = $request->get('incident_id');
+        $incident_id = $request->get('incident_id');
 
-        // if (!$incident_id) {
-        //     return $this->sendError('Không có giá trị định danh sự cố', 400);
-        // }
+        if (!$incident_id) {
+            return $this->sendError('Không có giá trị định danh sự cố', 400);
+        }
 
-        // // checking to get incident information
-        // $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
+        // checking to get incident information
+        $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
 
-        // if (!$this->incident) {
-        //     return $this->sendError($this->responseMessage, $this->statusCode);
-        // }
+        if (!$this->incident) {
+            return $this->sendError($this->responseMessage, $this->statusCode);
+        }
 
         try {
-            // DB::beginTransaction();
+            DB::beginTransaction();
 
             $rules = [
                 'list' => ['required', 'string'],
@@ -339,6 +339,12 @@ class TaskController extends BaseController
         }
 
         foreach ($employees as $employee_id) {
+            $isValidUser = $this->userChecking($employee_id, $apiToken, $projectType);
+
+            if (!$isValidUser) {
+                return $this->sendError($this->responseMessage, $this->statusCode);
+            }
+
             $employee = Employee::where('employee_id', $employee_id)->first();
 
             if (!$employee) {
@@ -751,5 +757,54 @@ class TaskController extends BaseController
 
             return $this->sendResponse(['task_id' => $task_id]);
         }
+    }
+
+    public function userChecking($employee_id, $apiToken, $projectType)
+    {
+        $url = 'https://distributed.de-lalcool.com/api/user/'. $employee_id;
+
+        $headers = [
+            'token' => $apiToken,
+            'project-type' => $projectType,
+        ];
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->patch($url, [
+                'headers' => $headers,
+            ]);
+        } catch (\Throwable $th) {
+            $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api kiểm tra id nhân viên';
+            $this->statusCode = $th->getCode();
+
+            return false;
+        }
+
+        $responseStatus = $response->getStatusCode();
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($responseStatus !== 200) {
+            if ($data['message']) {
+                $this->responseMessage = $data['message'];
+                $this->statusCode = $responseStatus;
+
+                return false;
+            } else {
+                $this->responseMessage = 'Lỗi chưa xác định đã xảy ra khi gọi api kiểm tra id nhân viên';
+                $this->statusCode = $responseStatus;
+
+                return false;
+            }
+        }
+
+        if ($data['result'] === null) {
+            $this->responseMessage = 'ID ' . $employee_id . ' của loại dự án ' . $projectType . ' không tồn tại';
+            $this->statusCode = 400;
+
+            return false;
+        }
+
+        return true;
     }
 }
