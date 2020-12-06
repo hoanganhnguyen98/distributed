@@ -344,7 +344,9 @@ class TaskController extends BaseController
             if (!$isValidUser) {
                 return $this->sendError($this->responseMessage, $this->statusCode);
             }
+        }
 
+        foreach ($employees as $employee_id) {
             $employee = Employee::where('employee_id', $employee_id)->first();
 
             if (!$employee) {
