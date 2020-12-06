@@ -317,7 +317,7 @@ class ScheduleSettingController extends BaseController
             }
         }
 
-        $listing = ScheduleSetting::orderBy('year', 'asc')->orderBy('month', 'asc')->all();
+        $listing = ScheduleSetting::all()->orderBy('year', 'asc')->orderBy('month', 'asc');
 
         return $this->sendResponse($listing);
     }
