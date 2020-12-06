@@ -773,7 +773,7 @@ class TaskController extends BaseController
         $client = new \GuzzleHttp\Client();
 
         try {
-            $response = $client->patch($url, [
+            $response = $client->get($url, [
                 'headers' => $headers,
             ]);
         } catch (\Throwable $th) {
