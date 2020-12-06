@@ -191,8 +191,8 @@ class EmployeeController extends BaseController
             return $this->sendError($message, $responseStatus);
         }
 
-        $employee = $data['result'];
-        $employee_id = $employee['id'];
+        $user = $data['result'];
+        $employee_id = $user['id'];
 
         $existedEmployee = Employee::where('employee_id', $employee_id)->first();
 
@@ -205,6 +205,7 @@ class EmployeeController extends BaseController
             ]);
 
             $data = [
+                'user' => $user,
                 'employee' => $newEmployee,
                 'current_task' => null,
                 'active_current_task' => false,
@@ -215,7 +216,12 @@ class EmployeeController extends BaseController
         }
 
         $current_id = $existedEmployee->current_id;
-        $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+
+        if ($current_id) {
+            $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+        } else {
+            $current_task = null;
+        }
 
         $current_task_info = [];
         if ($current_task) {
@@ -272,6 +278,7 @@ class EmployeeController extends BaseController
 
 
         $data = [
+            'user' => $user,
             'employee' => $existedEmployee,
             'current_task' =>$current_task_info,
             'active_current_task' => $active_task,
