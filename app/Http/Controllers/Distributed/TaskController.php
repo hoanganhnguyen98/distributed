@@ -310,7 +310,28 @@ class TaskController extends BaseController
                         'active_ids'  => null
                     ]);
 
-                    $this->setNewTask($apiToken, $projectType, $new_task->id, $employee_ids);
+                    if (strpos($employee_ids, ',') > 0) {
+                        $employees = explode(',', $employee_ids);
+                    } else {
+                        $employees = [$employee_ids];
+                    }
+
+                    $checkAllUser = true;
+                    foreach ($employees as $employee_id) {
+                        $isValidUser = $this->userChecking($employee_id, $apiToken, $projectType);
+
+                        if (!$isValidUser) {
+                            $checkAllUser = false;
+
+                            break;
+                        }
+                    }
+
+                    if (!$checkAllUser) {
+                        return $this->sendError($this->responseMessage, $this->statusCode);
+                    }
+
+                    $this->setNewTask($apiToken, $projectType, $new_task->id, $employees);
                 }
             }
 
@@ -330,29 +351,8 @@ class TaskController extends BaseController
         }
     }
 
-    public function setNewTask($apiToken, $projectType, $task_id, $employee_ids)
+    public function setNewTask($apiToken, $projectType, $task_id, $employees)
     {
-        if (strpos($employee_ids, ',') > 0) {
-            $employees = explode(',', $employee_ids);
-        } else {
-            $employees = [$employee_ids];
-        }
-
-        $checkAllUser = true;
-        foreach ($employees as $employee_id) {
-            $isValidUser = $this->userChecking($employee_id, $apiToken, $projectType);
-
-            if (!$isValidUser) {
-                $checkAllUser = false;
-
-                break;
-            }
-        }
-
-        if (!$checkAllUser) {
-            return $this->sendError($this->responseMessage, $this->statusCode);
-        }
-
         foreach ($employees as $employee_id) {
             $employee = Employee::where('employee_id', $employee_id)->first();
 
