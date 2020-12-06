@@ -173,7 +173,7 @@ class TaskController extends BaseController
             $task_data['status'] = $task->status;
 
             $task_type_id = $task->id;
-            $task_type = TaskType::where('id', $task_id)->first();
+            $task_type = TaskType::where('id', $task_type_id)->first();
             $task_data['task_type'] = $task_type;
 
             $employee_ids = $task->employee_ids;
@@ -253,21 +253,21 @@ class TaskController extends BaseController
             }
         }
 
-        $incident_id = $request->get('incident_id');
+        // $incident_id = $request->get('incident_id');
 
-        if (!$incident_id) {
-            return $this->sendError('Không có giá trị định danh sự cố', 400);
-        }
+        // if (!$incident_id) {
+        //     return $this->sendError('Không có giá trị định danh sự cố', 400);
+        // }
 
-        // checking to get incident information
-        $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
+        // // checking to get incident information
+        // $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
 
-        if (!$this->incident) {
-            return $this->sendError($this->responseMessage, $this->statusCode);
-        }
+        // if (!$this->incident) {
+        //     return $this->sendError($this->responseMessage, $this->statusCode);
+        // }
 
         try {
-            DB::beginTransaction();
+            // DB::beginTransaction();
 
             $rules = [
                 'list' => ['required', 'string'],
@@ -287,7 +287,7 @@ class TaskController extends BaseController
             }
 
             foreach ($subtasks as $subtask) {
-                if (strpos($subtask, ',') < 0) {
+                if (strpos($subtask, ',') <= 0) {
                     return $this->sendError('Giá trị list chưa hợp lệ', 400);
                 } else {
                     $task = explode(',', $subtask);
@@ -305,7 +305,7 @@ class TaskController extends BaseController
                     $new_task = Task::create([
                         'incident_id' => $incident_id,
                         'status' => 'pending',
-                        'task_type_ids' => $task_type_id,
+                        'task_type_id' => $task_type_id,
                         'employee_ids' => $employee_ids,
                         'active_ids'  => null
                     ]);
