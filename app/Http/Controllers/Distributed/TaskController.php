@@ -338,12 +338,19 @@ class TaskController extends BaseController
             $employees = [$employee_ids];
         }
 
+        $checkAllUser = true;
         foreach ($employees as $employee_id) {
             $isValidUser = $this->userChecking($employee_id, $apiToken, $projectType);
 
             if (!$isValidUser) {
-                return $this->sendError($this->responseMessage, $this->statusCode);
+                $checkAllUser = false;
+
+                break;
             }
+        }
+
+        if (!$checkAllUser) {
+            return $this->sendError($this->responseMessage, $this->statusCode);
         }
 
         foreach ($employees as $employee_id) {
@@ -801,7 +808,7 @@ class TaskController extends BaseController
         }
 
         if ($data['result'] === null) {
-            $this->responseMessage = 'ID ' . $employee_id . ' của loại dự án ' . $projectType . ' không tồn tại';
+            $this->responseMessage = 'Nhân viên ID ' . $employee_id . ' của loại dự án ' . $projectType . ' không tồn tại';
             $this->statusCode = 400;
 
             return false;
