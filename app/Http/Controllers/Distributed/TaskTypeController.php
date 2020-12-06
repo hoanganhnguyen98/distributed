@@ -148,16 +148,13 @@ class TaskTypeController extends BaseController
         try {
             DB::beginTransaction();
 
-            $rules = [
-                'id' => ['required', 'numeric']
-            ];
+            $id = $request->get('id');
 
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return $this->sendError($validator, 400);
+            if (!$id) {
+                return $this->sendError('Không có định danh loại công việc', 400);
             }
 
-            $taskType = TaskType::where('id', $request->get('id'))->first();
+            $taskType = TaskType::where('id', $id)->first();
 
             if (!$taskType) {
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);

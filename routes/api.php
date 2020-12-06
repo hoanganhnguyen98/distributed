@@ -62,6 +62,7 @@ Route::get('task-type/listing', 'Distributed\TaskTypeController@listing');
 Route::post('schedule-setting/set', 'Distributed\ScheduleSettingController@set');
 Route::put('schedule-setting/update', 'Distributed\ScheduleSettingController@update');
 Route::get('schedule-setting/listing', 'Distributed\ScheduleSettingController@listing');
+Route::delete('schedule-setting/delete', 'Distributed\ScheduleSettingController@delete');
 
 
 

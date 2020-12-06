@@ -165,6 +165,50 @@ class ScheduleSettingController extends BaseController
         }
     }
 
+    public function delete(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($message, $th->getCode());
+            }
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $id = $request->get('id');
+
+            if (!$id) {
+                return $this->sendError('Không có định danh cấu hình lịch làm việc', 400);
+            }
+
+            $setting = ScheduleSetting::where('id', $id)->first();
+
+            if (!$setting) {
+                return $this->sendError('Không tìm thấy cấu hình lịch làm việc hợp lệ', 404);
+            }
+
+            $setting->delete();
+
+            DB::commit();
+
+            return $this->sendResponse();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return $this->sendError('Có lỗi khi xóa cấu hình lịch làm việc', 500);
+        }
+    }
+
     public function update(Request $request)
     {
         $apiToken = $request->header('api-token');
@@ -273,7 +317,7 @@ class ScheduleSettingController extends BaseController
             }
         }
 
-        $listing = ScheduleSetting::all();
+        $listing = ScheduleSetting::orderBy('year', 'asc')->orderBy('month', 'asc')->all();
 
         return $this->sendResponse($listing);
     }
