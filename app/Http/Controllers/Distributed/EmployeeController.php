@@ -6,6 +6,7 @@ use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Employee;
 use App\Model\Task;
+use App\Model\TaskType;
 use Carbon\Carbon;
 
 class EmployeeController extends BaseController

@@ -9,7 +9,6 @@ use App\Model\Task;
 use App\Model\Employee;
 use Carbon\Carbon;
 use App\Http\Controllers\Distributed\TaskController as TaskController;
-use App\Http\Controllers\Distributed\HistoryController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Cloudder;
@@ -45,10 +44,20 @@ class ReportController extends BaseController
             return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 404);
         }
 
-        $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
+        $employee_id = $verifyApiToken['id'];
 
-        if ($task->captain_id != $create_id) {
-            return $this->sendError('Bạn không có quyền gửi báo cáo kết quả', 403);
+        $employee_ids = $task->employee_ids;
+
+        if (strpos($employee_ids, ',') > 0) {
+            $valid_ids = explode(',', $employee_ids);
+
+            if (!in_array($employee_id, $valid_ids)) {
+                return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
+            }
+        } else {
+            if ($employee_id !== $employee_ids) {
+                return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
+            }
         }
 
         $rules = [
@@ -82,7 +91,7 @@ class ReportController extends BaseController
                 'image' => $img_url,
                 'status' => 'waiting',
                 'type' => $projectType,
-                'create_id' => $create_id
+                'create_id' => $employee_id
             ]);
 
             DB::commit();
@@ -168,14 +177,14 @@ class ReportController extends BaseController
         $report = Report::where([['id', $id], ['status', 'waiting'], ['type', $type]])->first();
 
         if (!$report) {
-            return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
+            return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
         }
 
         $task_id = $report->task_id;
         $task = Task::where('task_id', $task_id)->first();
 
         if (!$task) {
-            return $this->sendError('Công việc xử lý của báo cáo không tồn tại', 400);
+            return $this->sendError('Công việc xử lý của báo cáo không tồn tại', 404);
         }
 
         if ($task->status == 'done') {
@@ -185,46 +194,85 @@ class ReportController extends BaseController
             return $this->sendError('Công việc xử lý đã được xác nhận từ trước', 400);
         }
 
-        if ($task->status == 'doing') {
-            $report->status = 'accept';
-            $report->save();
+        try {
+            DB::beginTransaction();
 
-            $action = "Chấp nhận báo cáo kết quả";
-            $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
-            (new HistoryController)->create($task_id, $action, $create_id);
+            if ($task->status == 'doing') {
+                $report->status = 'accept';
+                $report->save();
 
-            $task->status = 'done';
-            $task->save();
+                $task->status = 'done';
+                $task->save();
 
-            $action = "Sự cố đã được xử lý";
-            (new HistoryController)->create($task_id, $action, $create_id);
+                $task_id = $task->id;
+                $doing_employees = Employee::where('current_id', $task_id)->get();
+                $pending_employees = Employee::where('pending_ids', 'like', '%'. $task_id . '%')->get();
 
-            $task_id = $task->id;
-            $doing_employees = Employee::where('current_id', $task_id)->get();
-            $pending_employees = Employee::where('pending_ids', 'like', '%,'. $task_id . ',%')->get();
+                foreach ($pending_employees as $employee) {
+                    $pending_ids = $employee->pending_ids;
 
-            foreach ($pending_employees as $employee) {
-                // remove id from pending list
-                $pending_ids = $employee->pending_ids;
-                $pending_ids = str_replace($task_id . ',', '', $pending_ids);
+                    if (strpos($pending_ids, ',') > 0) {
+                        $pending_array = explode(',', $pending_ids);
 
-                $employee->pending_ids = $pending_ids;
-                $employee->save();
+                        if (in_array($task_id, $pending_array)) {
+                            foreach ($pending_array as $key => $value) {
+                                if ($value == $task) {
+                                    unset($pending_array[$key]);
 
-                $this->notification('pending', 'remove', $employee->id);
+                                    break;
+                                }
+                            }
+
+                            if (!empty($pending_array)) {
+                                $new_pending_ids = '';
+
+                                foreach ($pending_array as $id) {
+                                    $new_pending_ids .= $id . ',';
+                                }
+
+                                $employee->pending_ids = rtrim($new_pending_ids, ", ");
+                            } else {
+                                $employee->pending_ids = null;
+                            }
+
+                            $employee->save();
+                        }
+                    } else {
+                        if ($pending_ids === $task_id) {
+                            $employee->pending_ids = null;
+                            $employee->save();
+                        }
+                    }
+
+                    $this->notification('pending', 'remove', $employee->id);
+                }
+
+                foreach ($doing_employees as $employee) {
+                    $employee->current_id = null;
+
+                    $all_ids = $employee->all_ids;
+
+                    if ($all_ids) {
+                        $new_all_ids = $all_ids . ',' . $task_id;
+                    } else {
+                        $new_all_ids = $task_id;
+                    }
+
+                    $employee->all_ids = $new_all_ids;
+                    $employee->save();
+
+                    (new TaskController)->setCurrentTask($apiToken, $projectType, $employee->employee_id);
+                }
             }
 
-            foreach ($doing_employees as $employee) {
-                $employee->current_id = null;
-                $employee->save();
-
-                (new TaskController)->setCurrentTask($employee->id);
-            }
+            DB::commit();
 
             return $this->sendResponse();
-        }
+        } catch (Exception $e) {
+            DB::rollBack();
 
-        return $this->sendError('Trạng thái của công việc xử lý không hợp lệ', 400);
+            return $this->sendError('Đã có lỗi xảy ra khi chấp nhận báo cáo', 500);
+        }
     }
 
     public function reject(Request $request)
@@ -254,7 +302,7 @@ class ReportController extends BaseController
         $report = Report::where([['id', $id], ['status', 'waiting'], ['type', $type]])->first();
 
         if (!$report) {
-            return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 400);
+            return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
         }
 
         $report->status = 'reject';
