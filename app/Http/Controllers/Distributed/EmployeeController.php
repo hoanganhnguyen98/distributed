@@ -271,7 +271,7 @@ class EmployeeController extends BaseController
                     $task_type = TaskType::where('id', $task_type_id)->first();
                     $task_data['task_type'] = $task_type;
 
-                    $pending_tasks[] = $task;
+                    $pending_tasks[] = $task_data;
                 }
             }
         }
