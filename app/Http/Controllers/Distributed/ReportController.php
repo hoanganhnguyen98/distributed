@@ -63,7 +63,7 @@ class ReportController extends BaseController
         $rules = [
             'title' => ['required', 'string'],
             'content' => ['required', 'string'],
-            'image' => ['required'],
+            'file' => ['required'],
         ];
 
         $validator = Validator::make($request->all(), $rules);
@@ -74,14 +74,20 @@ class ReportController extends BaseController
         try {
             DB::beginTransaction();
 
-            if ($request->hasFile('image')){
-                // create path to store in cloud
-                $public_id = "ninja_restaurant/distributed/reports/" . ($create_id . '_' . Carbon::now()->timestamp);
-                // upload to cloud
-                Cloudder::upload($request->file('image'), $public_id);
-                // get url of image
+            $img_url = null;
+            if ($request->hasFile('file')){
+                $type = $request->file('file')->getMimeType();
+
+                $public_id = "ninja_restaurant/distributed/reports/" . ($employee_id . '_' . Carbon::now()->timestamp);
+
+                if (in_array('video', explode('/', $type))) {
+                    Cloudder::uploadVideo($request->file('file'), $public_id);
+                } else {
+                    Cloudder::upload($request->file('file'), $public_id);
+                }
+
                 $resize = array("width" => null, "height" => null, "crop" => null);
-                $img_url = Cloudder::show($public_id, $resize);
+                $img_url = Cloudder::getResult($public_id, $resize)['url'];
             }
 
             Report::create([
