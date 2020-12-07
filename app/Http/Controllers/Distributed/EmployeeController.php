@@ -223,7 +223,8 @@ class EmployeeController extends BaseController
                 'employee_id' => $employee_id,
                 'current_id' => null,
                 'pending_ids' => null,
-                'all_ids' => null
+                'all_ids' => null,
+                'type' => $user['type']
             ]);
 
             $data = [

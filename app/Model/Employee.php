@@ -15,6 +15,7 @@ class Employee extends Model
         'employee_id',
         'current_id',
         'pending_ids',
-        'all_ids'
+        'all_ids',
+        'type'
     ];
 }

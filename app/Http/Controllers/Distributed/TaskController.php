@@ -361,7 +361,8 @@ class TaskController extends BaseController
                     'employee_id' => $employee_id,
                     'current_id' => $task_id,
                     'pending_ids' => null,
-                    'all_ids' => null
+                    'all_ids' => null,
+                    'type' => $projectType
                 ]);
 
                 if (!$this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY")) {
