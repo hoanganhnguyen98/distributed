@@ -133,9 +133,30 @@ class EmployeeController extends BaseController
             ];
         }
 
+        $list = [];
+        foreach ($employees as $key => $employee) {
+            $employee_id = $employee->employee_id;
+            $user = $this->getUserInformation($employee_id, $apiToken, $projectType);
+
+            $current_id = $employee->current_id;
+            $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+
+            $current_task_type = null;
+            if ($current_task) {
+                $current_task_type_id = $current_task->task_type_id;
+                $current_task_type = TaskType::where('id', $current_task_type_id)->first();
+            }
+
+            $list[] = [
+                'employee' => $user,
+                'current_task' => $current_task,
+                'current_task_type' => $current_task_type
+            ];
+        }
+
         $data = [
             'metadata' => $metadata,
-            'employees' => $employees
+            'list' => $list
         ];
 
         return $this->sendResponse($data);
@@ -285,5 +306,38 @@ class EmployeeController extends BaseController
         ];
 
         return $this->sendResponse($data);
+    }
+
+    public function getUserInformation($employee_id, $apiToken, $projectType)
+    {
+        $url = 'https://distributed.de-lalcool.com/api/user/'. $employee_id;
+
+        $headers = [
+            'token' => $apiToken,
+            'project-type' => $projectType,
+        ];
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->get($url, [
+                'headers' => $headers,
+            ]);
+        } catch (\Throwable $th) {
+            return null;
+        }
+
+        $responseStatus = $response->getStatusCode();
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($responseStatus !== 200) {
+            if ($data['message']) {
+                return null;
+            } else {
+                return null;
+            }
+        }
+
+        return $data['result'];
     }
 }
