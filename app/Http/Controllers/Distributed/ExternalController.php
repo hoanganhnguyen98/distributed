@@ -6,14 +6,15 @@ use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Report;
 use App\Model\Task;
-use App\Model\Support;
+use App\Model\TaskType;
 use App\Model\Employee;
-use App\Model\History;
 use Carbon\Carbon;
 use App\Http\Controllers\Distributed\TaskController as TaskController;
 
 class ExternalController extends BaseController
 {
+    public $type;
+
     public function getUserTasks(Request $request)
     {
         $apiToken = $request->header('api-token');
@@ -135,14 +136,11 @@ class ExternalController extends BaseController
 
         $id = $task->id;
 
-        $histories = History::where('task_id', $id)->orderBy('created_at', 'asc')->get();
-
         $doing_employees = Employee::where('current_id', $id)->get();
         $pending_employees = Employee::where('pending_ids', 'like', '%,'. $id . ',%')->get();
 
         $data = [
             'task' => $task,
-            'histories' => $histories,
             'doing_employees' => $doing_employees,
             'pending_employees' => $pending_employees
         ];
@@ -150,16 +148,25 @@ class ExternalController extends BaseController
         return $this->sendResponse($data);
     }
 
-    public function reportListing()
+    public function reportListing(Request $request)
     {
+        $list = ['LUOI_DIEN', 'CHAY_RUNG', 'DE_DIEU', 'CAY_TRONG'];
+        $type = $request->get('type');
+
+        if ($type) {
+            if (!in_array($type, $list)) {
+                return $this->sendError('Loại dự án chưa chính xác', 400);
+            }
+        }
+
+        $this->type = $type;
+
         $reports = $this->reportCounting();
-        $supports = $this->supportCounting();
         $tasks = $this->taskCounting();
         $employees = $this->employeeCounting();
 
         $data = [
             'result_reports_total' => $reports,
-            'support_requests_total' => $supports,
             'created_tasks_total' => $tasks,
             'joined_employee' => $employees
         ];
@@ -169,10 +176,17 @@ class ExternalController extends BaseController
 
     public function reportCounting()
     {
-        $reports = Report::all()->count();
-        $accepts = Report::where('status', 'accept')->get()->count();
-        $rejects = Report::where('status', 'reject')->get()->count();
-        $waitings = $reports - $accepts - $rejects;
+        if ($this->type) {
+            $reports = Report::where('type', $this->type)->get()->count();
+            $accepts = Report::where([['status', 'accept'], ['type', $this->type]])->get()->count();
+            $rejects = Report::where([['status', 'reject'], ['type', $this->type]])->get()->count();
+            $waitings = $reports - $accepts - $rejects;
+        } else {
+            $reports = Report::all()->count();
+            $accepts = Report::where('status', 'accept')->get()->count();
+            $rejects = Report::where('status', 'reject')->get()->count();
+            $waitings = $reports - $accepts - $rejects;
+        }
 
         return [
             'label' => 'Báo cáo kết quả xử lý sự cố',
@@ -183,39 +197,65 @@ class ExternalController extends BaseController
         ];
     }
 
-    public function supportCounting()
-    {
-        $supports = Support::all()->count();
-        $accepts = Support::where('status', 'accept')->get()->count();
-        $rejects = Support::where('status', 'reject')->get()->count();
-        $waitings = $supports - $accepts - $rejects;
-
-        return [
-            'label' => 'Yêu cầu hỗ trợ xử lý sự cố',
-            'sent_total' => $supports,
-            'accepted_total' => $accepts,
-            'rejected_total' => $rejects,
-            'waiting_total' => $waitings
-        ];
-    }
-
     public function taskCounting()
     {
-        $tasks = Task::all()->count();
-        $doing = Task::where('status', 'doing')->get()->count();
-        $done = Task::where('status', 'done')->get()->count();
+        if ($this->type) {
+            $all_tasks = Task::all();
+
+            $tasks = [];
+            foreach ($all_tasks as $key => $task) {
+                $task_type_id = $task->task_type_id;
+
+                $task_type = TaskType::where('id', $task_type_id)->first();
+
+                if ($task_type) {
+                    if ($task_type->project_type === $this->type) {
+                        $tasks[] = $task;
+                    }
+                }
+            }
+
+            $total = count($tasks);
+            $doing = 0;
+            $done = 0;
+            $pending = 0;
+
+            if ($total) {
+                foreach ($tasks as $key => $task) {
+                    $status = $task->status;
+
+                    if ($status === 'pending') {
+                        $pending ++;
+                    } elseif ($status === 'doing') {
+                        $doing ++;
+                    } elseif ($status === 'done') {
+                        $done ++;
+                    }
+                }
+            }
+        } else {
+            $total = Task::all()->count();
+            $doing = Task::where('status', 'doing')->get()->count();
+            $done = Task::where('status', 'done')->get()->count();
+            $pending = $total - $doing - $done;
+        }
 
         return [
             'label' => 'Công việc xử lý sự cố',
-            'created_total' => $tasks,
+            'created_total' => $total,
             'doing_total' => $doing,
             'done_total' => $done,
+            'pending_total' => $pending
         ];
     }
 
     public function employeeCounting()
     {
-        $employees = Employee::all()->count();
+        if ($this->type) {
+            $employees = Employee::where('type', $this->type)->get()->count();
+        } else {
+            $employees = Employee::all()->count();
+        }
 
         return [
             'label' => 'Nhân viên tham gia xử lý sự cố',
