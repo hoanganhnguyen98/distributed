@@ -62,8 +62,7 @@ class ReportController extends BaseController
 
         $rules = [
             'title' => ['required', 'string'],
-            'content' => ['required', 'string'],
-            'file' => ['required'],
+            'content' => ['required', 'string']
         ];
 
         $validator = Validator::make($request->all(), $rules);

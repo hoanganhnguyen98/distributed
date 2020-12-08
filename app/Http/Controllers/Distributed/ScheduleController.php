@@ -6,12 +6,100 @@ use App\Http\Controllers\Distributed\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Model\Schedule;
 use App\Model\Employee;
+use App\Model\ScheduleSetting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Distributed\TaskController;
 
 class ScheduleController extends BaseController
 {
+    public function absentRequest(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        $employee_id = $request->get('absent_id');
+
+        if (!$employee_id) {
+            return $this->sendError("Định danh nhân viên absent_id đang trống", 400);
+        }
+
+        $validEmployee = (new TaskController)->userChecking($employee_id, $apiToken, $projectType);
+
+        if (!$validEmployee) {
+            return $this->sendError("Không tìm thấy nhân viên nào hợp lệ", 404);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $rules = [
+                'day' => ['required'],
+                'month' => ['required'],
+                'year' => ['required'],
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return $this->sendError('Thời gian yêu cầu chưa hợp lệ', 400);
+            }
+
+            $day = (int) $request->get('day');
+            $month = (int) $request->get('month');
+            $year = (int) $request->get('year');
+
+            $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
+
+            if ($day < 0 || $day > $days) {
+                return $this->sendError('Giá trị của ngày chưa hợp lệ', 400);
+            }
+
+            $setting = ScheduleSetting::where([['month', $month], ['year', $year]])->first();
+
+            if (!$setting) {
+                return $this->sendError('Lịch làm việc của tháng '. $month . ' năm '. $year . ' chưa được cấu hình.', 404);
+            }
+
+            $schedule = Schedule::where([['day', $day], ['month', $month], ['year', $year]])->first();
+
+            if (!$schedule) {
+                return $this->sendError('Không tồn tại lịch làm việc của ngày ' . $day, 404);
+            }
+
+            $absent_ids = $schedule->absent_ids;
+
+            if ($absent_ids) {
+                $new_absent_ids = $absent_ids . ',' . $employee_id;
+            } else {
+                $new_absent_ids = $employee_id;;
+            }
+
+            $schedule->absent_ids = $new_absent_ids;
+            $schedule->save();
+
+            DB::commit();
+
+            return $this->sendResponse();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return $this->sendError('Đã có lỗi xảy ra khi xử lý nghỉ phép cho nhân viên', 500);
+        }
+    }
+
     public function getSchedule(Request $request)
     {
         $apiToken = $request->header('api-token');
