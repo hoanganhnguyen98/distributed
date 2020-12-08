@@ -157,41 +157,185 @@ class ScheduleController extends BaseController
 
     public function getOffDaysInMonth(Request $request)
     {
-        $day = $request->get('day');
-        $month = $request->get('month');
-        $year = $request->get('year');
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
 
-        if (!$day || !$month || !$year) {
-            return $this->sendError('Cần có đủ 3 trường ngày, tháng, năm', 400);
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
         }
 
-        $schedule = Schedule::where([['day', $day], ['month', $month], ['year', $year]])->first();
+        $month = date('m');
+        $year = date('Y');
 
-        $data = [];
-        if ($schedule) {
-            $employee_ids = $schedule->employee_ids;
+        $setting = ScheduleSetting::where([['month', $month], ['year', $year]])->first();
 
-            if (strlen($employee_ids) > 1) {
-                $ids = array_slice(explode(',', $employee_ids), 1, -1);
+        if (!$setting) {
+            return $this->sendError('Lịch làm việc của tháng '. $month . ' năm '. $year . ' chưa được cấu hình.', 404);
+        }
 
-                foreach ($ids as $key => $id) {
-                    $employee = Employee::where('employee_id', $id)->first();
+        $off_saturday = $setting->off_saturday;
+        $off_sunday = $setting->off_sunday;
+        $off_days = $setting->off_days;
 
-                    if ($employee) {
-                        $data[] = [
-                            'employee_id' => $employee->employee_id,
-                            'name' => $employee->name
-                        ];
+        $offDaysInMonth = [];
+
+        if ($off_saturday) {
+            $off_weekend = getDaysWeekend('Saturday');
+
+            foreach ($off_weekend as $key => $value) {
+                $offDaysInMonth[] = $value;
+            }
+        }
+
+        if ($off_sunday) {
+            $off_weekend = getDaysWeekend('Sunday');
+
+            foreach ($off_weekend as $key => $value) {
+                $offDaysInMonth[] = $value;
+            }
+        }
+
+        if ($off_days) {
+            if (strpos($off_days, ',') > 0) {
+                foreach (explode(',', $off_days) as $key => $value) {
+                    if (!in_array($value, $offDaysInMonth)) {
+                        $offDaysInMonth[] = $value;
                     }
+                }
+            } else {
+                if (!in_array($off_days, $offDaysInMonth)) {
+                    $offDaysInMonth[] = $off_days;
                 }
             }
         }
 
-        return $this->sendResponse($data);
+        return $this->sendResponse($offDaysInMonth);
     }
 
     public function daily(Request $request)
     {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
 
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        $rules = [
+            'day' => ['required'],
+            'month' => ['required'],
+            'year' => ['required'],
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->sendError('Thời gian yêu cầu chưa hợp lệ', 400);
+        }
+
+        $day = (int) $request->get('day');
+        $month = (int) $request->get('month');
+        $year = (int) $request->get('year');
+
+        $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
+
+        if ($day < 0 || $day > $days) {
+            return $this->sendError('Giá trị của ngày chưa hợp lệ', 400);
+        }
+
+        $setting = ScheduleSetting::where([['month', $month], ['year', $year]])->first();
+
+        if (!$setting) {
+            return $this->sendError('Lịch làm việc của tháng '. $month . ' năm '. $year . ' chưa được cấu hình.', 404);
+        }
+
+        $schedule = Schedule::where([['day', $day], ['month', $month], ['year', $year]])->first();
+
+        if (!$schedule) {
+            return $this->sendError('Không tồn tại lịch làm việc của ngày ' . $day, 404);
+        }
+
+        $absent_ids = $schedule->absent_ids;
+
+        $absents = [];
+        if ($absent_ids) {
+            if (strpos($absent_ids, ',' >  0)) {
+                foreach (explode(',', $absent_ids) as $id) {
+                    $user = userGetting($id, $apiToken, $projectType);
+
+                    $absents[] = $user;
+                }
+            } else {
+                $user = userGetting($absent_ids, $apiToken, $projectType);
+
+                $absents[] = $user;
+            }
+        }
+
+        return $this->sendResponse($absents);
+    }
+
+    public function userGetting($employee_id, $apiToken, $projectType)
+    {
+        $url = 'https://distributed.de-lalcool.com/api/user/'. $employee_id;
+
+        $headers = [
+            'token' => $apiToken,
+            'project-type' => $projectType,
+        ];
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->get($url, [
+                'headers' => $headers,
+            ]);
+        } catch (\Throwable $th) {
+            return null;
+        }
+
+        $responseStatus = $response->getStatusCode();
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if ($responseStatus !== 200) {
+            return null;
+        }
+
+        return $data['result'];
+    }
+
+    public function getDaysWeekend($weekend)
+    {
+        $month = date('m');
+        $year = date('Y');
+        $days = $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
+
+        $off_days = [];
+        for ($i=1; $i <= $days; $i++) {
+            $date = (string) $year . '-' . $month . '-' . $i;
+            $unixTimestamp = strtotime($date);
+            $dayOfWeek = date("l", $unixTimestamp);
+
+            if ($dayOfWeek == $weekend) {
+                $off_days[] = $i;
+            }
+        }
+
+        return $off_days;
     }
 }
