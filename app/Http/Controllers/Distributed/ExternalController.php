@@ -164,10 +164,12 @@ class ExternalController extends BaseController
         $reports = $this->reportCounting();
         $tasks = $this->taskCounting();
         $employees = $this->employeeCounting();
+        $task_type = $this->taskTypeCounting();
 
         $data = [
-            'result_reports_total' => $reports,
             'created_tasks_total' => $tasks,
+            'task_types_total' => $task_type,
+            'result_reports_total' => $reports,
             'joined_employees_total' => $employees
         ];
 
@@ -260,6 +262,20 @@ class ExternalController extends BaseController
         return [
             'label' => 'Nhân viên tham gia xử lý sự cố',
             'joined_total' => $employees
+        ];
+    }
+
+    public function taskTypeCounting()
+    {
+        if ($this->type) {
+            $task_type = TaskType::where('type', $this->type)->get()->count();
+        } else {
+            $task_type = TaskType::all()->count();
+        }
+
+        return [
+            'label' => 'Loại công việc xử lý sự cố',
+            'created_total' => $task_type
         ];
     }
 }
