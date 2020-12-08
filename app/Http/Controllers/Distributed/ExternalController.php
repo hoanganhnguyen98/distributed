@@ -168,7 +168,7 @@ class ExternalController extends BaseController
         $data = [
             'result_reports_total' => $reports,
             'created_tasks_total' => $tasks,
-            'joined_employee' => $employees
+            'joined_employees_total' => $employees
         ];
 
         return $this->sendResponse($data);
