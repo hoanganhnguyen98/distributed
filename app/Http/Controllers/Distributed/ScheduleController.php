@@ -100,7 +100,7 @@ class ScheduleController extends BaseController
         }
     }
 
-    public function getSchedule(Request $request)
+    public function getOffDaysOfEmployee(Request $request)
     {
         $apiToken = $request->header('api-token');
         $projectType = $request->header('project-type');
@@ -120,19 +120,42 @@ class ScheduleController extends BaseController
         $id = $request->get('id');
         $employee_id = $id ? $id : $verifyApiToken['id'];
 
-        $employee = Employee::where('employee_id', $employee_id)->first();
+        $validEmployee = (new TaskController)->userChecking($employee_id, $apiToken, $projectType);
 
-        if (!$employee) {
-            return $this->sendError('Nhân viên chưa tham gia vào hệ thống Xử lý công việc', 403);
+        if (!$validEmployee) {
+            return $this->sendError("Không tìm thấy nhân viên nào hợp lệ", 404);
         }
 
-        $id = $employee->id;
-        $schedule = Schedule::where('employee_ids', 'like', '%,'. $id . ',%')->get();
+        $month = date('m');
+        $year = date('Y');
 
-        return $this->sendResponse($schedule);
+        $setting = ScheduleSetting::where([['month', $month], ['year', $year]])->first();
+
+        if (!$setting) {
+            return $this->sendError('Lịch làm việc của tháng '. $month . ' năm '. $year . ' chưa được cấu hình.', 404);
+        }
+
+        $schedules = Schedule::where([['absent_ids', 'like', '%'. $employee_id . '%'], ['month', $month], ['year', $year]])->get();
+
+        $off_days = [];
+        foreach ($schedules as $key => $value) {
+            $absent_ids = $value->absent_ids;
+
+            if (strpos($absent_ids, ',') > 0) {
+                if (in_array($employee_id, explode(',', $absent_ids))) {
+                    $off_days[] = $value->day;
+                }
+            } else {
+                if ($employee_id == $absent_ids) {
+                    $off_days[] = $value->day;
+                }
+            }
+        }
+
+        return $this->sendResponse($off_days);
     }
 
-    public function detail(Request $request)
+    public function getOffDaysInMonth(Request $request)
     {
         $day = $request->get('day');
         $month = $request->get('month');
@@ -165,5 +188,10 @@ class ScheduleController extends BaseController
         }
 
         return $this->sendResponse($data);
+    }
+
+    public function daily(Request $request)
+    {
+
     }
 }

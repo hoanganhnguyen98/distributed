@@ -39,8 +39,10 @@ Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 Route::post('employee/active', 'Distributed\EmployeeController@active');
 
 // lich lam viec
-Route::get('schedule/detail-day', 'Distributed\ScheduleController@detail');
-Route::get('schedule/detail-employee', 'Distributed\ScheduleController@getSchedule');
+Route::get('schedule/daily', 'Distributed\ScheduleController@daily');
+Route::get('schedule/off-days-month', 'Distributed\ScheduleController@getOffDaysInMonth');
+Route::get('schedule/off-days-employee', 'Distributed\ScheduleController@getOffDaysOfEmployee');
+Route::post('schedule/absent-request', 'Distributed\ScheduleController@absentRequest');
 
 // generate data
 Route::get('generate/employee', 'Distributed\GenerateController@generateEmployee');
