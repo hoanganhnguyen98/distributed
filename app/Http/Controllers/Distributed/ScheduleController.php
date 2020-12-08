@@ -188,7 +188,7 @@ class ScheduleController extends BaseController
         $offDaysInMonth = [];
 
         if ($off_saturday) {
-            $off_weekend = getDaysWeekend('Saturday');
+            $off_weekend = $this->getDaysWeekend('Saturday');
 
             foreach ($off_weekend as $key => $value) {
                 $offDaysInMonth[] = $value;
@@ -196,7 +196,7 @@ class ScheduleController extends BaseController
         }
 
         if ($off_sunday) {
-            $off_weekend = getDaysWeekend('Sunday');
+            $off_weekend = $this->getDaysWeekend('Sunday');
 
             foreach ($off_weekend as $key => $value) {
                 $offDaysInMonth[] = $value;
