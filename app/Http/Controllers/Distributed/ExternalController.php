@@ -15,113 +15,140 @@ class ExternalController extends BaseController
 {
     public $type;
 
-    // public function getUserTasks(Request $request)
-    // {
-    //     $apiToken = $request->header('api-token');
-    //     $projectType = $request->header('project-type');
+    public function getUserTasks(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
 
-    //     $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
 
-    //     if(empty($verifyApiToken)) {
-    //         return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
-    //     } else {
-    //         $statusCode = $verifyApiToken['code'];
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
 
-    //         if ($statusCode != 200) {
-    //             return $this->sendError($verifyApiToken['message'], $statusCode);
-    //         }
-    //     }
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
 
-    //     $employee_id = $verifyApiToken['id'];
+        $employee_id = $verifyApiToken['id'];
 
-    //     if (!$employee_id) {
-    //         return $this->sendError('Không có giá trị định danh nhân viên', 404);
-    //     }
+        if (!$employee_id) {
+            return $this->sendError('Không có giá trị định danh nhân viên', 404);
+        }
 
-    //     $existedEmployee = Employee::where('employee_id', $employee_id)->first();
+        $existedEmployee = Employee::where('employee_id', $employee_id)->first();
 
-    //     if (!$existedEmployee) {
-    //         $name = $verifyApiToken['name'];
-    //         $role = $verifyApiToken['role'];
+        if (!$existedEmployee) {
+            $name = $verifyApiToken['name'];
+            $role = $verifyApiToken['role'];
 
-    //         $newEmployee = Employee::create([
-    //             'employee_id' => $employee_id,
-    //             'current_id' => null,
-    //             'pending_ids' => null,
-    //             'all_ids' => null,
-    //             'type' => $projectType
-    //         ]);
+            $newEmployee = Employee::create([
+                'employee_id' => $employee_id,
+                'current_id' => null,
+                'pending_ids' => null,
+                'all_ids' => null,
+                'type' => $projectType
+            ]);
 
-    //         $data = [
-    //             'current_task' => null,
-    //             'pending_tasks' => [],
-    //             'done_tasks' => []
-    //         ];
+            $data = [
+                'current_task' => null,
+                'pending_tasks' => [],
+                'done_tasks' => []
+            ];
 
-    //         return $this->sendResponse($data);
-    //     }
+            return $this->sendResponse($data);
+        }
 
-    //     $current_id = $existedEmployee->current_id;
-    //     $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+        $current_id = $existedEmployee->current_id;
+        $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
 
-    //     $pending_ids = $existedEmployee->pending_ids;
-    //     $pending_tasks = [];
+        $main_task = [];
+        if ($current_task) {
+            $result['task'] = $current_task;
 
-    //     if ($pending_ids) {
-    //         if (strpos($pending_ids, ',') > 0) {
-    //             foreach (explode(',', $pending_ids) as $id) {
-    //                 $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
+            $task_type_id = $current_task->task_type_id;
+            $task_type = TaskType::where('id', $task_type_id)->first();
+            $result['task_type'] = $task_type;
 
-    //                 if ($task) {
-    //                     $result['status'] = $task->status;
+            $main_task = $result;
+        }
 
-    //                     $task_type_id = $task->task_type_id;
-    //                     $task_type = TaskType::where('id', $task_type_id)->first();
-    //                     $result['task_type'] = $task_type;
+        $pending_ids = $existedEmployee->pending_ids;
+        $pending_tasks = [];
 
-    //                     $pending_tasks = $result;
-    //                 }
-    //             }
-    //         } else {
+        if ($pending_ids) {
+            if (strpos($pending_ids, ',') > 0) {
+                foreach (explode(',', $pending_ids) as $id) {
+                    $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
 
-    //         }
-    //     }
+                    if ($task) {
+                        $result['task'] = $task;
 
-    //     if (strlen($pending_ids) > 1) {
-    //         $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
+                        $task_type_id = $task->task_type_id;
+                        $task_type = TaskType::where('id', $task_type_id)->first();
+                        $result['task_type'] = $task_type;
 
-    //         foreach ($pending_ids_array as $id) {
-    //             $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
+                        $pending_tasks[] = $result;
+                    }
+                }
+            } else {
+                $task = Task::where([['id', $pending_ids], ['status', '<>' ,'done']])->first();
 
-    //             if ($task) {
-    //                 $pending_tasks[] = $task;
-    //             }
-    //         }
-    //     }
+                if ($task) {
+                    $result['task'] = $task;
 
-    //     $all_ids = $existedEmployee->all_ids;
-    //     $done_tasks = [];
+                    $task_type_id = $task->task_type_id;
+                    $task_type = TaskType::where('id', $task_type_id)->first();
+                    $result['task_type'] = $task_type;
 
-    //     if (strlen($all_ids) > 1) {
-    //         $done_ids_array = array_slice(explode(',', $all_ids), 1, -1);
+                    $pending_tasks[] = $result;
+                }
+            }
+        }
 
-    //         foreach ($done_ids_array as $id) {
-    //             $task = Task::where([['id', $id], ['status' ,'done']])->first();
+        $all_ids = $existedEmployee->all_ids;
+        $done_tasks = [];
 
-    //             if ($task) {
-    //                 $done_tasks[] = $task;
-    //             }
-    //         }
-    //     }
+        if ($all_ids) {
+            if (strpos($all_ids, ',') > 0) {
+                foreach (explode(',', $all_ids) as $id) {
+                    $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
 
-    //     $data = [
-    //         'current_task' => $current_task,
-    //         'pending_tasks' => $pending_tasks,
-    //         'done_tasks' => $done_tasks
-    //     ];
+                    if ($task) {
+                        $result['task'] = $task;
 
-    //     return $this->sendResponse($data);
-    // }
+                        $task_type_id = $task->task_type_id;
+                        $task_type = TaskType::where('id', $task_type_id)->first();
+                        $result['task_type'] = $task_type;
+
+                        $done_tasks[] = $result;
+                    }
+                }
+            } else {
+                $task = Task::where([['id', $all_ids], ['status', '<>' ,'done']])->first();
+
+                if ($task) {
+                    $result['task'] = $task;
+
+                    $task_type_id = $task->task_type_id;
+                    $task_type = TaskType::where('id', $task_type_id)->first();
+                    $result['task_type'] = $task_type;
+
+                    $done_tasks[] = $result;
+                }
+            }
+        }
+
+        $data = [
+            'current_task' => $main_task,
+            'pending_tasks' => $pending_tasks,
+            'done_tasks' => $done_tasks
+        ];
+
+        return $this->sendResponse($data);
+    }
 
     public function getTaskByIncidentId(Request $request)
     {
