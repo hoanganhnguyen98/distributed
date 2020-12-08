@@ -250,6 +250,7 @@ class EmployeeController extends BaseController
             $current_task_type_id = $current_task->task_type_id;
             $current_task_type = TaskType::where('id', $current_task_type_id)->first();
 
+            $current_task_info['id'] = $current_task->id;
             $current_task_info['status'] = $current_task->status;
             $current_task_info['task_type'] = $current_task_type;
         }
@@ -287,6 +288,7 @@ class EmployeeController extends BaseController
                 if ($task) {
                     $task_data = [];
 
+                    $task_data['id'] = $task->id;
                     $task_data['status'] = $task->status;
 
                     $task_type_id = $task->id;
