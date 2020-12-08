@@ -152,7 +152,9 @@ class ScheduleController extends BaseController
             }
         }
 
-        return $this->sendResponse(sort($off_days));
+        sort($off_days);
+
+        return $this->sendResponse($off_days);
     }
 
     public function getOffDaysInMonth(Request $request)
@@ -217,7 +219,9 @@ class ScheduleController extends BaseController
             }
         }
 
-        return $this->sendResponse(sort($offDaysInMonth));
+        sort($offDaysInMonth);
+
+        return $this->sendResponse($offDaysInMonth);
     }
 
     public function daily(Request $request)
