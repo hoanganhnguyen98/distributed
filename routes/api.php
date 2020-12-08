@@ -37,6 +37,7 @@ Route::post('report/reject', 'Distributed\ReportController@reject');
 Route::post('employee/login', 'Distributed\EmployeeController@login');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
 Route::post('employee/active', 'Distributed\EmployeeController@active');
+Route::get('employee/detail', 'Distributed\EmployeeController@detail');
 
 // lich lam viec
 Route::get('schedule/daily', 'Distributed\ScheduleController@daily');

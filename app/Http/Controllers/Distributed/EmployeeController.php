@@ -162,6 +162,121 @@ class EmployeeController extends BaseController
         return $this->sendResponse($data);
     }
 
+    public function detail(Request $request)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        $user = $this->getUserInformation($employee_id, $apiToken, $projectType);
+
+        $employee_id  = $verifyApiToken['id'];
+
+        $existedEmployee = Employee::where('employee_id', $employee_id)->first();
+
+        if (!$existedEmployee) {
+            $newEmployee = Employee::create([
+                'employee_id' => $employee_id,
+                'current_id' => null,
+                'pending_ids' => null,
+                'all_ids' => null,
+                'type' => $projectType
+            ]);
+
+            $data = [
+                'employee' => $user,
+                'current_task' => null,
+                'active_current_task' => false,
+                'pending_tasks' => []
+            ];
+
+            return $this->sendResponse($data);
+        }
+
+        $current_id = $existedEmployee->current_id;
+
+        if ($current_id) {
+            $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
+        } else {
+            $current_task = null;
+        }
+
+        $current_task_info = [];
+        if ($current_task) {
+            $current_task_type_id = $current_task->task_type_id;
+            $current_task_type = TaskType::where('id', $current_task_type_id)->first();
+
+            $current_task_info['id'] = $current_task->id;
+            $current_task_info['status'] = $current_task->status;
+            $current_task_info['task_type'] = $current_task_type;
+        }
+
+        $active_task = false;
+        if ($current_task) {
+            $active_ids = $current_task->active_ids;
+
+            if ($active_ids) {
+                if (strpos($active_ids, ',') > 0) {
+                    if (in_array($employee_id, explode(',', $active_ids))) {
+                        $active_task = true;
+                    }
+                } else {
+                    if ($employee_id === (int) $active_ids) {
+                        $active_task = true;
+                    }
+                }
+            }
+        }
+
+        $pending_ids = $existedEmployee->pending_ids;
+        $pending_tasks = [];
+
+        if ($pending_ids) {
+            if (strpos($pending_ids, ',') > 0) {
+                $pending_ids_list = explode(',', $pending_ids);
+            } else {
+                $pending_ids_list = [$pending_ids];
+            }
+
+            foreach ($pending_ids_list as $id) {
+                $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
+
+                if ($task) {
+                    $task_data = [];
+
+                    $task_data['id'] = $task->id;
+                    $task_data['status'] = $task->status;
+
+                    $task_type_id = $task->id;
+                    $task_type = TaskType::where('id', $task_type_id)->first();
+                    $task_data['task_type'] = $task_type;
+
+                    $pending_tasks[] = $task_data;
+                }
+            }
+        }
+
+        $data = [
+            'employee' => $user,
+            'current_task' =>$current_task_info,
+            'active_current_task' => $active_task,
+            'pending_tasks' => $pending_tasks
+        ];
+
+        return $this->sendResponse($data);
+    }
+
     public function login(Request $request)
     {
         $username = $request->get('username');
