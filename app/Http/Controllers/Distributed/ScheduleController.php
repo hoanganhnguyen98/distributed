@@ -143,16 +143,16 @@ class ScheduleController extends BaseController
 
             if (strpos($absent_ids, ',') > 0) {
                 if (in_array($employee_id, explode(',', $absent_ids))) {
-                    $off_days[] = $value->day;
+                    $off_days[] = (int) $value->day;
                 }
             } else {
                 if ($employee_id == $absent_ids) {
-                    $off_days[] = $value->day;
+                    $off_days[] = (int) $value->day;
                 }
             }
         }
 
-        return $this->sendResponse($off_days);
+        return $this->sendResponse(sort($off_days));
     }
 
     public function getOffDaysInMonth(Request $request)
@@ -191,7 +191,7 @@ class ScheduleController extends BaseController
             $off_weekend = $this->getDaysWeekend('Saturday');
 
             foreach ($off_weekend as $key => $value) {
-                $offDaysInMonth[] = $value;
+                $offDaysInMonth[] = (int) $value;
             }
         }
 
@@ -199,7 +199,7 @@ class ScheduleController extends BaseController
             $off_weekend = $this->getDaysWeekend('Sunday');
 
             foreach ($off_weekend as $key => $value) {
-                $offDaysInMonth[] = $value;
+                $offDaysInMonth[] = (int) $value;
             }
         }
 
@@ -207,17 +207,17 @@ class ScheduleController extends BaseController
             if (strpos($off_days, ',') > 0) {
                 foreach (explode(',', $off_days) as $key => $value) {
                     if (!in_array($value, $offDaysInMonth)) {
-                        $offDaysInMonth[] = $value;
+                        $offDaysInMonth[] = (int) $value;
                     }
                 }
             } else {
                 if (!in_array($off_days, $offDaysInMonth)) {
-                    $offDaysInMonth[] = $off_days;
+                    $offDaysInMonth[] = (int) $off_days;
                 }
             }
         }
 
-        return $this->sendResponse($offDaysInMonth);
+        return $this->sendResponse(sort($offDaysInMonth));
     }
 
     public function daily(Request $request)
