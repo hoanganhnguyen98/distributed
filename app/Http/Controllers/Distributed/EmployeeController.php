@@ -268,7 +268,7 @@ class EmployeeController extends BaseController
 
         $data = [
             'employee' => $user,
-            'current_task' =>$current_task_info,
+            'current_task' => count($current_task_info) ? $current_task_info : null,
             'active_current_task' => $active_task,
             'pending_tasks' => $pending_tasks
         ];
@@ -336,7 +336,7 @@ class EmployeeController extends BaseController
             $newEmployee = Employee::create([
                 'employee_id' => $employee_id,
                 'current_id' => null,
-                'pending_ids' => null,
+                'pending_ids' => [],
                 'all_ids' => null,
                 'type' => $user['type']
             ]);
@@ -417,7 +417,7 @@ class EmployeeController extends BaseController
 
         $data = [
             'employee' => $user,
-            'current_task' =>$current_task_info,
+            'current_task' => count($current_task_info) ? $current_task_info : null,
             'active_current_task' => $active_task,
             'pending_tasks' => $pending_tasks
         ];
