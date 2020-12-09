@@ -179,9 +179,8 @@ class EmployeeController extends BaseController
             }
         }
 
-        $user = $this->getUserInformation($employee_id, $apiToken, $projectType);
-
         $employee_id  = $verifyApiToken['id'];
+        $user = $this->getUserInformation($employee_id, $apiToken, $projectType);
 
         $existedEmployee = Employee::where('employee_id', $employee_id)->first();
 
