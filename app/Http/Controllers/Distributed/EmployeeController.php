@@ -28,7 +28,7 @@ class EmployeeController extends BaseController
             }
         }
 
-        $task_id = $request->get('task_id');
+        $task_id = (int) $request->get('task_id');
 
         if (!$task_id) {
             return $this->sendError('Không có giá trị định danh công việc', 400);
