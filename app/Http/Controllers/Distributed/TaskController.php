@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Psr7\Request as ApiRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Distributed\EmployeeController;
 
 class TaskController extends BaseController
 {
@@ -816,5 +817,59 @@ class TaskController extends BaseController
         }
 
         return true;
+    }
+
+    public function getTaskById(Request $request, $id)
+    {
+        $apiToken = $request->header('api-token');
+        $projectType = $request->header('project-type');
+
+        $verifyApiToken = $this->verifyApiToken($apiToken, $projectType);
+
+        if(empty($verifyApiToken)) {
+            return $this->sendError('Đã có lỗi xảy ra từ khi gọi api verify token', 401);
+        } else {
+            $statusCode = $verifyApiToken['code'];
+
+            if ($statusCode != 200) {
+                return $this->sendError($verifyApiToken['message'], $statusCode);
+            }
+        }
+
+        if (!$id) {
+            return $this->sendError('Không có id của công việc xử lý sự cố', 400);
+        }
+
+        $task = Task::where('id', $id)->first();
+
+        if (!$task) {
+            return $this->sendError('Không tìm thấy công việc xử lý sự cố hợp lệ', 404);
+        }
+
+        $result['id'] = $id;
+        $result['status'] = $task->status;
+
+        $task_type_id = $task->task_type_id;
+        $task_type = TaskType::where('id', $task_type_id)->first();
+        $result['task_type'] = $task_type;
+
+        $employee_ids = $task->employee_ids;
+
+        $employees = [];
+        if ($employee_ids) {
+            if (strpos($employee_ids, ',') > 0) {
+                $array_id = explode(',', $employee_ids);
+            } else {
+                $array_id = [$employee_ids];
+            }
+
+            foreach ($array_id as $employee_id) {
+                $employees[] = (new EmployeeController)->getUserInformation($employee_id, $apiToken, $projectType);
+            }
+        }
+
+        $result['employees'] = $employees;
+
+        return $this->sendResponse($result);
     }
 }

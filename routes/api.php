@@ -22,10 +22,7 @@ Route::post('task/handler', 'Distributed\TaskController@handler');
 Route::get('task/incident-listing', 'Distributed\TaskController@incidentListing');
 Route::get('task/employee-listing', 'Distributed\TaskController@getEmployeeListing');
 Route::get('task/detail', 'Distributed\TaskController@detail');
-
-// vien tro
-Route::get('support/listing', 'Distributed\SupportController@listing');
-Route::post('support/create', 'Distributed\SupportController@create');
+Route::get('task/get-by-id/{id}', 'Distributed\TaskController@getTaskById');
 
 // bao cao
 Route::get('report/listing', 'Distributed\ReportController@listing');
