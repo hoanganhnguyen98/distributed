@@ -96,6 +96,10 @@ class TaskController extends BaseController
             }
         }
 
+        if ($verifyApiToken['role'] !== 'ADMIN') {
+            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
+        }
+
         $url = 'https://it4483.cf/api/incidents/search';
 
         $headers = [
@@ -153,6 +157,10 @@ class TaskController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
+        }
+
+        if ($verifyApiToken['role'] !== 'ADMIN') {
+            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
         }
 
         $incident_id = $request->get('incident_id');
@@ -252,6 +260,10 @@ class TaskController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
+        }
+
+        if ($verifyApiToken['role'] !== 'ADMIN') {
+            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
         }
 
         $incident_id = $request->get('incident_id');

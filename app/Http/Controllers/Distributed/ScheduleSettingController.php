@@ -89,6 +89,10 @@ class ScheduleSettingController extends BaseController
             }
         }
 
+        if ($verifyApiToken['role'] == 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền cao hơn INCIDENT_STAFF để sử dụng chức năng này', 403);
+        }
+
         try {
             DB::beginTransaction();
 
@@ -246,6 +250,10 @@ class ScheduleSettingController extends BaseController
             }
         }
 
+        if ($verifyApiToken['role'] == 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền cao hơn INCIDENT_STAFF để sử dụng chức năng này', 403);
+        }
+
         try {
             DB::beginTransaction();
 
@@ -320,6 +328,10 @@ class ScheduleSettingController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($message, $th->getCode());
             }
+        }
+
+        if ($verifyApiToken['role'] == 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền cao hơn INCIDENT_STAFF để sử dụng chức năng này', 403);
         }
 
         try {
@@ -475,6 +487,10 @@ class ScheduleSettingController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($message, $th->getCode());
             }
+        }
+
+        if ($verifyApiToken['role'] == 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền cao hơn INCIDENT_STAFF để sử dụng chức năng này', 403);
         }
 
         $listing = ScheduleSetting::orderBy('year', 'asc')->orderBy('month', 'asc')->get();

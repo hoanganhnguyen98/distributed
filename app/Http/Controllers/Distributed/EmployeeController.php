@@ -29,6 +29,10 @@ class EmployeeController extends BaseController
             }
         }
 
+        if ($verifyApiToken['role'] !== 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền INCIDENT_STAFF để sử dụng chức năng này', 403);
+        }
+
         $task_id = (int) $request->get('task_id');
 
         if (!$task_id) {
@@ -187,6 +191,10 @@ class EmployeeController extends BaseController
             }
         }
 
+        if ($verifyApiToken['role'] !== 'ADMIN') {
+            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
+        }
+
         $type = $projectType;
 
         $page = $request->get('page');
@@ -252,6 +260,10 @@ class EmployeeController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
+        }
+
+        if ($verifyApiToken['role'] !== 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền INCIDENT_STAFF để sử dụng chức năng này', 403);
         }
 
         $employee_id  = $verifyApiToken['id'];
@@ -404,6 +416,10 @@ class EmployeeController extends BaseController
 
         $user = $data['result'];
         $employee_id = $user['id'];
+
+        if ($user['role'] !== 'INCIDENT_STAFF') {
+            return $this->sendError('Bạn phải có quyền INCIDENT_STAFF để sử dụng chức năng này', 403);
+        }
 
         $existedEmployee = Employee::where('employee_id', $employee_id)->first();
 
