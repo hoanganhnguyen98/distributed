@@ -8,6 +8,7 @@ use App\Model\Employee;
 use App\Model\Task;
 use App\Model\TaskType;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends BaseController
 {
@@ -31,6 +32,14 @@ class EmployeeController extends BaseController
         $task_id = (int) $request->get('task_id');
 
         if (!$task_id) {
+            $this->logging(
+                'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
             return $this->sendError('Không có giá trị định danh công việc', 400);
         }
 
@@ -38,16 +47,40 @@ class EmployeeController extends BaseController
         $employee = Employee::where('employee_id', $employee_id)->first();
 
         if ($employee->current_id !== $task_id) {
+            $this->logging(
+                'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
             return $this->sendError('Định danh công việc không trùng với công việc hiện tại', 403);
         }
 
         $task = Task::where('id', $task_id)->first();
 
         if (!$task) {
+            $this->logging(
+                'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
             return $this->sendError('Công việc xử lý không tồn tại', 404);
         }
 
         if ($task->status == 'done') {
+            $this->logging(
+                'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
             return $this->sendError('Công việc xử lý đã hoàn tất', 403);
         }
 
@@ -60,6 +93,14 @@ class EmployeeController extends BaseController
         }
 
         if (!in_array($employee_id, $employee_area)) {
+            $this->logging(
+                'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
             return $this->sendError('Không thuộc phạm vi quản lý công việc', 403);
         }
 
@@ -79,6 +120,14 @@ class EmployeeController extends BaseController
         }
 
         if ($active_task) {
+            $this->logging(
+                'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
             return $this->sendError('Công việc đã được xác nhận từ trước', 403);
         }
 
@@ -88,11 +137,37 @@ class EmployeeController extends BaseController
             $new_active_ids = $employee_id;
         }
 
-        $task->active_ids = $new_active_ids;
-        $task->status = 'doing';
-        $task->save();
+        try {
+            DB::beginTransaction();
 
-        return $this->sendResponse();
+            $task->active_ids = $new_active_ids;
+            $task->status = 'doing';
+            $task->save();
+
+            DB::commit();
+
+            $this->logging(
+                'Xác nhận công việc thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Công việc xử lý sự cố'
+            );
+
+            return $this->sendResponse();
+        } catch (Exception $e) {
+            DB::rollback();
+
+            $this->logging(
+                'Xác nhận công việc lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Công việc xử lý sự cố'
+            );
+
+            return $this->sendError('Đã có lỗi xảy ra khi xác nhận công việc', 500);
+        }
     }
 
     public function listing(Request $request)

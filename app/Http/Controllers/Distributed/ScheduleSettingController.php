@@ -101,6 +101,14 @@ class ScheduleSettingController extends BaseController
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
+                $this->logging(
+                    'Cài đặt lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Cấu hình lịch làm việc'
+                );
+
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 404);
             }
 
@@ -111,6 +119,14 @@ class ScheduleSettingController extends BaseController
             if ($off_days) {
                 if (strpos($off_days, ',') < 0) {
                     if ((int) $request->get('off_days') == null) {
+                        $this->logging(
+                            'Cài đặt lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                            $verifyApiToken['id'],
+                            $projectType,
+                            'failure',
+                            'Cấu hình lịch làm việc'
+                        );
+
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     }
                 } else {
@@ -122,16 +138,40 @@ class ScheduleSettingController extends BaseController
                         foreach ($days as $day) {
                             // chứa 2 dấu phẩy liên tiếp
                             if ((int) $day == null) {
+                                $this->logging(
+                                    'Cài đặt lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                                    $verifyApiToken['id'],
+                                    $projectType,
+                                    'failure',
+                                    'Cấu hình lịch làm việc'
+                                );
+
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                             }
 
                             // chứa ngày không có trong tháng
                             if ((int) $day > $daysInMonth || (int) $day < 1) {
+                                $this->logging(
+                                    'Cài đặt lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                                    $verifyApiToken['id'],
+                                    $projectType,
+                                    'failure',
+                                    'Cấu hình lịch làm việc'
+                                );
+
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chứa ngày không hợp lệ', 400);
                             }
                         }
                     } else {
                         // chứa toàn dấu phẩy và space
+                        $this->logging(
+                            'Cài đặt lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                            $verifyApiToken['id'],
+                            $projectType,
+                            'failure',
+                            'Cấu hình lịch làm việc'
+                        );
+
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     }
                 }
@@ -142,6 +182,14 @@ class ScheduleSettingController extends BaseController
             $setting = ScheduleSetting::where([['month', $request->get('month')], ['year', $request->get('year')]])->first();
 
             if ($setting) {
+                $this->logging(
+                    'Cài đặt lịch làm việc lỗi do đã được cài đặt từ trước',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Cấu hình lịch làm việc'
+                );
+
                 return $this->sendError('Lịch làm việc của tháng '. $request->get('month') . ' năm '. $request->get('year') . ' đã được cấu hình.', 400);
             }
 
@@ -157,9 +205,25 @@ class ScheduleSettingController extends BaseController
 
             DB::commit();
 
+            $this->logging(
+                'Cài đặt lịch làm việc thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Cấu hình lịch làm việc'
+            );
+
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Cài đặt lịch làm việc lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Cấu hình lịch làm việc'
+            );
 
             return $this->sendError('Có lỗi khi cấu hình lịch làm việc', 500);
         }
@@ -188,12 +252,28 @@ class ScheduleSettingController extends BaseController
             $id = $request->get('id');
 
             if (!$id) {
+                $this->logging(
+                    'Xóa lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Cấu hình lịch làm việc'
+                );
+
                 return $this->sendError('Không có định danh cấu hình lịch làm việc', 400);
             }
 
             $setting = ScheduleSetting::where('id', $id)->first();
 
             if (!$setting) {
+                $this->logging(
+                    'Xóa lịch làm việc lỗi do không tìm thấy cài đặt lịch làm việc',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Cấu hình lịch làm việc'
+                );
+
                 return $this->sendError('Không tìm thấy cấu hình lịch làm việc hợp lệ', 404);
             }
 
@@ -201,9 +281,25 @@ class ScheduleSettingController extends BaseController
 
             DB::commit();
 
+            $this->logging(
+                'Xóa lịch làm việc thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Cấu hình lịch làm việc'
+            );
+
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Xóa lịch làm việc lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Cấu hình lịch làm việc'
+            );
 
             return $this->sendError('Có lỗi khi xóa cấu hình lịch làm việc', 500);
         }
@@ -237,12 +333,28 @@ class ScheduleSettingController extends BaseController
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
+                $this->logging(
+                    'Cập nhật lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Cấu hình lịch làm việc'
+                );
+
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
             $setting = ScheduleSetting::where('id', $request->get('id'))->first();
 
             if (!$setting) {
+                $this->logging(
+                    'Cập nhật lịch làm việc lỗi do không tìm thấy cài đặt trước đó',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Cấu hình lịch làm việc'
+                );
+
                 return $this->sendError('Không tìm thấy cấu hình của lịch làm việc hợp lệ', 404);
             }
 
@@ -253,6 +365,14 @@ class ScheduleSettingController extends BaseController
             if ($off_days) {
                 if (strpos($off_days, ',') < 0) {
                     if ((int) $request->get('off_days') == null) {
+                        $this->logging(
+                            'Cập nhật lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                            $verifyApiToken['id'],
+                            $projectType,
+                            'failure',
+                            'Cấu hình lịch làm việc'
+                        );
+
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     }
                 } else {
@@ -264,16 +384,40 @@ class ScheduleSettingController extends BaseController
                         foreach ($days as $day) {
                             // chứa 2 dấu phẩy liên tiếp
                             if ((int) $day == null) {
+                                $this->logging(
+                                    'Cập nhật lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                                    $verifyApiToken['id'],
+                                    $projectType,
+                                    'failure',
+                                    'Cấu hình lịch làm việc'
+                                );
+
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                             }
 
                             // chứa ngày không có trong tháng
                             if ((int) $day > $daysInMonth || (int) $day < 1) {
+                                $this->logging(
+                                    'Cập nhật lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                                    $verifyApiToken['id'],
+                                    $projectType,
+                                    'failure',
+                                    'Cấu hình lịch làm việc'
+                                );
+
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chứa ngày không hợp lệ', 400);
                             }
                         }
                     } else {
                         // chứa toàn dấu phẩy và space
+                        $this->logging(
+                            'Cập nhật lịch làm việc lỗi do dữ liệu đầu vào chưa hợp lệ',
+                            $verifyApiToken['id'],
+                            $projectType,
+                            'failure',
+                            'Cấu hình lịch làm việc'
+                        );
+
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
                     }
                 }
@@ -292,9 +436,25 @@ class ScheduleSettingController extends BaseController
 
             DB::commit();
 
+            $this->logging(
+                'Cập nhật lịch làm việc thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Cấu hình lịch làm việc'
+            );
+
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Cập nhật lịch làm việc lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Cấu hình lịch làm việc'
+            );
 
             return $this->sendError('Có lỗi khi cập nhật cấu hình lịch làm việc', 500);
         }

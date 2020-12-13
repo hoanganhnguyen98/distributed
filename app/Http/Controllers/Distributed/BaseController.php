@@ -110,12 +110,74 @@ class BaseController extends Controller
         return $verifyApiToken;
     }
 
-    public function callApi($method, $url, $header)
+    public function logging($description = 'test', $authorId=1, $projectType='LUOI_DIEN', $state='doing', $name='test')
     {
-        $client = new \GuzzleHttp\Client();
-        $request = new ApiRequest($method, $url, $header);
-        $response = $client->send($request);
+        $url = 'http://it4883logging.herokuapp.com/api/resolve-problem/add';
 
-        return $response;
+        // $headers = [
+        //     'api-token' => $apiToken,
+        //     'project-type' => $projectType
+        // ];
+
+        $body = [
+            "regionId" => 0,
+            "entityId" => 0,
+            "description" => $description,
+            "authorId" => $authorId,
+            "projectType" => $projectType,
+            "state" => $state,
+            "name" => $name
+        ];
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->post($url, [
+                // 'headers' => $headers
+                'json' => $body,
+
+            ]);
+        } catch (\Throwable $th) {
+        }
+    }
+
+    public function createUserMeta(
+        $apiToken,
+        $projectType,
+        $user_id,
+        $target_id,
+        $description,
+        $status,
+        $task_id
+    )
+    {
+        $url = 'https://distributed.de-lalcool.com/api/userMeta';
+
+        $headers = [
+            'token' => $apiToken,
+            'project-type' => $projectType,
+            'Content-Type' => 'application/json'
+        ];
+
+        $body = [
+            "user_id" => $user_id,
+            "target_id" => $target_id,
+            "description" => "Khắc phục sự cố",
+            "status" => $status,
+            "type" => $projectType,
+            "name" => "INCIDENT",
+            "meta_data" => [
+                "task_id" => $task_id
+            ]
+        ];
+
+        try {
+            $response = $client->post($url, [
+                // 'headers' => $headers
+                'json' => $body,
+
+            ]);
+        } catch (\Throwable $th) {
+        }
     }
 }

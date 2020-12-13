@@ -35,12 +35,28 @@ class ReportController extends BaseController
         $task_id = $request->get('id');
 
         if(!$task_id) {
+            $this->logging(
+                'Tạo báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
         }
 
         $task = Task::where([['id', $task_id], ['status', '<>', 'done']])->first();
 
         if (!$task) {
+            $this->logging(
+                'Tạo báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 404);
         }
 
@@ -52,10 +68,26 @@ class ReportController extends BaseController
             $valid_ids = explode(',', $employee_ids);
 
             if (!in_array($employee_id, $valid_ids)) {
+                $this->logging(
+                    'Tạo báo cáo lỗi do nhân viên không thuộc phạm vi công việc báo cáo',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Báo cáo kết quả xử lý'
+                );
+
                 return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
             }
         } else {
             if ($employee_id !== $employee_ids) {
+                $this->logging(
+                    'Tạo báo cáo lỗi do nhân viên không thuộc phạm vi công việc báo cáo',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Báo cáo kết quả xử lý'
+                );
+
                 return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
             }
         }
@@ -67,6 +99,14 @@ class ReportController extends BaseController
 
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
+            $this->logging(
+                'Tạo báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Thông tin gửi đi không hợp lệ', 400);
         }
 
@@ -99,11 +139,27 @@ class ReportController extends BaseController
                 'create_id' => $employee_id
             ]);
 
+            $this->logging(
+                'Tạo báo cáo thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Báo cáo kết quả xử lý'
+            );
+
             DB::commit();
 
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Tạo báo cáo lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
 
             return $this->sendError('Đã có lỗi xảy ra khi tạo báo cáo', 500);
         }
@@ -176,12 +232,28 @@ class ReportController extends BaseController
         $type = $projectType;
 
         if(!$id) {
+            $this->logging(
+                'Chấp nhận báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
         }
 
         $report = Report::where([['id', $id], ['status', 'waiting'], ['type', $type]])->first();
 
         if (!$report) {
+            $this->logging(
+                'Chấp nhận báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
         }
 
@@ -189,12 +261,28 @@ class ReportController extends BaseController
         $task = Task::where('task_id', $task_id)->first();
 
         if (!$task) {
+            $this->logging(
+                'Chấp nhận báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Công việc xử lý của báo cáo không tồn tại', 404);
         }
 
         if ($task->status == 'done') {
             $report->status = 'accept';
             $report->save();
+
+            $this->logging(
+                'Chấp nhận báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
 
             return $this->sendError('Công việc xử lý đã được xác nhận từ trước', 400);
         }
@@ -255,6 +343,16 @@ class ReportController extends BaseController
                 foreach ($doing_employees as $employee) {
                     $employee->current_id = null;
 
+                    $this->createUserMeta(
+                        $apiToken,
+                        $projectType,
+                        $verifyApiToken['id'],
+                        $employee->employee_id,
+                        "Yêu cầu nhân viên xử lý công việc",
+                        "DONE",
+                        $task_id
+                    );
+
                     $all_ids = $employee->all_ids;
 
                     if ($all_ids) {
@@ -266,15 +364,31 @@ class ReportController extends BaseController
                     $employee->all_ids = $new_all_ids;
                     $employee->save();
 
-                    (new TaskController)->setCurrentTask($apiToken, $projectType, $employee->employee_id);
+                    (new TaskController)->setCurrentTask($apiToken, $projectType, $employee->employee_id, $verifyApiToken['id']);
                 }
             }
 
             DB::commit();
 
+            $this->logging(
+                'Chấp nhận báo cáo thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Chấp nhận báo cáo lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
 
             return $this->sendError('Đã có lỗi xảy ra khi chấp nhận báo cáo', 500);
         }
@@ -301,18 +415,63 @@ class ReportController extends BaseController
         $type = $projectType;
 
         if(!$id) {
+            $this->logging(
+                'Từ chối báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
         }
 
         $report = Report::where([['id', $id], ['status', 'waiting'], ['type', $type]])->first();
 
         if (!$report) {
+            $this->logging(
+                'Từ chối báo cáo lỗi do dữ liệu đầu vào chưa hợp lệ',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
         }
 
         $report->status = 'reject';
         $report->save();
 
-        return $this->sendResponse();
+        try {
+            DB::beginTransaction();
+
+            $report->status = 'reject';
+            $report->save();
+
+            DB::commit();
+
+            $this->logging(
+                'Từ chối báo cáo thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Báo cáo kết quả xử lý'
+            );
+
+            return $this->sendResponse();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            $this->logging(
+                'Từ chối báo cáo lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
+            return $this->sendError('Đã có lỗi xảy ra khi chấp nhận báo cáo', 500);
+        }
     }
 }

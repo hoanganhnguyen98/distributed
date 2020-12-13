@@ -46,6 +46,14 @@ class TaskTypeController extends BaseController
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
+                $this->logging(
+                    'Tạo mới loại công việc xử lý sự cố lỗi do dữ liệu đầu vào chưa hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Loại công việc xử lý sự cố'
+                );
+
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
@@ -60,11 +68,27 @@ class TaskTypeController extends BaseController
                 'create_id' => $create_id
             ]);
 
+            $this->logging(
+                'Tạo mới loại công việc xử lý sự cố thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Loại công việc xử lý sự cố'
+            );
+
             DB::commit();
 
             return $this->sendResponse($newTaskType);
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Tạo mới loại công việc xử lý sự cố lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Loại công việc xử lý sự cố'
+            );
 
             return $this->sendError('Có lỗi khi tạo loại công việc mới', 500);
         }
@@ -100,6 +124,14 @@ class TaskTypeController extends BaseController
 
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
+                $this->logging(
+                    'Cập nhật loại công việc xử lý sự cố lỗi do dữ liệu đầu vào chưa hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Loại công việc xử lý sự cố'
+                );
+
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
             }
 
@@ -108,6 +140,14 @@ class TaskTypeController extends BaseController
             $taskType = TaskType::where('id', $request->get('id'))->first();
 
             if (!$taskType) {
+                $this->logging(
+                    'Cập nhật loại công việc xử lý sự cố lỗi do không tìm thấy loại công việc hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Loại công việc xử lý sự cố'
+                );
+
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
             }
 
@@ -120,9 +160,25 @@ class TaskTypeController extends BaseController
 
             DB::commit();
 
+            $this->logging(
+                'Cập nhật loại công việc xử lý sự cố thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Loại công việc xử lý sự cố'
+            );
+
             return $this->sendResponse($taskType);
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Cập nhật loại công việc xử lý sự cố lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Loại công việc xử lý sự cố'
+            );
 
             return $this->sendError('Có lỗi khi cập nhật loại công việc', 500);
         }
@@ -151,12 +207,28 @@ class TaskTypeController extends BaseController
             $id = $request->get('id');
 
             if (!$id) {
+                $this->logging(
+                    'Xóa loại công việc xử lý sự cố lỗi do dữ liệu đầu vào chưa hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Loại công việc xử lý sự cố'
+                );
+
                 return $this->sendError('Không có định danh loại công việc', 400);
             }
 
             $taskType = TaskType::where('id', $id)->first();
 
             if (!$taskType) {
+                $this->logging(
+                    'Xóa loại công việc xử lý sự cố lỗi do không tìm được loại công việc hợp lệ',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Loại công việc xử lý sự cố'
+                );
+
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
             }
 
@@ -164,9 +236,25 @@ class TaskTypeController extends BaseController
 
             DB::commit();
 
+            $this->logging(
+                'Xóa loại công việc xử lý sự cố thành công',
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Loại công việc xử lý sự cố'
+            );
+
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
+
+            $this->logging(
+                'Xóa loại công việc xử lý sự cố lỗi chưa xác định',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Loại công việc xử lý sự cố'
+            );
 
             return $this->sendError('Có lỗi khi xóa loại công việc', 500);
         }

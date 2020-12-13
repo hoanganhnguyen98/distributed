@@ -332,7 +332,7 @@ class TaskController extends BaseController
                         return $this->sendError($this->responseMessage, $this->statusCode);
                     }
 
-                    $this->setNewTask($apiToken, $projectType, $new_task->id, $employees);
+                    $this->setNewTask($apiToken, $projectType, $new_task->id, $employees, $verifyApiToken['id']);
                 }
             }
 
@@ -344,6 +344,14 @@ class TaskController extends BaseController
                 return $this->sendError($this->responseMessage, $this->statusCode);
             }
 
+            $this->logging(
+                'Tiến hành xử lý thành công sự cố có id là ' . $incident_id,
+                $verifyApiToken['id'],
+                $projectType,
+                'success',
+                'Xử lý sự cố'
+            );
+
             return $this->sendResponse();
         } catch (Exception $e) {
             DB::rollBack();
@@ -352,7 +360,7 @@ class TaskController extends BaseController
         }
     }
 
-    public function setNewTask($apiToken, $projectType, $task_id, $employees)
+    public function setNewTask($apiToken, $projectType, $task_id, $employees, $admin_id)
     {
         foreach ($employees as $employee_id) {
             $employee = Employee::where('employee_id', $employee_id)->first();
@@ -366,9 +374,17 @@ class TaskController extends BaseController
                     'type' => $projectType
                 ]);
 
-                if (!$this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY")) {
-                    return $this->sendError($this->responseMessage, $this->statusCode);
-                }
+                $this->createUserMeta(
+                    $apiToken,
+                    $projectType,
+                    $admin_id,
+                    $employee_id,
+                    "Yêu cầu nhân viên xử lý công việc",
+                    "DOING",
+                    $task_id
+                );
+
+                $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
             } else {
                 $pending_ids = $employee->pending_id;
                 if ($pending_ids == null) {
@@ -379,12 +395,12 @@ class TaskController extends BaseController
                     $employee->save();
                 }
 
-                $this->setCurrentTask($apiToken, $projectType, $employee_id);
+                $this->setCurrentTask($apiToken, $projectType, $employee_id, $admin_id);
             }
         }
     }
 
-    public function setCurrentTask($apiToken, $projectType, $employee_id)
+    public function setCurrentTask($apiToken, $projectType, $employee_id, $admin_id)
     {
         $employee = Employee::where('employee_id', $employee_id)->first();
 
@@ -418,18 +434,28 @@ class TaskController extends BaseController
                             }
 
                             $employee->save();
+
+                            $this->createUserMeta(
+                                $apiToken,
+                                $projectType,
+                                $admin_id,
+                                $employee_id,
+                                "Yêu cầu nhân viên xử lý công việc",
+                                "DOING",
+                                $task_id
+                            );
+
                             $setted = true;
 
-                            if (!$this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY")) {
-                                return $this->sendError($this->responseMessage, $this->statusCode);
-                            }
+                            $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
 
                             break;
                         }
                     }
 
                     if ($setted == false) {
-                        $employee->current_id = $pending_task_ids[0];
+                        $new_current_id = $pending_task_ids[0];
+                        $employee->current_id = $new_current_id;
 
                         unset($pending_task_ids[$key]);
 
@@ -447,9 +473,17 @@ class TaskController extends BaseController
 
                         $employee->save();
 
-                        if (!$this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY")) {
-                            return $this->sendError($this->responseMessage, $this->statusCode);
-                        }
+                        $this->createUserMeta(
+                            $apiToken,
+                            $projectType,
+                            $admin_id,
+                            $employee_id,
+                            "Yêu cầu nhân viên xử lý công việc",
+                            "DOING",
+                            $new_current_id
+                        );
+
+                        $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
                     }
 
                     $this->notification('pending', 'add', $employee_id);
@@ -458,117 +492,23 @@ class TaskController extends BaseController
                     $employee->pending_ids = null;
                     $employee->save();
 
-                    if (!$this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY")) {
-                        return $this->sendError($this->responseMessage, $this->statusCode);
-                    }
+                    $this->createUserMeta(
+                        $apiToken,
+                        $projectType,
+                        $admin_id,
+                        $employee_id,
+                        "Yêu cầu nhân viên xử lý công việc",
+                        "DOING",
+                        $pending_ids
+                    );
+
+                    $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
 
                     $this->notification('pending', 'add', $employee_id);
                 }
             }
         }
     }
-
-    // khi co mot task moi
-    // public function setNewTask($task_id, $employee, $priority)
-    // {
-    //     $employee_id = $employee->employee_id;
-
-    //     $current_id = $employee->current_id;
-    //     $pending_ids = $employee->pending_ids;
-
-    //     if ($current_id) {
-    //         $current_task = Task::where([['id', $current_id], ['status', '<>' ,'done']])->first();
-
-    //         if ($current_task) {
-    //             $current_priority = $current_task->priority;
-
-    //             if ($current_priority >= $priority) {
-    //                 $pending_ids .= $task_id . ',';
-    //             } else {
-    //                 $new_current_id = $task_id;
-    //                 $employee->current_id = $new_current_id;
-
-    //                 $old_all_ids = $employee->all_ids;
-    //                 $employee->all_ids = $old_all_ids . $new_current_id . ',';
-
-    //                 $pending_ids .= $current_id . ',';
-    //             }
-
-    //             $employee->pending_ids = $pending_ids;
-    //             $employee->save();
-
-    //             $this->notification('pending', 'add', $employee_id);
-    //         } else {
-    //             $employee->current_id = null;
-
-    //             $pending_ids .= $task_id . ',';
-    //             $employee->pending_ids = $pending_ids;
-    //             $employee->save();
-
-    //             $this->setCurrentTask($employee_id);
-    //         }
-    //     } else {
-    //         $pending_ids .= $task_id . ',';
-    //         $employee->pending_ids = $pending_ids;
-    //         $employee->save();
-
-    //         $this->setCurrentTask($employee_id);
-    //     }
-    // }
-
-    // khi nhan vien da hoan thanh mot task (task hien tai trong)
-    // public function setCurrentTask($employee_id)
-    // {
-    //     $employee = Employee::where('employee_id', $employee_id)->first();
-
-    //     $pending_ids = $employee->pending_ids;
-
-    //     // if pending task not null
-    //     if (strlen($pending_ids) > 1) {
-    //         $pending_ids_array = array_slice(explode(',', $pending_ids), 1, -1);
-
-    //         $list = [];
-    //         foreach ($pending_ids_array as $id) {
-    //             $task = Task::where([['id', $id], ['status', '<>' ,'done']])->first();
-
-    //             if ($task) {
-    //                 $list[] = [
-    //                     'id' => $id,
-    //                     'priority' => $task->priority,
-    //                     'created_at' => $task->created_at
-    //                 ];
-    //             } else {
-    //                 // remove id from pending list
-    //                 $pending_ids = str_replace($id . ',', '', $pending_ids);
-
-    //                 $this->notification('pending', 'remove', $employee_id);
-    //             }
-    //         }
-
-    //         if (count($list) > 0) {
-    //             array_multisort(array_column($list, "priority"), SORT_ASC, array_column($list, "created_at"), SORT_DESC, $list);
-
-    //             $current_task = end($list);
-    //             $new_current_id = end($list)['id'];
-
-    //             $employee->current_id = $new_current_id;
-
-    //             $old_all_ids = $employee->all_ids;
-    //             $employee->all_ids = $old_all_ids . $new_current_id . ',';
-
-    //             $employee->save();
-
-    //             $this->notification('current', 'push', $employee_id);
-
-    //             $pending_ids = str_replace($new_current_id . ',', '', $pending_ids);
-
-    //             $this->notification('pending', 'remove', $employee_id);
-    //         }
-
-    //         $employee->pending_ids = $pending_ids;
-    //         $employee->save();
-    //     }
-    // }
 
     public function incidentChecking($incident_id, $apiToken, $projectType)
     {
@@ -717,56 +657,6 @@ class TaskController extends BaseController
                 'json' => $body,
             ]);
         } catch (\Throwable $th) {
-            $this->responseMessage = 'Đã có lỗi xảy ra từ khi gọi api cập nhật trạng thái nhân viên';
-            $this->statusCode = $th->getCode();
-
-            return false;
-        }
-
-        $responseStatus = $response->getStatusCode();
-        $data = json_decode($response->getBody()->getContents(), true);
-
-        if ($responseStatus !== 200) {
-            if ($data['message']) {
-                $this->responseMessage = $data['message'];
-                $this->statusCode = $responseStatus;
-
-                return false;
-            } else {
-                $this->responseMessage = 'Lỗi chưa xác định đã xảy ra cập nhật trạng thái nhân viên';
-                $this->statusCode = $responseStatus;
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function handlerIncident($incident_id, $apiToken, $projectType)
-    {
-        $this->incident = $this->incidentChecking($incident_id, $apiToken, $projectType);
-
-        if ($this->incident) {
-            // get employee to handler new task
-            $employeeGetting = $this->employeeGetting();
-
-            // create new task
-            $task_id = $this->createTask();
-
-            foreach ($employeeGetting as $employee) {
-                $this->setNewTask($task_id, $employee, $this->incident['priority']);
-            }
-
-            $this->setCaptainForTask($task_id);
-
-            $isUpdated = $this->updateIncidentStatus($incident_id, $apiToken, $projectType, 1);
-
-            if (!$isUpdated) {
-                return $this->sendError($this->responseMessage, $this->statusCode);
-            }
-
-            return $this->sendResponse(['task_id' => $task_id]);
         }
     }
 
