@@ -100,7 +100,41 @@ class ReportController extends BaseController
         $existedReport = Report::where([['create_id', $employee_id], ['status', 'waiting']])->first();
 
         if ($existedReport) {
+            $this->logging(
+                'Tạo báo cáo lỗi do đang có một báo cáo chờ xử lý',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
             return $this->sendError('Đã có một báo cáo được gửi đi, hãy chờ được xử lý', 403);
+        }
+
+        if ($request->hasFile('file')){
+            $size = $request->file('file')->getSize();
+
+            if ($size > 5800000) {
+                $this->logging(
+                    'Tạo báo cáo lỗi do tệp đính kèm quá lớn',
+                    $verifyApiToken['id'],
+                    $projectType,
+                    'failure',
+                    'Báo cáo kết quả xử lý'
+                );
+
+                return $this->sendError('Kích thước tệp đính kèm có dung lượng không quá 5800000', 400);
+            }
+        } else {
+            $this->logging(
+                'Tạo báo cáo lỗi do không có tệp đính kèm',
+                $verifyApiToken['id'],
+                $projectType,
+                'failure',
+                'Báo cáo kết quả xử lý'
+            );
+
+            return $this->sendError('Không có tệp đính kèm', 400);
         }
 
         $rules = [
