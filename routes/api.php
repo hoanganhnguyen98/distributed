@@ -33,7 +33,7 @@ Route::post('report/reject', 'Distributed\ReportController@reject');
 // nhan vien
 Route::post('employee/login', 'Distributed\EmployeeController@login');
 Route::get('employee/listing', 'Distributed\EmployeeController@listing');
-Route::post('employee/active', 'Distributed\EmployeeController@active');
+Route::post('employee/active/{$task_id}', 'Distributed\EmployeeController@active');
 Route::get('employee/detail', 'Distributed\EmployeeController@detail');
 
 // lich lam viec

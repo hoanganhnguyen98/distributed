@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends BaseController
 {
-    public function active(Request $request)
+    public function active(Request $request, $task_id)
     {
         $apiToken = $request->header('api-token');
         $projectType = $request->header('project-type');
@@ -32,8 +32,6 @@ class EmployeeController extends BaseController
         if ($verifyApiToken['role'] !== 'INCIDENT_STAFF') {
             return $this->sendError('Bạn phải có quyền INCIDENT_STAFF để sử dụng chức năng này', 403);
         }
-
-        $task_id = (int) $request->get('task_id');
 
         if (!$task_id) {
             $this->logging(

@@ -12,6 +12,7 @@ use App\Http\Controllers\Distributed\TaskController as TaskController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Cloudder;
+use App\Http\Controllers\Distributed\ZoneAreaController as ZoneAreaController;
 
 class ReportController extends BaseController
 {
@@ -47,7 +48,7 @@ class ReportController extends BaseController
                 'Báo cáo kết quả xử lý'
             );
 
-            return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
+            return $this->sendError('Không có giá trị định danh công việc xử lý sự cố', 400);
         }
 
         $task = Task::where([['id', $task_id], ['status', '<>', 'done']])->first();
@@ -61,7 +62,7 @@ class ReportController extends BaseController
                 'Báo cáo kết quả xử lý'
             );
 
-            return $this->sendError('Định danh báo cáo kết quả không hợp lệ', 404);
+            return $this->sendError('Định danh công việc xử lý không hợp lệ', 404);
         }
 
         $employee_id = $verifyApiToken['id'];
@@ -94,6 +95,12 @@ class ReportController extends BaseController
 
                 return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
             }
+        }
+
+        $existedReport = Report::where([['create_id', $employee_id], ['status', 'waiting']])->first();
+
+        if ($existedReport) {
+            return $this->sendError('Đã có một báo cáo được gửi đi, hãy chờ được xử lý', 403);
         }
 
         $rules = [
@@ -309,6 +316,8 @@ class ReportController extends BaseController
                 $task->status = 'done';
                 $task->save();
 
+                $this->finishHandler($task, $apiToken, $projectType);
+
                 $task_id = $task->id;
                 $doing_employees = Employee::where('current_id', $task_id)->get();
                 $pending_employees = Employee::where('pending_ids', 'like', '%'. $task_id . '%')->get();
@@ -488,6 +497,17 @@ class ReportController extends BaseController
             );
 
             return $this->sendError('Đã có lỗi xảy ra khi chấp nhận báo cáo', 500);
+        }
+    }
+
+    public function finishHandler($task, $apiToken, $projectType)
+    {
+        $incident_id = $task->incident_id;
+        $all_tasks = Task::where([['incident_id', $incident_id], ['status', '<>' , 'done']])->get()->count();
+
+        if (!$all_tasks) {
+            (new TaskController)->updateIncidentStatus($incident_id, $apiToken, $projectType, 2);
+            (new ZoneAreaController)->updateTimes($apiToken, $projectType, $incident_id);
         }
     }
 }
