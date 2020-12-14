@@ -33,6 +33,8 @@ class EmployeeController extends BaseController
             return $this->sendError('Bạn phải có quyền INCIDENT_STAFF để sử dụng chức năng này', 403);
         }
 
+        $task_id = (int) $task_id;
+
         if (!$task_id) {
             $this->logging(
                 'Xác nhận công việc lỗi do dữ liệu đầu vào chưa hợp lệ',
