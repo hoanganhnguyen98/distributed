@@ -97,19 +97,19 @@ class ReportController extends BaseController
             }
         }
 
-        $existedReport = Report::where([['create_id', $employee_id], ['status', 'waiting']])->first();
+        // $existedReport = Report::where([['create_id', $employee_id], ['status', 'waiting']])->first();
 
-        if ($existedReport) {
-            $this->logging(
-                'Tạo báo cáo lỗi do đang có một báo cáo chờ xử lý',
-                $verifyApiToken['id'],
-                $projectType,
-                'failure',
-                'Báo cáo kết quả xử lý'
-            );
+        // if ($existedReport) {
+        //     $this->logging(
+        //         'Tạo báo cáo lỗi do đang có một báo cáo chờ xử lý',
+        //         $verifyApiToken['id'],
+        //         $projectType,
+        //         'failure',
+        //         'Báo cáo kết quả xử lý'
+        //     );
 
-            return $this->sendError('Đã có một báo cáo được gửi đi, hãy chờ được xử lý', 403);
-        }
+        //     return $this->sendError('Đã có một báo cáo được gửi đi, hãy chờ được xử lý', 403);
+        // }
 
         if ($request->hasFile('file')){
             $size = $request->file('file')->getSize();
