@@ -311,7 +311,7 @@ class ReportController extends BaseController
         }
 
         $task_id = $report->task_id;
-        $task = Task::where('task_id', $task_id)->first();
+        $task = Task::where('id', $task_id)->first();
 
         if (!$task) {
             $this->logging(
@@ -352,7 +352,6 @@ class ReportController extends BaseController
 
                 $this->finishHandler($task, $apiToken, $projectType);
 
-                $task_id = $task->id;
                 $doing_employees = Employee::where('current_id', $task_id)->get();
                 $pending_employees = Employee::where('pending_ids', 'like', '%'. $task_id . '%')->get();
 
