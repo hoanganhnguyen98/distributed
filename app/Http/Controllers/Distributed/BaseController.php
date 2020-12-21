@@ -43,9 +43,49 @@ class BaseController extends Controller
         ]);
     }
 
-    public function notification($type, $action, $employee_id)
-    {
+    public function notification(
+        $apiToken = "1fa6b94047ba20d998b44ff1a2c78bba",
+        $projectType = "CHAY_RUNG",
+        $type = 8,
+        $sender = "35",
+        $employee_ids = ["64","188"],
+        $refID = "shfowhog-whoswohsgow",
+        $linkView = "https://dsd08handleincident.herokuapp.com/handle-problem",
+        $content = "Thông báo mới",
+        $ntfType = 1
+    ) {
+        // ntfType
+        // 1: thông báo công việc mới
+        // 2: gửi báo cáo công iệc
+        // 3: review báo cáo công việc
+        $url = 'https://it4483-dsd04.herokuapp.com/create_ntf_2';
+        $headers = [
+            'api-token' => $apiToken,
+            'project-type' => $projectType,
+            'Content-Type' => 'application/json'
+        ];
 
+        $body = [
+            "fromUserID" => $sender,
+            "toUserIDs" => $employee_ids,
+            "refID" => $refID,
+            "refType" => 1,
+            "refLinkView" => $linkView,
+            "level" => 1,
+            "content" => $content,
+            "ntfType" => $ntfType
+        ];
+
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->post($url, [
+                'headers' => $headers,
+                'json' => $body,
+
+            ]);
+        } catch (\Throwable $th) {
+        }
     }
 
     public function verifyApiToken($apiToken = null, $projectType = null)

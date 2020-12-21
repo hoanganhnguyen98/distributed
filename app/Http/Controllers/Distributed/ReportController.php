@@ -192,6 +192,18 @@ class ReportController extends BaseController
                 'Báo cáo kết quả xử lý'
             );
 
+            $this->notification(
+                $apiToken,
+                $projectType,
+                8,
+                $employee_id,
+                $employee_id,
+                "shfowhog-whoswohsgow",
+                "https://dsd08handleincident.herokuapp.com/handle-problem",
+                "Báo cáo kết quả mới",
+                2
+            );
+
             DB::commit();
 
             return $this->sendResponse();
@@ -347,6 +359,18 @@ class ReportController extends BaseController
                 $report->status = 'accept';
                 $report->save();
 
+                $this->notification(
+                    $apiToken,
+                    $projectType,
+                    8,
+                    $verifyApiToken['id'],
+                    $report->create_id,
+                    "shfowhog-whoswohsgow",
+                    "https://dsd08handleincident.herokuapp.com/handle-problem",
+                    "Báo cáo được chấp nhận",
+                    3
+                );
+
                 $task->status = 'done';
                 $task->save();
 
@@ -391,7 +415,17 @@ class ReportController extends BaseController
                         }
                     }
 
-                    $this->notification('pending', 'remove', $employee->id);
+                    $this->notification(
+                        $apiToken,
+                        $projectType,
+                        8,
+                        $verifyApiToken['id'],
+                        [$employee->id],
+                        "shfowhog-whoswohsgow",
+                        "https://dsd08handleincident.herokuapp.com/handle-problem",
+                        "Thông báo công việc trong hàng chờ được loại bỏ",
+                        1
+                    );
                 }
 
                 foreach ($doing_employees as $employee) {
@@ -498,14 +532,23 @@ class ReportController extends BaseController
             return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
         }
 
-        $report->status = 'reject';
-        $report->save();
-
         try {
             DB::beginTransaction();
 
             $report->status = 'reject';
             $report->save();
+
+            $this->notification(
+                $apiToken,
+                $projectType,
+                8,
+                $verifyApiToken['id'],
+                $report->create_id,
+                "shfowhog-whoswohsgow",
+                "https://dsd08handleincident.herokuapp.com/handle-problem",
+                "Báo cáo bị từ chối",
+                3
+            );
 
             DB::commit();
 

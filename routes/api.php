@@ -64,6 +64,8 @@ Route::put('schedule-setting/update', 'Distributed\ScheduleSettingController@upd
 Route::get('schedule-setting/listing', 'Distributed\ScheduleSettingController@listing');
 Route::delete('schedule-setting/delete', 'Distributed\ScheduleSettingController@delete');
 
+Route::post('test', 'Distributed\BaseController@notification');
+
 
 
 

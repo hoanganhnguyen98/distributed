@@ -498,7 +498,17 @@ class TaskController extends BaseController
                         $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
                     }
 
-                    $this->notification('pending', 'add', $employee_id);
+                    $this->notification(
+                        $apiToken,
+                        $projectType,
+                        8,
+                        $admin_id,
+                        [$employee_id],
+                        "shfowhog-whoswohsgow",
+                        "https://dsd08handleincident.herokuapp.com/handle-problem",
+                        "Thông báo công việc mới",
+                        1
+                    );
                 } else {
                     $employee->current_id = $pending_ids;
                     $employee->pending_ids = null;
@@ -516,7 +526,17 @@ class TaskController extends BaseController
 
                     $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
 
-                    $this->notification('pending', 'add', $employee_id);
+                    $this->notification(
+                        $apiToken,
+                        $projectType,
+                        8,
+                        $admin_id,
+                        [$employee_id],
+                        "shfowhog-whoswohsgow",
+                        "https://dsd08handleincident.herokuapp.com/handle-problem",
+                        "Thông báo công việc mới",
+                        1
+                    );
                 }
             }
         }
