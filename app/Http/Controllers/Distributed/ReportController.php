@@ -174,7 +174,7 @@ class ReportController extends BaseController
                 $img_url = Cloudder::getResult($public_id, $resize)['url'];
             }
 
-            Report::create([
+            $newReport = Report::create([
                 'title' => $request->get('title'),
                 'content' => $request->get('content'),
                 'task_id' => $task_id,
@@ -198,7 +198,7 @@ class ReportController extends BaseController
                 8,
                 $employee_id,
                 $employee_id,
-                "shfowhog-whoswohsgow",
+                $newReport->id,
                 "https://dsd08handleincident.herokuapp.com/handle-problem",
                 "Báo cáo kết quả mới",
                 2
@@ -365,7 +365,7 @@ class ReportController extends BaseController
                     8,
                     $verifyApiToken['id'],
                     $report->create_id,
-                    "shfowhog-whoswohsgow",
+                    $id,
                     "https://dsd08handleincident.herokuapp.com/handle-problem",
                     "Báo cáo được chấp nhận",
                     3
@@ -414,18 +414,6 @@ class ReportController extends BaseController
                             $employee->save();
                         }
                     }
-
-                    $this->notification(
-                        $apiToken,
-                        $projectType,
-                        8,
-                        $verifyApiToken['id'],
-                        [$employee->id],
-                        "shfowhog-whoswohsgow",
-                        "https://dsd08handleincident.herokuapp.com/handle-problem",
-                        "Thông báo công việc trong hàng chờ được loại bỏ",
-                        1
-                    );
                 }
 
                 foreach ($doing_employees as $employee) {
@@ -544,7 +532,7 @@ class ReportController extends BaseController
                 8,
                 $verifyApiToken['id'],
                 $report->create_id,
-                "shfowhog-whoswohsgow",
+                $id,
                 "https://dsd08handleincident.herokuapp.com/handle-problem",
                 "Báo cáo bị từ chối",
                 3

@@ -504,7 +504,7 @@ class TaskController extends BaseController
                         8,
                         $admin_id,
                         [$employee_id],
-                        "shfowhog-whoswohsgow",
+                        $new_current_id,
                         "https://dsd08handleincident.herokuapp.com/handle-problem",
                         "Thông báo công việc mới",
                         1
@@ -532,7 +532,7 @@ class TaskController extends BaseController
                         8,
                         $admin_id,
                         [$employee_id],
-                        "shfowhog-whoswohsgow",
+                        $pending_ids,
                         "https://dsd08handleincident.herokuapp.com/handle-problem",
                         "Thông báo công việc mới",
                         1
