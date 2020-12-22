@@ -195,9 +195,8 @@ class ReportController extends BaseController
             $this->notification(
                 $apiToken,
                 $projectType,
-                8,
                 $employee_id,
-                $employee_id,
+                [$employee_id],
                 $newReport->id,
                 "https://dsd08handleincident.herokuapp.com/handle-problem",
                 "Báo cáo kết quả mới",
@@ -362,9 +361,8 @@ class ReportController extends BaseController
                 $this->notification(
                     $apiToken,
                     $projectType,
-                    8,
                     $verifyApiToken['id'],
-                    $report->create_id,
+                    [$report->create_id],
                     $id,
                     "https://dsd08handleincident.herokuapp.com/handle-problem",
                     "Báo cáo được chấp nhận",
@@ -529,7 +527,6 @@ class ReportController extends BaseController
             $this->notification(
                 $apiToken,
                 $projectType,
-                8,
                 $verifyApiToken['id'],
                 $report->create_id,
                 $id,

@@ -44,12 +44,11 @@ class BaseController extends Controller
     }
 
     public function notification(
-        $apiToken = "1fa6b94047ba20d998b44ff1a2c78bba",
-        $projectType = "CHAY_RUNG",
-        $type = 8,
-        $sender = "35",
-        $employee_ids = ["64","188"],
-        $refID = "shfowhog-whoswohsgow",
+        $apiToken,
+        $projectType,
+        $sender,
+        $employee_ids,
+        $refID,
         $linkView = "https://dsd08handleincident.herokuapp.com/handle-problem",
         $content = "Thông báo mới",
         $ntfType = 1
@@ -69,7 +68,7 @@ class BaseController extends Controller
             "fromUserID" => $sender,
             "toUserIDs" => $employee_ids,
             "refID" => $refID,
-            "refType" => 1,
+            "refType" => 8,
             "refLinkView" => $linkView,
             "level" => 1,
             "content" => $content,

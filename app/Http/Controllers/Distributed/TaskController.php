@@ -501,7 +501,6 @@ class TaskController extends BaseController
                     $this->notification(
                         $apiToken,
                         $projectType,
-                        8,
                         $admin_id,
                         [$employee_id],
                         $new_current_id,
@@ -529,7 +528,6 @@ class TaskController extends BaseController
                     $this->notification(
                         $apiToken,
                         $projectType,
-                        8,
                         $admin_id,
                         [$employee_id],
                         $pending_ids,
