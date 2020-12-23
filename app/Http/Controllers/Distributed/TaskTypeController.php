@@ -32,10 +32,6 @@ class TaskTypeController extends BaseController
             }
         }
 
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
-        }
-
         $create_id = Employee::where('employee_id', $verifyApiToken['id'])->first()->id;
 
         try {
@@ -113,10 +109,6 @@ class TaskTypeController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
-        }
-
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
         }
 
         try {
@@ -209,10 +201,6 @@ class TaskTypeController extends BaseController
             }
         }
 
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
-        }
-
         try {
             DB::beginTransaction();
 
@@ -301,10 +289,6 @@ class TaskTypeController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
-        }
-
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
         }
 
         $listing = TaskType::where('project_type', $projectType)->get();

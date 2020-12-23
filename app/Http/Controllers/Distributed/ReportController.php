@@ -33,10 +33,6 @@ class ReportController extends BaseController
             }
         }
 
-        if ($verifyApiToken['role'] !== 'INCIDENT_STAFF') {
-            return $this->sendError('Bạn phải có quyền INCIDENT_STAFF để sử dụng chức năng này', 403);
-        }
-
         $task_id = $request->get('id');
 
         if(!$task_id) {
@@ -238,10 +234,6 @@ class ReportController extends BaseController
             }
         }
 
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
-        }
-
         $type_id = $projectType;
 
         $page = $request->get('page');
@@ -286,10 +278,6 @@ class ReportController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
-        }
-
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
         }
 
         $id = $request->get('id');
@@ -483,10 +471,6 @@ class ReportController extends BaseController
             if ($statusCode != 200) {
                 return $this->sendError($verifyApiToken['message'], $statusCode);
             }
-        }
-
-        if ($verifyApiToken['role'] !== 'ADMIN') {
-            return $this->sendError('Bạn phải có quyền ADMIN để sử dụng chức năng này', 403);
         }
 
         $id = $request->get('id');
