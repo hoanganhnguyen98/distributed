@@ -165,7 +165,8 @@ class TaskTypeController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Loại công việc xử lý sự cố'
+                'Loại công việc xử lý sự cố',
+                $request->get('prioritize')
             );
 
             return $this->sendResponse($taskType);
@@ -255,7 +256,8 @@ class TaskTypeController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Loại công việc xử lý sự cố'
+                'Loại công việc xử lý sự cố',
+                $id
             );
 
             return $this->sendResponse();
@@ -291,7 +293,11 @@ class TaskTypeController extends BaseController
             }
         }
 
-        $listing = TaskType::where('project_type', $projectType)->get();
+        if ($projectType == 'ALL_PROJECT') {
+            $listing = TaskType::all();
+        } else {
+            $listing = TaskType::where('project_type', $projectType)->get();
+        }
 
         return $this->sendResponse($listing);
     }

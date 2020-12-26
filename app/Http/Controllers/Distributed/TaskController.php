@@ -267,6 +267,7 @@ class TaskController extends BaseController
             return $this->sendError($this->responseMessage, $this->statusCode);
         }
 
+        $incidentType = $this->incident['type'];
         try {
             DB::beginTransaction();
 
@@ -332,7 +333,7 @@ class TaskController extends BaseController
                         return $this->sendError($this->responseMessage, $this->statusCode);
                     }
 
-                    $this->setNewTask($apiToken, $projectType, $new_task->id, $employees, $verifyApiToken['id']);
+                    $this->setNewTask($apiToken, $projectType, $new_task->id, $employees, $verifyApiToken['id'], $incidentType);
                 }
             }
 
@@ -349,7 +350,8 @@ class TaskController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Xử lý sự cố'
+                'Xử lý sự cố',
+                $incident_id
             );
 
             return $this->sendResponse();
@@ -360,7 +362,7 @@ class TaskController extends BaseController
         }
     }
 
-    public function setNewTask($apiToken, $projectType, $task_id, $employees, $admin_id)
+    public function setNewTask($apiToken, $projectType, $task_id, $employees, $admin_id, $incidentType)
     {
         foreach ($employees as $employee_id) {
             $employee = Employee::where('employee_id', $employee_id)->first();
@@ -371,17 +373,18 @@ class TaskController extends BaseController
                     'current_id' => $task_id,
                     'pending_ids' => null,
                     'all_ids' => null,
-                    'type' => $projectType
+                    'type' => $incidentType
                 ]);
 
                 $this->createUserMeta(
                     $apiToken,
-                    $projectType,
+                    $incidentType,
                     $admin_id,
                     $employee_id,
                     "Yêu cầu nhân viên xử lý công việc",
                     "DOING",
-                    $task_id
+                    $task_id,
+                    $incidentType
                 );
 
                 $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
@@ -395,12 +398,12 @@ class TaskController extends BaseController
                     $employee->save();
                 }
 
-                $this->setCurrentTask($apiToken, $projectType, $employee_id, $admin_id);
+                $this->setCurrentTask($apiToken, $projectType, $employee_id, $admin_id, $incidentType);
             }
         }
     }
 
-    public function setCurrentTask($apiToken, $projectType, $employee_id, $admin_id)
+    public function setCurrentTask($apiToken, $projectType, $employee_id, $admin_id, $incidentType)
     {
         $employee = Employee::where('employee_id', $employee_id)->first();
 
@@ -442,7 +445,8 @@ class TaskController extends BaseController
                                 $employee_id,
                                 "Yêu cầu nhân viên xử lý công việc",
                                 "DOING",
-                                $task_id
+                                $task_id,
+                                $incidentType
                             );
 
                             $setted = true;
@@ -480,7 +484,8 @@ class TaskController extends BaseController
                             $employee_id,
                             "Yêu cầu nhân viên xử lý công việc",
                             "DOING",
-                            $new_current_id
+                            $new_current_id,
+                            $incidentType
                         );
 
                         $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");
@@ -508,7 +513,8 @@ class TaskController extends BaseController
                         $employee_id,
                         "Yêu cầu nhân viên xử lý công việc",
                         "DOING",
-                        $pending_ids
+                        $pending_ids,
+                        $incidentType
                     );
 
                     $this->changeStatusEmployee($apiToken, $projectType, $employee_id, "BUSY");

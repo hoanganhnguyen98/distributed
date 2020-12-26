@@ -2,11 +2,11 @@
 
 use Illuminate\Support\Str;
 
-$url = parse_url(getenv('DATABASE_URL'));
-$host = $url['host']?? null;
-$username = $url['user']??null;
-$password = $url['pass']??null;
-$database = substr($url['path'], 1)??null;
+$url = parse_url(getenv('DATABASE_URL')) ?? 'postgres://sevqggnbwcmmil:1d019ac2cee816ca7beb95216efbc70157514767d752f4cf173b554b877a95d4@ec2-174-129-205-197.compute-1.amazonaws.com:5432/d26i149tkpjamk';
+$host = $url['host']?? 'ec2-174-129-205-197.compute-1.amazonaws.com';
+$username = $url['user']??'sevqggnbwcmmil';
+$password = $url['pass']??'1d019ac2cee816ca7beb95216efbc70157514767d752f4cf173b554b877a95d4';
+$database = substr($url['path'], 1)??"d26i149tkpjamk";
 
 return [
 
@@ -71,12 +71,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'url' => env('DATABASE_URL', 'postgres://sevqggnbwcmmil:1d019ac2cee816ca7beb95216efbc70157514767d752f4cf173b554b877a95d4@ec2-174-129-205-197.compute-1.amazonaws.com:5432/d26i149tkpjamk'),
+            'host' => env('DB_HOST', 'ec2-174-129-205-197.compute-1.amazonaws.com'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'database' => env('DB_DATABASE', 'd26i149tkpjamk'),
+            'username' => env('DB_USERNAME', 'sevqggnbwcmmil'),
+            'password' => env('DB_PASSWORD', '1d019ac2cee816ca7beb95216efbc70157514767d752f4cf173b554b877a95d4'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

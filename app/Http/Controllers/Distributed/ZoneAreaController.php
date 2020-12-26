@@ -30,19 +30,19 @@ class ZoneAreaController extends BaseController
             foreach ($objects_ids as $object_id) {
                 $zone_id = $this->getZoneFromObject($object_id);
 
-                $zoneTimes = $this->getZoneTimesById($zone_id);
+                $zoneTimes = $this->getZoneTimesById($zone_id, $apiToken, $projectType);
 
                 if ($zoneTimes !== null) {
                     $newZoneTimes = $zoneTimes + 1;
-                    $this->updateZoneTimes($zone_id, $newZoneTimes);
+                    $this->updateZoneTimes($zone_id, $newZoneTimes, $apiToken, $projectType);
                 }
 
                 if ($this->area_id !== null) {
-                    $areaTimes = $this->getAreaTimesById();
+                    $areaTimes = $this->getAreaTimesById($apiToken, $projectType);
 
                     if ($areaTimes !== null) {
                         $newAreaTimes = $areaTimes + 1;
-                        $this->updateAreaTimes($newAreaTimes);
+                        $this->updateAreaTimes($times, $apiToken, $projectType);
                     }
                 }
             }
@@ -164,12 +164,13 @@ class ZoneAreaController extends BaseController
         return $zone_id;
     }
 
-    public function getZoneTimesById($zone_id)
+    public function getZoneTimesById($zone_id, $apiToken, $projectType)
     {
         $url = 'https://monitoredzoneserver.herokuapp.com/monitoredzone/zoneinfo/'.$zone_id;
 
         $headers = [
-            'token' => $apiToken
+            'token' => $apiToken,
+            'projecttype' => $projectType,
         ];
 
         $client = new \GuzzleHttp\Client();
@@ -207,12 +208,13 @@ class ZoneAreaController extends BaseController
         return $area_times;
     }
 
-    public function getAreaTimesById()
+    public function getAreaTimesById($apiToken, $projectType)
     {
         $url = 'https://monitoredzoneserver.herokuapp.com/area/areainfo/'.$this->area_id;
 
         $headers = [
             'token' => $apiToken,
+            'projecttype' => $projectType
         ];
 
         $client = new \GuzzleHttp\Client();
@@ -247,12 +249,13 @@ class ZoneAreaController extends BaseController
         return $zone_times;
     }
 
-    public function updateZoneTimes($zone_id, $times)
+    public function updateZoneTimes($zone_id, $times, $apiToken, $projectType)
     {
         $url = 'https://monitoredzoneserver.herokuapp.com/monitoredzone/'.$zone_id;
 
         $headers = [
-            // 'token' => $apiToken,
+            'token' => $apiToken,
+            'projecttype' => $projectType,
             'Content-Type' => 'application/json'
         ];
 
@@ -271,12 +274,13 @@ class ZoneAreaController extends BaseController
         }
     }
 
-    public function updateAreaTimes($times)
+    public function updateAreaTimes($times, $apiToken, $projectType)
     {
         $url = 'https://monitoredzoneserver.herokuapp.com/area/'.$this->area_id;
 
         $headers = [
-            // 'token' => $apiToken,
+            'token' => $apiToken,
+            'projecttype' => $projectType,
             'Content-Type' => 'application/json'
         ];
 

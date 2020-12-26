@@ -149,7 +149,7 @@ class BaseController extends Controller
         return $verifyApiToken;
     }
 
-    public function logging($description = 'test', $authorId="1", $projectType='LUOI_DIEN', $state='doing', $name='test')
+    public function logging($description, $authorId, $projectType, $state, $name, $entityId = null)
     {
         $url = 'http://it4883logging.herokuapp.com/api/resolve-problem/add';
 
@@ -160,9 +160,9 @@ class BaseController extends Controller
 
         $body = [
             // "regionId" => 0,
-            // "entityId" => 0,
+            "entityId" => (string) $entityId,
             "description" => $description,
-            "authorId" => $authorId,
+            "authorId" => (string) $authorId,
             "projectType" => $projectType,
             "state" => $state,
             "name" => $name
@@ -187,7 +187,8 @@ class BaseController extends Controller
         $target_id,
         $description,
         $status,
-        $task_id
+        $task_id,
+        $incidentType
     )
     {
         $url = 'https://distributed.de-lalcool.com/api/userMeta';
@@ -203,7 +204,7 @@ class BaseController extends Controller
             "target_id" => $target_id,
             "description" => "Khắc phục sự cố",
             "status" => $status,
-            "type" => $projectType,
+            "type" => $incidentType,
             "name" => "INCIDENT",
             "meta_data" => [
                 "task_id" => $task_id
