@@ -41,7 +41,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Không có giá trị định danh công việc xử lý sự cố', 400);
@@ -55,7 +56,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Định danh công việc xử lý không hợp lệ', 404);
@@ -74,7 +76,8 @@ class ReportController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Báo cáo kết quả xử lý'
+                    'Báo cáo kết quả xử lý',
+                    'report'
                 );
 
                 return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
@@ -86,7 +89,8 @@ class ReportController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Báo cáo kết quả xử lý'
+                    'Báo cáo kết quả xử lý',
+                    'report'
                 );
 
                 return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
@@ -101,7 +105,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Đã có một báo cáo được gửi đi, hãy chờ được xử lý', 403);
@@ -116,7 +121,8 @@ class ReportController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Báo cáo kết quả xử lý'
+                    'Báo cáo kết quả xử lý',
+                    'report'
                 );
 
                 return $this->sendError('Kích thước tệp đính kèm có dung lượng không quá 5800000', 400);
@@ -127,7 +133,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Không có tệp đính kèm', 400);
@@ -145,7 +152,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Thông tin gửi đi không hợp lệ', 400);
@@ -185,7 +193,9 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report',
+                $newReport->id
             );
 
             $this->notification(
@@ -210,7 +220,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Đã có lỗi xảy ra khi tạo báo cáo', 500);
@@ -289,7 +300,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
@@ -303,7 +315,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
@@ -318,7 +331,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Công việc xử lý của báo cáo không tồn tại', 404);
@@ -333,7 +347,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Công việc xử lý đã được xác nhận từ trước', 400);
@@ -412,7 +427,8 @@ class ReportController extends BaseController
                         $employee->employee_id,
                         "Yêu cầu nhân viên xử lý công việc",
                         "DONE",
-                        $task_id
+                        $task_id,
+                        $projectType
                     );
 
                     $all_ids = $employee->all_ids;
@@ -437,7 +453,9 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report',
+                $id
             );
 
             return $this->sendResponse();
@@ -449,7 +467,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Đã có lỗi xảy ra khi chấp nhận báo cáo', 500);
@@ -482,7 +501,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Không có giá trị định danh báo cáo kết quả', 400);
@@ -496,7 +516,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Không tìm được báo cáo nào hợp lệ', 404);
@@ -526,7 +547,9 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report',
+                $id
             );
 
             return $this->sendResponse();
@@ -538,7 +561,8 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Báo cáo kết quả xử lý'
+                'Báo cáo kết quả xử lý',
+                'report'
             );
 
             return $this->sendError('Đã có lỗi xảy ra khi chấp nhận báo cáo', 500);

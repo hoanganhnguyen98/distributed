@@ -149,9 +149,17 @@ class BaseController extends Controller
         return $verifyApiToken;
     }
 
-    public function logging($description, $authorId, $projectType, $state, $name, $entityId = null)
+    public function logging($description, $authorId, $projectType, $state, $name, $action = 'add', $entityId = null)
     {
-        $url = 'http://it4883logging.herokuapp.com/api/resolve-problem/add';
+        $array_action = [
+            'add' => 'resolve-problem/add',
+            'delete' => 'resolve-problem/delete',
+            'edit' => 'resolve-problem/edit',
+            'activity' => 'resolve-problem/activity',
+            'report' => 'result-resolve-problem'
+        ];
+
+        $url = 'http://it4883logging.herokuapp.com/api/'. $array_action[$action];
 
         // $headers = [
         //     'api-token' => $apiToken,

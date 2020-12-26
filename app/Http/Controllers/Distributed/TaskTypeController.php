@@ -51,7 +51,8 @@ class TaskTypeController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Loại công việc xử lý sự cố'
+                    'Loại công việc xử lý sự cố',
+                    'add'
                 );
 
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
@@ -73,7 +74,9 @@ class TaskTypeController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Loại công việc xử lý sự cố'
+                'Loại công việc xử lý sự cố',
+                'add',
+                $newTaskType->id
             );
 
             DB::commit();
@@ -87,7 +90,8 @@ class TaskTypeController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Loại công việc xử lý sự cố'
+                'Loại công việc xử lý sự cố',
+                'add'
             );
 
             return $this->sendError('Có lỗi khi tạo loại công việc mới', 500);
@@ -129,7 +133,8 @@ class TaskTypeController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Loại công việc xử lý sự cố'
+                    'Loại công việc xử lý sự cố',
+                    'add'
                 );
 
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
@@ -145,7 +150,8 @@ class TaskTypeController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Loại công việc xử lý sự cố'
+                    'Loại công việc xử lý sự cố',
+                    'add'
                 );
 
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
@@ -166,7 +172,8 @@ class TaskTypeController extends BaseController
                 $projectType,
                 'success',
                 'Loại công việc xử lý sự cố',
-                $request->get('prioritize')
+                'edit',
+                $request->get('id')
             );
 
             return $this->sendResponse($taskType);
@@ -178,7 +185,8 @@ class TaskTypeController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Loại công việc xử lý sự cố'
+                'Loại công việc xử lý sự cố',
+                'edit'
             );
 
             return $this->sendError('Có lỗi khi cập nhật loại công việc', 500);
@@ -213,7 +221,8 @@ class TaskTypeController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Loại công việc xử lý sự cố'
+                    'Loại công việc xử lý sự cố',
+                    'delete'
                 );
 
                 return $this->sendError('Không có định danh loại công việc', 400);
@@ -227,7 +236,8 @@ class TaskTypeController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Loại công việc xử lý sự cố'
+                    'Loại công việc xử lý sự cố',
+                    'delete'
                 );
 
                 return $this->sendError('Không tìm thấy loại công việc hợp lệ', 404);
@@ -241,7 +251,8 @@ class TaskTypeController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Loại công việc xử lý sự cố'
+                    'Loại công việc xử lý sự cố',
+                    'delete'
                 );
 
                 return $this->sendError('Không thể xóa vì đã tồn tại công việc thuộc loại này', 400);
@@ -257,6 +268,7 @@ class TaskTypeController extends BaseController
                 $projectType,
                 'success',
                 'Loại công việc xử lý sự cố',
+                'delete',
                 $id
             );
 
@@ -269,7 +281,8 @@ class TaskTypeController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Loại công việc xử lý sự cố'
+                'Loại công việc xử lý sự cố',
+                'delete'
             );
 
             return $this->sendError('Có lỗi khi xóa loại công việc', 500);

@@ -106,7 +106,8 @@ class ScheduleSettingController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Cấu hình lịch làm việc'
+                    'Cấu hình lịch làm việc',
+                    'activity'
                 );
 
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 404);
@@ -124,7 +125,8 @@ class ScheduleSettingController extends BaseController
                             $verifyApiToken['id'],
                             $projectType,
                             'failure',
-                            'Cấu hình lịch làm việc'
+                            'Cấu hình lịch làm việc',
+                            'activity'
                         );
 
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
@@ -143,7 +145,8 @@ class ScheduleSettingController extends BaseController
                                     $verifyApiToken['id'],
                                     $projectType,
                                     'failure',
-                                    'Cấu hình lịch làm việc'
+                                    'Cấu hình lịch làm việc',
+                                    'activity'
                                 );
 
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
@@ -156,7 +159,8 @@ class ScheduleSettingController extends BaseController
                                     $verifyApiToken['id'],
                                     $projectType,
                                     'failure',
-                                    'Cấu hình lịch làm việc'
+                                    'Cấu hình lịch làm việc',
+                                    'activity'
                                 );
 
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chứa ngày không hợp lệ', 400);
@@ -169,7 +173,8 @@ class ScheduleSettingController extends BaseController
                             $verifyApiToken['id'],
                             $projectType,
                             'failure',
-                            'Cấu hình lịch làm việc'
+                            'Cấu hình lịch làm việc',
+                            'activity'
                         );
 
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
@@ -187,7 +192,8 @@ class ScheduleSettingController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Cấu hình lịch làm việc'
+                    'Cấu hình lịch làm việc',
+                    'activity'
                 );
 
                 return $this->sendError('Lịch làm việc của tháng '. $request->get('month') . ' năm '. $request->get('year') . ' đã được cấu hình.', 400);
@@ -210,7 +216,8 @@ class ScheduleSettingController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Cấu hình lịch làm việc'
+                'Cấu hình lịch làm việc',
+                'activity'
             );
 
             return $this->sendResponse();
@@ -222,7 +229,8 @@ class ScheduleSettingController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Cấu hình lịch làm việc'
+                'Cấu hình lịch làm việc',
+                'activity'
             );
 
             return $this->sendError('Có lỗi khi cấu hình lịch làm việc', 500);
@@ -257,7 +265,8 @@ class ScheduleSettingController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Cấu hình lịch làm việc'
+                    'Cấu hình lịch làm việc',
+                    'activity'
                 );
 
                 return $this->sendError('Không có định danh cấu hình lịch làm việc', 400);
@@ -271,7 +280,8 @@ class ScheduleSettingController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Cấu hình lịch làm việc'
+                    'Cấu hình lịch làm việc',
+                    'activity'
                 );
 
                 return $this->sendError('Không tìm thấy cấu hình lịch làm việc hợp lệ', 404);
@@ -286,7 +296,8 @@ class ScheduleSettingController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Cấu hình lịch làm việc'
+                'Cấu hình lịch làm việc',
+                'activity'
             );
 
             return $this->sendResponse();
@@ -298,7 +309,8 @@ class ScheduleSettingController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Cấu hình lịch làm việc'
+                'Cấu hình lịch làm việc',
+                'activity'
             );
 
             return $this->sendError('Có lỗi khi xóa cấu hình lịch làm việc', 500);
@@ -338,7 +350,8 @@ class ScheduleSettingController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Cấu hình lịch làm việc'
+                    'Cấu hình lịch làm việc',
+                    'activity'
                 );
 
                 return $this->sendError('Dữ liệu đầu vào chưa hợp lệ', 400);
@@ -352,7 +365,8 @@ class ScheduleSettingController extends BaseController
                     $verifyApiToken['id'],
                     $projectType,
                     'failure',
-                    'Cấu hình lịch làm việc'
+                    'Cấu hình lịch làm việc',
+                    'activity'
                 );
 
                 return $this->sendError('Không tìm thấy cấu hình của lịch làm việc hợp lệ', 404);
@@ -370,7 +384,8 @@ class ScheduleSettingController extends BaseController
                             $verifyApiToken['id'],
                             $projectType,
                             'failure',
-                            'Cấu hình lịch làm việc'
+                            'Cấu hình lịch làm việc',
+                            'activity'
                         );
 
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
@@ -389,7 +404,8 @@ class ScheduleSettingController extends BaseController
                                     $verifyApiToken['id'],
                                     $projectType,
                                     'failure',
-                                    'Cấu hình lịch làm việc'
+                                    'Cấu hình lịch làm việc',
+                                    'activity'
                                 );
 
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
@@ -402,7 +418,8 @@ class ScheduleSettingController extends BaseController
                                     $verifyApiToken['id'],
                                     $projectType,
                                     'failure',
-                                    'Cấu hình lịch làm việc'
+                                    'Cấu hình lịch làm việc',
+                                    'activity'
                                 );
 
                                 return $this->sendError('Chuỗi ngày nghỉ off_days chứa ngày không hợp lệ', 400);
@@ -415,7 +432,8 @@ class ScheduleSettingController extends BaseController
                             $verifyApiToken['id'],
                             $projectType,
                             'failure',
-                            'Cấu hình lịch làm việc'
+                            'Cấu hình lịch làm việc',
+                            'activity'
                         );
 
                         return $this->sendError('Chuỗi ngày nghỉ off_days chưa hợp lệ', 400);
@@ -441,7 +459,8 @@ class ScheduleSettingController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'success',
-                'Cấu hình lịch làm việc'
+                'Cấu hình lịch làm việc',
+                'activity'
             );
 
             return $this->sendResponse();
@@ -453,7 +472,8 @@ class ScheduleSettingController extends BaseController
                 $verifyApiToken['id'],
                 $projectType,
                 'failure',
-                'Cấu hình lịch làm việc'
+                'Cấu hình lịch làm việc',
+                'activity'
             );
 
             return $this->sendError('Có lỗi khi cập nhật cấu hình lịch làm việc', 500);

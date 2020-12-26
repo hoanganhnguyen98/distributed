@@ -351,6 +351,7 @@ class TaskController extends BaseController
                 $projectType,
                 'success',
                 'Xử lý sự cố',
+                'add',
                 $incident_id
             );
 
