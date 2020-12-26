@@ -9,12 +9,16 @@
             <a href="/">
                 <img src="{{ asset('img/logo.jpg') }}" class="mr-3" width="80" height="80">
             </a>
-            
+
             <div class="media-body">
                 <h3 class="mt-2 text-uppercase text-secondary font-weight-bold">
-                    <a href="/">{{ trans('messages.header.title') }}</a>
+                    {{-- <a href="/">{{ trans('messages.header.title') }}</a> --}}
+                    DSD08
                 </h3>
-                <h6 class="text-secondary font-weight-bold">{{ trans('messages.header.subtitle') }}</h6>
+                <h6 class="text-secondary font-weight-bold">
+                    {{-- {{ trans('messages.header.subtitle') }} --}}
+                    DISTRIBUTED SOFTWARE DEVELOPMENT
+                </h6>
             </div>
         </div>
         @endif
@@ -24,7 +28,7 @@
         </button>
 
         <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
+            {{-- <ul class="navbar-nav ml-auto">
                 @if(Auth::check())
                     <li class="nav-item mx-0 mx-lg-1">
                         <a href="#" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" data-toggle="modal" data-target="#logoutModal">
@@ -72,7 +76,7 @@
                         <a class="dropdown-item" href="lang/vn"><img src="{{asset('img/vn.png')}}" width="30px" height="20x"> Tiếng Việt</a>
                     </div>
                 </li>
-            </ul>
+            </ul> --}}
         </div>
     </div>
 </nav>

@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('htmlheader_title')
-    {{ trans('messages.login.title') }}
+    {{-- {{ trans('messages.login.title') }} --}}
+    DSD 08
 @endsection
 
 @section('custom_css')
@@ -13,11 +14,12 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-uppercase text-primary font-weight-bold">
-                    {{ trans('messages.login.header') }}
+                    {{-- {{ trans('messages.login.header') }} --}}
+                    BÀI TẬP LỚN MÔN HỌC
                 </div>
 
-                <div class="card-body">
-                    @if(Session::has('success'))
+                {{-- <div class="card-body"> --}}
+                    {{-- @if(Session::has('success'))
                         @include('layouts.toast.success')
                     @endif
 
@@ -68,8 +70,8 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </form> --}}
+                {{-- </div> --}}
             </div>
         </div>
     </div>

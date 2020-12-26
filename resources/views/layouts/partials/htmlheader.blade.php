@@ -5,7 +5,7 @@
     <meta name="author" content="Nguyen Hoang Anh">
 
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}" />
-    <title>{{ config('app.name') }} - @yield('htmlheader_title', 'Your title here')</title>
+    <title>NINJA - @yield('htmlheader_title', 'Your title here')</title>
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
