@@ -486,7 +486,7 @@ class EmployeeController extends BaseController
                     $task_data['id'] = $task->id;
                     $task_data['status'] = $task->status;
 
-                    $task_type_id = $task->id;
+                    $task_type_id = $task->task_type_id;
                     $task_type = TaskType::where('id', $task_type_id)->first();
                     $task_data['task_type'] = $task_type;
 
