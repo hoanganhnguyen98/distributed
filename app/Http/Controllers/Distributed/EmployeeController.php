@@ -193,20 +193,26 @@ class EmployeeController extends BaseController
         $limit = $request->get('limit');
         $metadata = [];
 
-        if (!$page || !$limit) {
-            $employees = Employee::where('type',$type)->get();
+        if ($type == 'ALL_PROJECT') {
+            $employees = Employee::all();
         } else {
-            $employees = Employee::where('type',$type)->offset(($page - 1) * $limit)->limit($limit)->get();
-
-            $count = Employee::where('type',$type)->count();
-            $total = ceil($count / $limit);
-
-            $metadata = [
-                'total' => (int) $total,
-                'page' => (int) $page,
-                'limit' => (int) $limit
-            ];
+            $employees = Employee::where('type',$type)->get();
         }
+
+        // if (!$page || !$limit) {
+        //     $employees = Employee::where('type',$type)->get();
+        // } else {
+        //     $employees = Employee::where('type',$type)->offset(($page - 1) * $limit)->limit($limit)->get();
+
+        //     $count = Employee::where('type',$type)->count();
+        //     $total = ceil($count / $limit);
+
+        //     $metadata = [
+        //         'total' => (int) $total,
+        //         'page' => (int) $page,
+        //         'limit' => (int) $limit
+        //     ];
+        // }
 
         $list = [];
         foreach ($employees as $key => $employee) {
