@@ -159,7 +159,7 @@ class BaseController extends Controller
             'report' => 'result-resolve-problem'
         ];
 
-        $url = 'http://it4883logging.herokuapp.com/api/'. $array_action[$action];
+        $url = 'http://14.248.5.197:5012/api/'. $array_action[$action];
 
         // $headers = [
         //     'api-token' => $apiToken,
