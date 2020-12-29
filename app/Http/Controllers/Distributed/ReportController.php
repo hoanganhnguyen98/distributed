@@ -245,26 +245,37 @@ class ReportController extends BaseController
             }
         }
 
-        $type_id = $projectType;
+        $type = $projectType;
 
         $page = $request->get('page');
         $limit = $request->get('limit');
         $metadata = [];
 
-        if (!$page || !$limit) {
-            $list = Report::where('type',$type_id)->get();
-        } else {
-            $list = Report::where('type',$type_id)->offset(($page - 1) * $limit)->limit($limit)->get();
+        // if (!$page || !$limit) {
 
-            $count = Report::where('type',$type_id)->count();
-            $total = ceil($count / $limit);
+            if ($type == 'ALL_PROJECT') {
+                $list = Report::all();
+            } else {
+                $list = Report::where('type',$type)->get();
+            }
+        // } else {
+        //     if ($type == 'ALL_PROJECT') {
+        //         $list = Report::all();
+        //     } else {
+        //         $list = Report::where('type',$type)->get();
+        //     }
 
-            $metadata = [
-                'total' => (int) $total,
-                'page' => (int) $page,
-                'limit' => (int) $limit
-            ];
-        }
+        //     $list = Report::where('type',$type)->offset(($page - 1) * $limit)->limit($limit)->get();
+
+        //     $count = Report::where('type',$type)->count();
+        //     $total = ceil($count / $limit);
+
+        //     $metadata = [
+        //         'total' => (int) $total,
+        //         'page' => (int) $page,
+        //         'limit' => (int) $limit
+        //     ];
+        // }
 
         $data = [
             'metadata' => $metadata,
