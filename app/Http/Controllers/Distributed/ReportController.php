@@ -83,7 +83,7 @@ class ReportController extends BaseController
                 return $this->sendError('Nhân viên không trong phạm vi xử lý của công việc này', 403);
             }
         } else {
-            if ($employee_id !== $employee_ids) {
+            if ((int) $employee_id !== (int) $employee_ids) {
                 $this->logging(
                     'Tạo báo cáo lỗi do nhân viên không thuộc phạm vi công việc báo cáo',
                     $verifyApiToken['id'],
