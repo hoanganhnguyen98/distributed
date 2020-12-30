@@ -49,7 +49,7 @@ class BaseController extends Controller
         $sender,
         $employee_ids,
         $refID,
-        $linkView = "https://dsd08handleincident.herokuapp.com/handle-problem",
+        $linkView = "http://14.248.5.197:8010/handle-problem",
         $content = "Thông báo mới",
         $ntfType = 1
     ) {

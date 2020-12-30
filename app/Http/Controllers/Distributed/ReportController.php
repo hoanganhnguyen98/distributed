@@ -204,7 +204,7 @@ class ReportController extends BaseController
                 $employee_id,
                 [$employee_id],
                 $newReport->id,
-                "https://dsd08handleincident.herokuapp.com/handle-problem",
+                "http://14.248.5.197:8010/handle-problem",
                 "Báo cáo kết quả mới",
                 2
             );
@@ -378,7 +378,7 @@ class ReportController extends BaseController
                     $verifyApiToken['id'],
                     [$report->create_id],
                     $id,
-                    "https://dsd08handleincident.herokuapp.com/handle-problem",
+                    "http://14.248.5.197:8010/handle-problem",
                     "Báo cáo được chấp nhận",
                     3
                 );
@@ -546,7 +546,7 @@ class ReportController extends BaseController
                 $verifyApiToken['id'],
                 $report->create_id,
                 $id,
-                "https://dsd08handleincident.herokuapp.com/handle-problem",
+                "http://14.248.5.197:8010/handle-problem",
                 "Báo cáo bị từ chối",
                 3
             );
